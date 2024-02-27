@@ -14,9 +14,9 @@ const Register: React.FC = () => {
 
   return (
     <AuthLayout onSubmit={onRegistration}>
-      <Controller
+      {/* <Controller
         control={form.control}
-        name="fullname"
+        name=""
         render={({ field, fieldState: { error } }) => (
           <Form.TextField
             fieldProps={field}
@@ -25,7 +25,7 @@ const Register: React.FC = () => {
             message={error?.message || ""}
           />
         )}
-      />
+      /> */}
 
       <Controller
         control={form.control}

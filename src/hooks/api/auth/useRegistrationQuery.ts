@@ -12,7 +12,6 @@ export default function useRegistrationQuery() {
 
   const onRegistration = form.handleSubmit(async (values) => {
     await register({
-      fullname: values.fullname,
       email: values.email,
       password: values.password,
       confirm_password: values.confirm_password,

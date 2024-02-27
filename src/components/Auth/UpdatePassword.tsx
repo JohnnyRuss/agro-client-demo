@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  // useNavigate
+} from "react-router-dom";
 
-import { PATHS } from "@/config/paths";
+// import { PATHS } from "@/config/paths";
 
 import { useUpdatePasswordQuery } from "@/hooks/api/auth";
 
@@ -14,7 +17,7 @@ import { ErrorMessage, StandSpinner } from "@/components/Layouts";
 const UpdatePassword: React.FC = () => {
   const { form, onUpdatePassword, status } = useUpdatePasswordQuery();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { state } = useLocation();
   const emailIsConfirmed = state?.emailIsConfirmed;
 

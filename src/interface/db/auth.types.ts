@@ -13,7 +13,6 @@ type SignInArgsT = {
 
 type SignUpArgsT = {
   email: string;
-  fullname: string;
   password: string;
   confirm_password: string;
 };

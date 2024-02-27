@@ -67,9 +67,9 @@ const AddProduct: React.FC = () => {
         />
 
         <Controller
-          control={form.control}
           name="category"
-          render={({ field, fieldState: { error } }) => <SelectField />}
+          control={form.control}
+          render={() => <SelectField />}
         />
 
         {sizesField.fields.map((sizeField, index) => (

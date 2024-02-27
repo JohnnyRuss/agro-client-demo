@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { Controller } from "react-hook-form";
-import { useLocation, useNavigate } from "react-router-dom";
+import {
+  useLocation,
+  //  useNavigate
+} from "react-router-dom";
 
-import { PATHS } from "@/config/paths";
+// import { PATHS } from "@/config/paths";
 import { useConfirmEmailQuery } from "@/hooks/api/auth";
 
 import SubmitButton from "./components/SubmitButton";
@@ -13,7 +16,7 @@ import { ErrorMessage, StandSpinner } from "@/components/Layouts";
 const ConfirmEmail: React.FC = () => {
   const { form, onConfirmEmail, status } = useConfirmEmailQuery();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { state } = useLocation();
   const isProcessingPasswordUpdate = state?.isProcessingPasswordUpdate;
 
