@@ -1,14 +1,19 @@
-import { generateArray } from "@/utils";
+import { useGetProductsQuery } from "@/hooks/api/dashboard/products";
 
 import ProductCard from "./components/ProductCard";
 import * as Styled from "./styles/yourProducts.styled";
+import { StandSpinner } from "@/components/Layouts";
 
 const YourProducts: React.FC = () => {
+  const { data, status } = useGetProductsQuery();
+
   return (
     <Styled.YourProducts>
-      {generateArray(12).map((id) => (
-        <ProductCard key={id} />
+      {data.map((product) => (
+        <ProductCard key={product._id} product={product} />
       ))}
+
+      {status.loading && <StandSpinner />}
     </Styled.YourProducts>
   );
 };

@@ -31,6 +31,7 @@ import {
   FaVideo,
   FaPlus,
   FaMinus,
+  FaPlay,
 } from "react-icons/fa";
 
 // ========== ai ==========
@@ -71,6 +72,7 @@ const MinusIcon = FaMinus;
 const PublishIcon = MdOutlinePublish;
 const FilterIcon = CiFilter;
 const AppIcon = GrApps;
+const PlayIcon = FaPlay;
 
 export {
   LocationIcon,
@@ -99,4 +101,5 @@ export {
   PublishIcon,
   FilterIcon,
   AppIcon,
+  PlayIcon,
 };

@@ -187,6 +187,10 @@ export const FileField = styled.div`
     color: ${({ theme }) => theme.colors.white};
   }
 
+  .chosen-assets__review-box {
+    margin-top: 1rem;
+  }
+
   .chosen-assets__review-box.single {
     display: flex;
     align-items: center;
@@ -208,11 +212,21 @@ export const FileField = styled.div`
     border-radius: 0.5rem;
     position: relative;
 
-    img {
+    img,
+    video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: inherit;
+    }
+
+    .play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: ${({ theme }) => theme.fontSize.lg};
+      color: ${({ theme }) => theme.colors.blue};
     }
 
     .remove-asset--btn {

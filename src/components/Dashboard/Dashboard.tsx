@@ -15,16 +15,16 @@ const routes = [
     title: "categories",
   },
   {
+    path: PATHS.dashboard_products_page,
+    title: "products",
+  },
+  {
     path: PATHS.dashboard_combos_page,
     title: "combos",
   },
   {
     path: PATHS.dashboard_orders_page,
     title: "orders",
-  },
-  {
-    path: PATHS.dashboard_products_page,
-    title: "products",
   },
   {
     path: PATHS.home_page,

@@ -46,13 +46,19 @@ export const AddProduct = styled.div`
       width: 12rem;
     }
 
+    &.first .remove-field__btn {
+      transform: translateY(15%);
+    }
+
     .remove-field__btn {
       width: max-content;
       position: absolute;
       right: -3rem;
-      top: 56%;
+      top: 50%;
+      transform: translateY(-50%);
       font-size: ${({ theme }) => theme.fontSize.lg};
       color: ${({ theme }) => theme.colors.red};
+      display: flex;
     }
   }
 

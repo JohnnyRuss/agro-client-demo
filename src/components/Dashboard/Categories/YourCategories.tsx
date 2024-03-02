@@ -1,47 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useGetCategoriesQuery } from "@/hooks/api/dashboard/categories";
+import { useDeleteCategoryQuery } from "@/hooks/api/dashboard/categories";
 
-import { generateArray } from "@/utils";
-import { PATHS } from "@/config/paths";
-import { useAppUIContext } from "@/Providers/useProviders";
-
-import { Button } from "@/components/Layouts";
+import { StandSpinner } from "@/components/Layouts";
+import CategoryCard from "./components/CategoryCard";
 import * as Styled from "./styles/yourCategories.styled";
-import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
 
 const YourCategories: React.FC = () => {
-  const navigate = useNavigate();
-
-  const { activateDialog } = useAppUIContext();
-
-  const onEdit = (categoryId: string) =>
-    navigate(`${PATHS.dashboard_create_category_page}?category=${categoryId}`);
-
-  const onStartDelete = () =>
-    activateDialog({
-      target: "<CATEGORY>",
-      message: "Are you sure you want to delete this category ?",
-      onConfirm: () => {},
-      title: "Delete Category",
-      type: "danger",
-    });
+  const { data, status } = useGetCategoriesQuery();
+  const { deleteCategoryQuery, status: deleteStatus } =
+    useDeleteCategoryQuery();
 
   return (
     <Styled.YourCategories>
-      {generateArray(12).map((id) => (
-        <li key={id} className="category-item">
-          <p>მუხლი</p>
-
-          <div className="category-item__actions">
-            <Button onClick={onStartDelete} show="danger" fillType="outlined">
-              <DeleteIcon />
-            </Button>
-
-            <Button onClick={() => onEdit(id)} fillType="outlined">
-              <EditIcon />
-            </Button>
-          </div>
-        </li>
+      {data.map((category) => (
+        <CategoryCard
+          key={category._id}
+          category={category}
+          deleteCategoryQuery={deleteCategoryQuery}
+        />
       ))}
+
+      {(status.loading || deleteStatus.loading) && <StandSpinner />}
     </Styled.YourCategories>
   );
 };

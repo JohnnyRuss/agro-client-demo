@@ -32,7 +32,7 @@ export const ProductCard = styled.div`
       text-align: center;
     }
 
-    p[data-line-clamp] {
+    div[data-line-clamp] {
       color: ${({ theme }) => theme.colors.gray_shade};
       font-size: ${({ theme }) => theme.fontSize.sm};
       text-align: justify;

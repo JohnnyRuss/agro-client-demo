@@ -1,23 +1,33 @@
-import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
 import { PATHS } from "@/config/paths";
 import { useSearchParams } from "@/hooks/utils";
 import { useCreateCategoryQuery } from "@/hooks/api/dashboard/categories";
 
-import { TextField, Button } from "@/components/Layouts";
+import { TextField, Button, StandSpinner } from "@/components/Layouts";
 import * as Styled from "./styles/createCategory.styled";
 import { ArrowLeftIcon } from "@/components/Layouts/Icons";
 
+import { CategoryT } from "@/interface/db/category.types";
+
 const CreateCategory: React.FC = () => {
   const navigate = useNavigate();
-
-  const { form } = useCreateCategoryQuery();
+  const { state } = useLocation();
   const { getParam } = useSearchParams();
 
+  const { form, status, onStartUpdate, createCategoryQuery } =
+    useCreateCategoryQuery();
+
   const isEditing = getParam("category");
+  const candidateCategory: CategoryT | undefined = state?.category;
 
   const onGoBack = () => navigate(PATHS.dashboard_your_categories_page);
+
+  useEffect(() => {
+    if (isEditing && candidateCategory) onStartUpdate(candidateCategory);
+  }, [isEditing, candidateCategory]);
 
   return (
     <Styled.CreateCategory>
@@ -43,10 +53,17 @@ const CreateCategory: React.FC = () => {
           )}
         />
 
-        <Button show="secondary" className="create-category__btn">
-          create
+        <Button
+          show="secondary"
+          disabled={status.loading}
+          onClick={createCategoryQuery}
+          className="create-category__btn"
+        >
+          {isEditing ? "update" : "create"}
         </Button>
       </form>
+
+      {status.loading && <StandSpinner />}
     </Styled.CreateCategory>
   );
 };
