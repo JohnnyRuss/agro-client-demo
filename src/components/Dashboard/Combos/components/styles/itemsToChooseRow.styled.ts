@@ -38,17 +38,10 @@ export const ItemsToChooseRow = styled.div`
     }
   }
 
-  .item-to--choose__list-wrapper {
+  .infinite-scroll-component {
     ${scrollbar};
-    overflow-y: auto;
-    height: 100%;
-    padding-bottom: 1rem;
-  }
-
-  .item-to--choose__list {
     display: flex;
     flex-direction: column;
     gap: 3rem;
-    margin-right: 1rem;
   }
 `;

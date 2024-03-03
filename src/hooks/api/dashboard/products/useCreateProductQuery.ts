@@ -66,8 +66,8 @@ export default function useCreateProductQuery() {
   const [candidateProductId, setCandidateProductId] = useState("");
 
   const status = productStore.use.createStatus();
-  const create = productStore.use.createProduct();
-  const update = productStore.use.updateProduct();
+  const create = productStore.use.create();
+  const update = productStore.use.update();
 
   const onStartUpdate = (product: ProductT) => {
     form.reset({
@@ -88,11 +88,19 @@ export default function useCreateProductQuery() {
 
   const onCreateQuery = form.handleSubmit(async (values) => {
     if (candidateProductId) {
-      await update(values, { productId: candidateProductId });
+      await update({ data: values, params: { productId: candidateProductId } });
       navigate(pathname);
     } else await create(values);
 
-    form.reset();
+    form.reset({
+      title: "",
+      description: "",
+      price: "",
+      category: { title: "", value: "" },
+      sizes: [{ quantity: "", size: "" }],
+      assets: [],
+      assets_to_delete: [],
+    });
   });
 
   return {

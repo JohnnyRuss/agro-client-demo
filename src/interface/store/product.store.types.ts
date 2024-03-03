@@ -1,6 +1,6 @@
 import { ProductT } from "@/interface/db/product.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
-import { ProductSchemaT } from "@/utils/validations/dashboard/ProductSchema";
+import * as ProductAPI_T from "@/interface/API/products.api.types";
 
 type ProductStateT = {
   product: ProductT;
@@ -13,22 +13,21 @@ type ProductStateT = {
 };
 
 type ProductActionsT = {
-  createProduct: (data: ProductSchemaT) => Promise<void>;
+  create: (data: ProductAPI_T.CreateProductArgsT) => Promise<void>;
 
-  updateProduct: (
-    data: ProductSchemaT,
-    params: { productId: string }
-  ) => Promise<void>;
+  update: (args: ProductAPI_T.UpdateProductArgsT) => Promise<void>;
 
-  deleteProduct: (params: { productId: string }) => Promise<void>;
+  delete: (params: ProductAPI_T.DeleteProductArgsT) => Promise<void>;
 
-  getProduct: (params: { productId: string }) => Promise<void>;
+  get: (params: ProductAPI_T.GetProductArgsT) => Promise<void>;
 
-  getProducts: () => Promise<void>;
+  cleanUp: () => void;
 
-  cleanUpProduct: () => void;
+  getAll: (params: ProductAPI_T.GetAllProductsArgsT) => Promise<void>;
 
-  cleanUpProducts: () => void;
+  getAllPaginated: (params: ProductAPI_T.GetAllProductsArgsT) => Promise<void>;
+
+  cleanUpAll: () => void;
 };
 
 type ProductStoreT = ProductStateT & ProductActionsT;

@@ -4,17 +4,29 @@ import { productStore } from "@/store";
 
 export default function useGetProductsQuery() {
   const status = productStore.use.readStatus();
-  const get = productStore.use.getProducts();
-  const cleanUp = productStore.use.cleanUpProducts();
+  const getAll = productStore.use.getAll();
+  const getAllPaginated = productStore.use.getAllPaginated();
+
   const data = productStore.use.products();
+  const hasMore = productStore.use.hasMore();
+  const currentPage = productStore.use.currentPage();
+  const total = data.length;
+
+  const cleanUpAll = productStore.use.cleanUpAll();
+
+  const getPaginatedProductsQuery = async () => {
+    await getAllPaginated({
+      page: currentPage + 1,
+    });
+  };
 
   useEffect(() => {
-    get();
+    getAll({ page: 1 });
 
     return () => {
-      cleanUp();
+      cleanUpAll();
     };
   }, []);
 
-  return { status, data };
+  return { status, data, total, hasMore, getPaginatedProductsQuery };
 }

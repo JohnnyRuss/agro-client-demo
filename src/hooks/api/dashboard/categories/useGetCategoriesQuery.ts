@@ -4,17 +4,29 @@ import { categoryStore } from "@/store";
 
 export default function useGetCategoriesQuery() {
   const status = categoryStore.use.readStatus();
+  const getAll = categoryStore.use.getAll();
+  const getAllPaginated = categoryStore.use.getAllPaginated();
+
   const data = categoryStore.use.categories();
-  const get = categoryStore.use.getCategories();
-  const cleanUp = categoryStore.use.cleanUpCategories();
+  const hasMore = categoryStore.use.hasMore();
+  const currentPage = categoryStore.use.currentPage();
+  const total = data.length;
+
+  const cleanUpAll = categoryStore.use.cleanUpAll();
+
+  const getPaginatedCategoriesQuery = async () => {
+    await getAllPaginated({
+      page: currentPage + 1,
+    });
+  };
 
   useEffect(() => {
-    get();
+    getAll({ page: 1 });
 
     return () => {
-      cleanUp();
+      cleanUpAll();
     };
   }, []);
 
-  return { status, data };
+  return { status, data, hasMore, total, getPaginatedCategoriesQuery };
 }

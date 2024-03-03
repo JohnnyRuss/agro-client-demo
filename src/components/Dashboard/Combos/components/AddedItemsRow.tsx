@@ -1,7 +1,5 @@
 import { memo } from "react";
 
-import { generateArray } from "@/utils";
-
 import * as Styled from "./styles/addedItemsRow.styled";
 import ItemToChooseCard from "./ItemToChooseCard";
 
@@ -11,10 +9,10 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
   return (
     <Styled.AddedItemsRow>
       <div className="added-items__list-head">
-        <span>Added 3 Products</span>
+        <span>დამატებულია 3 პროდუქტი</span>
 
         <div>
-          <span>Total Price:</span>
+          <span>ჯამური ფასი:</span>
           &nbsp;
           <span>416</span>
         </div>
@@ -22,8 +20,20 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
 
       <div className="added-items__list-wrapper">
         <div className="added-items__list">
-          {generateArray(3).map((id) => (
-            <ItemToChooseCard key={id} isInAddedRow={true} />
+          {[].map((id) => (
+            <ItemToChooseCard
+              key={id}
+              isInAddedRow={true}
+              product={{
+                _id: "",
+                assets: [],
+                category: { _id: "", query: "", title: "" },
+                description: "",
+                price: 1,
+                sizes: [],
+                title: "",
+              }}
+            />
           ))}
         </div>
       </div>

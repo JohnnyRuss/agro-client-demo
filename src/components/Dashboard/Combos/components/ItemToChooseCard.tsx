@@ -2,40 +2,46 @@ import { LineClamp, Button } from "@/components/Layouts";
 import { PlusIcon, MinusIcon, DeleteIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/itemToChooseCard.styled";
 
-type ItemToChooseCardT = { isInAddedRow: boolean };
+import { ProductT } from "@/interface/db/product.types";
 
-const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ isInAddedRow }) => {
+type ItemToChooseCardT = {
+  isInAddedRow: boolean;
+  product: ProductT;
+};
+
+const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({
+  product,
+  isInAddedRow,
+}) => {
+  const thumbnail = product.assets.find((asset) => asset?.endsWith(".webp"));
+
   return (
     <Styled.ItemToChooseCard>
       <figure className="item--fig">
         <img
-          src="https://images.unsplash.com/photo-1562658601-0ae4a690ae1f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          title=""
+          src={thumbnail}
+          alt={product.title}
+          title={product.title}
           width="100"
           loading="lazy"
         />
       </figure>
 
       <div className="item--details">
-        <LineClamp
-          clamp={2}
-          component="h4"
-          text="some very ver very very very big text"
-        />
+        <LineClamp clamp={2} component="h4" text={product.title} />
 
         <div>
           <span>
-            <strong>Price:</strong>
+            <strong>ფასი:</strong>
           </span>
           &nbsp;
-          <span>16</span>
+          <span>{product.price}</span>
         </div>
 
         <div className="item--actions">
           <div className="size-box">
             <span>
-              <strong>Size:</strong>
+              <strong>ზომა:</strong>
             </span>
             &nbsp;
             {isInAddedRow ? (
@@ -54,7 +60,7 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ isInAddedRow }) => {
 
           <div className="total-quantity--box">
             <span>
-              <strong>Total Quantity:</strong>
+              <strong>მაქს. რაოდენობა:</strong>
               &nbsp;
             </span>
             <span>4</span>
@@ -74,7 +80,7 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ isInAddedRow }) => {
             show={isInAddedRow ? "danger" : "primary"}
             className={`add-btn ${isInAddedRow ? "danger" : ""}`}
           >
-            {isInAddedRow ? <DeleteIcon /> : "add"}
+            {isInAddedRow ? <DeleteIcon /> : "ADD"}
           </Button>
         </div>
       </div>

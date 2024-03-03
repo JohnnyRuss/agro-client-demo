@@ -15,11 +15,4 @@ type ProductSizeT = {
   quantity: number;
 };
 
-// API
-type GetProductsResponseT = {
-  currentPage: number;
-  data: Array<ProductT>;
-  hasMore: boolean;
-};
-
-export type { ProductT, GetProductsResponseT };
+export type { ProductT };

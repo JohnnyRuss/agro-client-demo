@@ -1,10 +1,13 @@
 import styled from "styled-components";
 
 export const YourCategories = styled.ul`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 3rem;
   padding: 3rem 2rem;
+
+  .infinite-scroll-component {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3rem;
+  }
 
   .category-item {
     width: 24rem;

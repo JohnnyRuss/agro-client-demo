@@ -1,33 +1,43 @@
 import { memo } from "react";
 
-import { generateArray } from "@/utils";
+import { useGetProductsQuery } from "@/hooks/api/dashboard/products";
 
-import { Button } from "@/components/Layouts";
 import ItemToChooseCard from "./ItemToChooseCard";
 import { SearchIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/itemsToChooseRow.styled";
+import { Button, InfiniteScroll } from "@/components/Layouts";
 
 type ItemToChooseRowT = {};
 
 const ItemToChooseRow: React.FC<ItemToChooseRowT> = memo(() => {
+  const { data, status, hasMore, total, getPaginatedProductsQuery } =
+    useGetProductsQuery();
+
   return (
     <Styled.ItemsToChooseRow>
       <div className="search-field">
-        <input type="text" name="" id="" placeholder="Search ..." />
+        <input type="text" name="" id="" placeholder="ძებნა ..." />
 
         <Button show="secondary">
-          Search
+          ძებნა
           <SearchIcon />
         </Button>
       </div>
 
-      <div className="item-to--choose__list-wrapper">
-        <div className="item-to--choose__list">
-          {generateArray(10).map((id) => (
-            <ItemToChooseCard key={id} isInAddedRow={false} />
-          ))}
-        </div>
-      </div>
+      <InfiniteScroll
+        height="76vh"
+        total={total}
+        hasMore={hasMore}
+        onNext={getPaginatedProductsQuery}
+      >
+        {data.map((product) => (
+          <ItemToChooseCard
+            key={product._id}
+            isInAddedRow={false}
+            product={product}
+          />
+        ))}
+      </InfiniteScroll>
     </Styled.ItemsToChooseRow>
   );
 });

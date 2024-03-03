@@ -3,20 +3,17 @@ import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { AxiosResponse } from "axios";
 
-import {
-  isURL,
-  isBase64Str,
-} from "@/utils/validations/helpers/customValidators";
 import { logger } from "@/utils";
-import FileControl from "@/utils/FileControl";
-import { axiosPrivateQuery, axiosPrivateFormDataQuery } from "@/services/axios";
+import { PRODUCT_PER_PAGE } from "@/config/config";
 import { getStatus, createSelectors } from "./helpers";
+import { axiosPrivateQuery, axiosPrivateFormDataQuery } from "@/services/axios";
 
 import {
   ProductStateT,
   ProductStoreT,
 } from "@/interface/store/product.store.types";
-import { ProductT, GetProductsResponseT } from "@/interface/db/product.types";
+import { ProductT } from "@/interface/db/product.types";
+import { GetAllProductsResponseT } from "@/interface/API/products.api.types";
 
 const initialState: ProductStateT = {
   product: {
@@ -44,10 +41,10 @@ const initialState: ProductStateT = {
 
 const useProductStore = create<ProductStoreT>()(
   devtools(
-    immer((set) => ({
+    immer((set, get) => ({
       ...initialState,
 
-      async createProduct(data) {
+      async create(data) {
         try {
           set(() => ({ createStatus: getStatus("PENDING") }));
 
@@ -68,11 +65,25 @@ const useProductStore = create<ProductStoreT>()(
         }
       },
 
-      async updateProduct(data, params) {
+      async update({ data, params }) {
         try {
           set(() => ({ createStatus: getStatus("PENDING") }));
 
-          await axiosPrivateQuery.put(`/${params.productId}`, data);
+          const requestBody = {
+            title: data.title,
+            description: data.description,
+            price: data.price,
+            category: data.category.value,
+            sizes: data.sizes,
+            assets: data.assets.filter((asset) => typeof asset === "string"),
+            new_assets: data.assets.filter((asset) => asset instanceof File),
+            assets_to_delete: data.assets_to_delete,
+          };
+
+          await axiosPrivateFormDataQuery.put(
+            `/products/${params.productId}`,
+            requestBody
+          );
 
           set(() => ({ createStatus: getStatus("SUCCESS") }));
         } catch (error: any) {
@@ -82,11 +93,11 @@ const useProductStore = create<ProductStoreT>()(
         }
       },
 
-      async deleteProduct(params) {
+      async delete(params) {
         try {
           set(() => ({ deleteStatus: getStatus("PENDING") }));
 
-          await axiosPrivateQuery.delete(`${params.productId}`);
+          await axiosPrivateQuery.delete(`/products/${params.productId}`);
 
           set((state) => ({
             products: state.products.filter(
@@ -101,7 +112,7 @@ const useProductStore = create<ProductStoreT>()(
         }
       },
 
-      async getProduct(params) {
+      async get(params) {
         try {
           set(() => ({ readStatus: getStatus("PENDING") }));
 
@@ -117,22 +128,22 @@ const useProductStore = create<ProductStoreT>()(
         }
       },
 
-      cleanUpProduct() {
+      cleanUp() {
         set(() => ({
           product: initialState.product,
           readStatus: initialState.readStatus,
         }));
       },
 
-      async getProducts() {
+      async getAll(args) {
         try {
           set(() => ({ readStatus: getStatus("PENDING") }));
 
-          const {
-            data: { data, currentPage, hasMore },
-          }: AxiosResponse<GetProductsResponseT> = await axiosPrivateQuery.get(
-            `/products`
-          );
+          const { currentPage, hasMore, data } = await getProductsQuery({
+            page: args.page,
+            queryStr: args.query || "",
+            limit: PRODUCT_PER_PAGE,
+          });
 
           set(() => ({
             hasMore,
@@ -147,7 +158,27 @@ const useProductStore = create<ProductStoreT>()(
         }
       },
 
-      cleanUpProducts() {
+      async getAllPaginated(args) {
+        try {
+          const { currentPage, hasMore, data } = await getProductsQuery({
+            page: args.page,
+            queryStr: args.query || "",
+            limit: PRODUCT_PER_PAGE,
+          });
+
+          set(() => ({
+            hasMore,
+            currentPage,
+            products: [...get().products, ...data],
+          }));
+        } catch (error: any) {
+          const message = logger(error);
+          set(() => ({ readStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      cleanUpAll() {
         set(() => ({
           hasMore: initialState.hasMore,
           currentPage: initialState.currentPage,
@@ -161,3 +192,26 @@ const useProductStore = create<ProductStoreT>()(
 );
 
 export default createSelectors(useProductStore);
+
+async function getProductsQuery(params: {
+  queryStr: string;
+  page: number;
+  limit: number;
+}): Promise<GetAllProductsResponseT> {
+  try {
+    const queryStrings = [
+      params.queryStr.replace("?", ""),
+      `page=${params.page}&limit=${params.limit}`,
+    ];
+
+    const queryStr = queryStrings.join(params.queryStr ? "&" : "");
+
+    const { data }: AxiosResponse<GetAllProductsResponseT> =
+      await axiosPrivateQuery.get(`/products?${queryStr}`);
+
+    return data;
+  } catch (error: any) {
+    const message = logger(error);
+    throw new Error(message);
+  }
+}

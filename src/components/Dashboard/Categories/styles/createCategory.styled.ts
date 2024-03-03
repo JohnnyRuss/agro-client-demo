@@ -8,24 +8,6 @@ export const CreateCategory = styled.div`
   align-items: center;
   height: 85vh;
 
-  .create-category__title {
-    position: absolute;
-    top: 2rem;
-    left: 3rem;
-    font-size: ${({ theme }) => theme.fontSize.xxl};
-    font-weight: 500;
-    display: flex;
-    align-items: center;
-    gap: 2rem;
-
-    button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: ${({ theme }) => theme.fontSize.h3};
-    }
-  }
-
   .create-category__form {
     display: flex;
     flex-direction: column;

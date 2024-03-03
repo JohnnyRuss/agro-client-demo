@@ -5,6 +5,7 @@ export const AddProduct = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 
   form {
     width: 40rem;

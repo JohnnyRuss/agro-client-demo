@@ -29,10 +29,10 @@ const Dialog: React.FC<DialogT> = ({ type = "detailed", ...props }) => {
 
         <div className="dialog-actions">
           <button className="dialog__action-btn" onClick={props.onClose}>
-            Cancel
+            გაუქმება
           </button>
           <button className="dialog__action-btn" onClick={props.onConfirm}>
-            Continue
+            გაგრძელება
           </button>
         </div>
       </Styled.Dialog>

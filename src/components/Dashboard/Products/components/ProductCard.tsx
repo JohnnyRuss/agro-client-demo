@@ -11,9 +11,10 @@ import { ProductT } from "@/interface/db/product.types";
 
 type ProductCardT = {
   product: ProductT;
+  onDelete: (productId: string) => Promise<void>;
 };
 
-const ProductCard: React.FC<ProductCardT> = ({ product }) => {
+const ProductCard: React.FC<ProductCardT> = ({ product, onDelete }) => {
   const navigate = useNavigate();
 
   const { activateDialog } = useAppUIContext();
@@ -25,18 +26,20 @@ const ProductCard: React.FC<ProductCardT> = ({ product }) => {
 
   const onStartDelete = () =>
     activateDialog({
-      target: "<PRODUCT>",
-      message: "Are you sure you want to delete this Product ?",
-      onConfirm: () => {},
-      title: "Delete Product",
+      target: "პროდუქტის",
+      message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
+      onConfirm: () => onDelete(product._id),
+      title: "პროდუქტის წაშლა",
       type: "danger",
     });
+
+  const thumbnail = product.assets.find((asset) => asset?.endsWith(".webp"));
 
   return (
     <Styled.ProductCard>
       <figure className="card-fig">
         <img
-          src={product.assets[0]}
+          src={thumbnail}
           alt={product.title}
           title={product.title}
           width="100%"
@@ -52,7 +55,7 @@ const ProductCard: React.FC<ProductCardT> = ({ product }) => {
 
         <div className="flex-box">
           <div className="flex-box__sub">
-            <span>price:</span>
+            <span>ფასი:</span>
             &nbsp;
             <span>${product.price.toFixed(2).toLocaleString()}</span>
           </div>
@@ -65,12 +68,12 @@ const ProductCard: React.FC<ProductCardT> = ({ product }) => {
         <div className="flex-box">
           <Button show="danger" onClick={onStartDelete}>
             <DeleteIcon />
-            delete
+            წაშლა
           </Button>
 
           <Button onClick={onEdit}>
             <EditIcon />
-            update
+            რედაქტირება
           </Button>
         </div>
       </div>

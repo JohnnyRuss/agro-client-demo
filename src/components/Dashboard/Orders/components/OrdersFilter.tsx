@@ -7,10 +7,10 @@ const OrdersFilter: React.FC<OrdersFilterT> = () => {
   return (
     <Styled.OrdersFilter>
       <FilterIcon />
-      <span>All</span>
-      <span>Successful Orders</span>
-      <span>Pending Orders</span>
-      <span>Rejected Orders</span>
+      <span>ყველა</span>
+      <span>წარმატებული შეკვეთები</span>
+      <span>მომლოდინე შეკვეთები</span>
+      <span>უარყოფილი შეკვეთები</span>
     </Styled.OrdersFilter>
   );
 };

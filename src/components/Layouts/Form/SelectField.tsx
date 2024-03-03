@@ -16,10 +16,12 @@ type SelectFieldT = {
   isFilterable?: boolean;
   options: Array<OptionT>;
   onSelect: (value: OptionT) => void;
+  label?: string;
 };
 
 const SelectField: React.FC<SelectFieldT> = ({
   value,
+  label,
   options,
   onSelect,
   placeholder,
@@ -48,7 +50,7 @@ const SelectField: React.FC<SelectFieldT> = ({
 
   return (
     <Styled.SelectField>
-      <label htmlFor="">Category</label>
+      {label && <label htmlFor="">{label}</label>}
 
       <div className="dropdown-wrapper">
         <div className="text-field__wrapper">

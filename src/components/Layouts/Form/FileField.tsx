@@ -24,7 +24,8 @@ const FileField: React.FC<FileFieldT> = (props) => {
   const fileRef = useRef<HTMLInputElement | null>(null);
 
   const doesValueExists =
-    (Array.isArray(props.value) && props.value.length > 0) || props.value;
+    (Array.isArray(props.value) && props.value.length > 0) ||
+    (!Array.isArray(props.value) && props.value);
 
   return (
     <Styled.FileField data-input-file>
@@ -32,8 +33,7 @@ const FileField: React.FC<FileFieldT> = (props) => {
         {props.label ? props.label : "აირჩიეთ ფაილი"}
       </label>
 
-      {((Array.isArray(props.value) && props.value[0]) ||
-        (!Array.isArray(props.value) && props.value)) && (
+      {doesValueExists && (
         <InputFileFrame
           value={props.value}
           multiple={props.multiple || false}
@@ -110,7 +110,9 @@ function AssetFigure({ url, index, assetsCount, onRemoveFile }: AssetFigureT) {
   };
 
   const isFile = (v: any) => v instanceof File;
-  const isVideo = (v: any) => isFile(v) && v.type.startsWith("video/");
+  const isVideo = (v: any) =>
+    (isFile(v) && v.type.startsWith("video/")) ||
+    (typeof v === "string" && v.endsWith(".mp4"));
 
   return (
     <figure className="chosen-assets__review-box--fig" key={`file-${index}`}>

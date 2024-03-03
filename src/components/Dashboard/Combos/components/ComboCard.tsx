@@ -58,13 +58,13 @@ const ComboCard: React.FC<ComboCardT> = () => {
 
         <div className="combo-details--duplex">
           <div>
-            <span>price:</span>
+            <span>ფასი:</span>
             &nbsp;
             <span>100</span>
           </div>
 
           <div>
-            <span>products variety:</span>
+            <span>პროდუქტების ვარიაცია:</span>
             &nbsp;
             <span>5</span>
           </div>
@@ -73,12 +73,12 @@ const ComboCard: React.FC<ComboCardT> = () => {
         <div className="combo-details--duplex">
           <Button show="danger" onClick={onStartDelete}>
             <DeleteIcon />
-            delete
+            წაშლა
           </Button>
 
           <Button onClick={onEdit}>
             <EditIcon />
-            update
+            რედაქტირება
           </Button>
         </div>
       </div>

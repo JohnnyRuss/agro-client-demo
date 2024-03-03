@@ -12,19 +12,19 @@ type DashboardT = {
 const routes = [
   {
     path: PATHS.dashboard_categories_page,
-    title: "categories",
+    title: "კატეგორიები",
   },
   {
     path: PATHS.dashboard_products_page,
-    title: "products",
+    title: "პროდუქტები",
   },
   {
     path: PATHS.dashboard_combos_page,
-    title: "combos",
+    title: "ნაკრები",
   },
   {
     path: PATHS.dashboard_orders_page,
-    title: "orders",
+    title: "შეკვეთები",
   },
   {
     path: PATHS.home_page,

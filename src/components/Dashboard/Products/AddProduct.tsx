@@ -2,18 +2,13 @@ import { useMemo, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Controller } from "react-hook-form";
 
+import { PATHS } from "@/config/paths";
 import { useSearchParams } from "@/hooks/utils";
 import { useGetCategoriesQuery } from "@/hooks/api/dashboard/categories";
 import { useCreateProductQuery } from "@/hooks/api/dashboard/products";
 
-import {
-  Button,
-  TextField,
-  FileField,
-  SelectField,
-  TextareaField,
-  StandSpinner,
-} from "@/components/Layouts";
+import * as Form from "@/components/Layouts/Form";
+import { Button, StandSpinner } from "@/components/Layouts";
 import { CloseIcon, PlusIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/addProduct.styled";
 
@@ -43,13 +38,18 @@ const AddProduct: React.FC = () => {
 
   return (
     <Styled.AddProduct>
+      <Form.FormTitle
+        path={PATHS.dashboard_your_products_page}
+        title={isEditing ? "პროდუქტის რედაქტირება" : "პროდუქტის დამატება"}
+      />
+
       <form>
         <Controller
           control={form.form.control}
           name="title"
           render={({ field, fieldState: { error } }) => (
-            <TextField
-              label="Title"
+            <Form.TextField
+              label="სათაური"
               fieldProps={field}
               hasError={error ? true : false}
               message={error?.message || ""}
@@ -61,9 +61,9 @@ const AddProduct: React.FC = () => {
           control={form.form.control}
           name="description"
           render={({ field, fieldState: { error } }) => (
-            <TextareaField
+            <Form.TextareaField
               rows={4}
-              label="Description"
+              label="აღწერა"
               fieldProps={field}
               hasError={error ? true : false}
               message={error?.message || ""}
@@ -75,8 +75,8 @@ const AddProduct: React.FC = () => {
           control={form.form.control}
           name="price"
           render={({ field, fieldState: { error } }) => (
-            <TextField
-              label="Price"
+            <Form.TextField
+              label="ფასი"
               fieldProps={field}
               hasError={error ? true : false}
               message={error?.message || ""}
@@ -88,9 +88,10 @@ const AddProduct: React.FC = () => {
           name="category"
           control={form.form.control}
           render={({ field }) => (
-            <SelectField
+            <Form.SelectField
+              label="კატეგორია"
               value={field.value}
-              placeholder="select category"
+              placeholder="მიუთითე კატეგორია"
               options={categoryOptions}
               loading={categoriesStatus.loading}
               onSelect={(v) => field.onChange(v)}
@@ -107,9 +108,9 @@ const AddProduct: React.FC = () => {
               control={form.form.control}
               name={`sizes.${index}.size`}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  label={index === 0 ? "Size" : ""}
-                  placeholder={index > 0 ? "Size" : ""}
+                <Form.TextField
+                  label={index === 0 ? "ზომა" : ""}
+                  placeholder={index > 0 ? "ზომა" : ""}
                   fieldProps={field}
                   hasError={error ? true : false}
                   message={error?.message || ""}
@@ -121,9 +122,9 @@ const AddProduct: React.FC = () => {
               control={form.form.control}
               name={`sizes.${index}.quantity`}
               render={({ field, fieldState: { error } }) => (
-                <TextField
-                  label={index === 0 ? "Quantity" : ""}
-                  placeholder={index > 0 ? "Quantity" : ""}
+                <Form.TextField
+                  label={index === 0 ? "რაოდენობა" : ""}
+                  placeholder={index > 0 ? "რაოდენობა" : ""}
                   fieldProps={field}
                   hasError={error ? true : false}
                   message={error?.message || ""}
@@ -150,20 +151,20 @@ const AddProduct: React.FC = () => {
           className="add-size--field__btn"
         >
           <PlusIcon />
-          Append Size Field
+          ზომის ველის დამატება
         </button>
 
         <Controller
           control={form.form.control}
           name="assets"
           render={({ field, fieldState: { error } }) => (
-            <FileField
-              label="Assets"
+            <Form.FileField
+              label="მულტიმედია"
               multiple={true}
               value={field.value}
               onRemoveFile={form.onRemoveFile}
               message={error?.message || ""}
-              anotation="Please Select assets"
+              anotation="მიუთითეთ მულტიმედია"
               hasError={error ? true : false}
               fieldProps={{ ...field, onChange: form.onFileChange }}
             />
@@ -171,7 +172,7 @@ const AddProduct: React.FC = () => {
         />
 
         <Button onClick={form.onCreateQuery} disabled={form.status.loading}>
-          {isEditing ? "update" : "create"}
+          {isEditing ? "რედაქტირება" : "დამატება"}
         </Button>
       </form>
 

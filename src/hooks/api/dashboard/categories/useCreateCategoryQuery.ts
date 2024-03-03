@@ -14,8 +14,8 @@ export default function useCreateCategoryQuery() {
   const [candidateCategoryId, setCandidateCategoryId] = useState("");
 
   const status = categoryStore.use.createStatus();
-  const createCategory = categoryStore.use.createCategory();
-  const updateCategory = categoryStore.use.updateCategory();
+  const create = categoryStore.use.create();
+  const update = categoryStore.use.update();
 
   const onStartUpdate = (category: CategoryT) => {
     form.reset({ title: category.title });
@@ -24,9 +24,13 @@ export default function useCreateCategoryQuery() {
 
   const createCategoryQuery = form.handleSubmit(async (values) => {
     if (candidateCategoryId) {
-      await updateCategory(values, { categoryId: candidateCategoryId });
+      await update({
+        data: values,
+        params: { categoryId: candidateCategoryId },
+      });
+
       navigate(pathname);
-    } else await createCategory(values);
+    } else await create(values);
 
     form.reset({ title: "" });
   });

@@ -6,14 +6,18 @@ import { AxiosResponse } from "axios";
 import { logger } from "@/utils";
 import { axiosPrivateQuery } from "@/services/axios";
 import { getStatus, createSelectors } from "./helpers";
+import { CATEGORIES_PER_PAGE } from "@/config/config";
 
 import {
   CategoryStateT,
   CategoryStoreT,
 } from "@/interface/store/category.store.types";
 import { CategoryT } from "@/interface/db/category.types";
+import { GetAllCategoriesResponseT } from "@/interface/API/category.api.types";
 
 const initialState: CategoryStateT = {
+  hasMore: false,
+  currentPage: 0,
   categories: [],
   readStatus: getStatus("IDLE"),
   createStatus: getStatus("IDLE"),
@@ -22,10 +26,10 @@ const initialState: CategoryStateT = {
 
 const useCategoryStore = create<CategoryStoreT>()(
   devtools(
-    immer((set) => ({
+    immer((set, get) => ({
       ...initialState,
 
-      async createCategory(data) {
+      async create(data) {
         try {
           set(() => ({ createStatus: getStatus("PENDING") }));
 
@@ -39,7 +43,7 @@ const useCategoryStore = create<CategoryStoreT>()(
         }
       },
 
-      async updateCategory(data, params) {
+      async update({ data, params }) {
         try {
           set(() => ({ createStatus: getStatus("PENDING") }));
 
@@ -56,7 +60,7 @@ const useCategoryStore = create<CategoryStoreT>()(
         }
       },
 
-      async deleteCategory(params) {
+      async delete(params) {
         try {
           set(() => ({ deleteStatus: getStatus("PENDING") }));
 
@@ -75,7 +79,7 @@ const useCategoryStore = create<CategoryStoreT>()(
         }
       },
 
-      async getCategory(params) {
+      async get(params) {
         try {
           set(() => ({ readStatus: getStatus("PENDING") }));
 
@@ -91,14 +95,22 @@ const useCategoryStore = create<CategoryStoreT>()(
         }
       },
 
-      async getCategories() {
+      async getAll(args) {
         try {
           set(() => ({ readStatus: getStatus("PENDING") }));
 
-          const { data }: AxiosResponse<Array<CategoryT>> =
-            await axiosPrivateQuery.get(`/categories`);
+          const { currentPage, hasMore, data } = await getCategoriesQuery({
+            page: args.page,
+            queryStr: args.query || "",
+            limit: CATEGORIES_PER_PAGE,
+          });
 
-          set(() => ({ categories: data, readStatus: getStatus("SUCCESS") }));
+          set(() => ({
+            hasMore,
+            currentPage,
+            categories: data,
+            readStatus: getStatus("SUCCESS"),
+          }));
         } catch (error: any) {
           const message = logger(error);
           set(() => ({ readStatus: getStatus("FAIL", message) }));
@@ -106,8 +118,30 @@ const useCategoryStore = create<CategoryStoreT>()(
         }
       },
 
-      cleanUpCategories() {
+      async getAllPaginated(args) {
+        try {
+          const { currentPage, hasMore, data } = await getCategoriesQuery({
+            page: args.page!,
+            queryStr: args.query || "",
+            limit: CATEGORIES_PER_PAGE,
+          });
+
+          set(() => ({
+            hasMore,
+            currentPage,
+            categories: [...get().categories, ...data],
+          }));
+        } catch (error: any) {
+          const message = logger(error);
+          set(() => ({ readStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      cleanUpAll() {
         set(() => ({
+          hasMore: initialState.hasMore,
+          currentPage: initialState.currentPage,
           categories: initialState.categories,
           readStatus: initialState.readStatus,
         }));
@@ -118,3 +152,26 @@ const useCategoryStore = create<CategoryStoreT>()(
 );
 
 export default createSelectors(useCategoryStore);
+
+async function getCategoriesQuery(params: {
+  queryStr: string;
+  page: number;
+  limit: number;
+}): Promise<GetAllCategoriesResponseT> {
+  try {
+    const queryStrings = [
+      params.queryStr.replace("?", ""),
+      `page=${params.page}&limit=${params.limit}`,
+    ];
+
+    const queryStr = queryStrings.join(params.queryStr ? "&" : "");
+
+    const { data }: AxiosResponse<GetAllCategoriesResponseT> =
+      await axiosPrivateQuery.get(`/categories?${queryStr}`);
+
+    return data;
+  } catch (error: any) {
+    const message = logger(error);
+    throw new Error(message);
+  }
+}

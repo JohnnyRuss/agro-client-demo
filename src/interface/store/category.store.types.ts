@@ -1,8 +1,10 @@
 import { LoadingStatusT } from "@/interface/store/common.types";
 import { CategoryT } from "@/interface/db/category.types";
-import { CategorySchemaT } from "@/utils/validations/dashboard/CategorySchema";
+import * as CategoryAPI_T from "@/interface/API/category.api.types";
 
 type CategoryStateT = {
+  hasMore: boolean;
+  currentPage: number;
   categories: Array<CategoryT>;
   readStatus: LoadingStatusT;
   createStatus: LoadingStatusT;
@@ -10,20 +12,19 @@ type CategoryStateT = {
 };
 
 type CategoryActionsT = {
-  createCategory: (data: CategorySchemaT) => Promise<void>;
+  create: (data: CategoryAPI_T.CreateCategoryArgsT) => Promise<void>;
 
-  updateCategory: (
-    data: CategorySchemaT,
-    params: { categoryId: string }
-  ) => Promise<void>;
+  update: (args: CategoryAPI_T.UpdateCategoryArgsT) => Promise<void>;
 
-  deleteCategory: (params: { categoryId: string }) => Promise<void>;
+  delete: (params: CategoryAPI_T.DeleteCategoryArgsT) => Promise<void>;
 
-  getCategory: (params: { categoryId: string }) => Promise<void>;
+  get: (params: CategoryAPI_T.GetCategoryArgsT) => Promise<void>;
 
-  getCategories: () => Promise<void>;
+  getAll: (args: CategoryAPI_T.GetAllCategoriesArgsT) => Promise<void>;
 
-  cleanUpCategories: () => void;
+  getAllPaginated: (args: CategoryAPI_T.GetAllCategoriesArgsT) => Promise<void>;
+
+  cleanUpAll: () => void;
 };
 
 type CategoryStoreT = CategoryStateT & CategoryActionsT;

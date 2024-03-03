@@ -19,13 +19,13 @@ const OrderItem: React.FC<OrderItemT> = () => {
       <div className="order-details">
         <div className="grid-box">
           <div className="grid-box__sub">
-            <span>Customer:</span>
+            <span>მომხმარებელი:</span>
             &nbsp;
             <span>Lana Del Ray</span>
           </div>
 
           <div className="grid-box__sub">
-            <span>Order Date:</span>
+            <span>შეკვეთის თარიღი:</span>
             &nbsp;
             <span>25.02.2024</span>
           </div>
@@ -33,13 +33,13 @@ const OrderItem: React.FC<OrderItemT> = () => {
 
         <div className="grid-box">
           <div className="grid-box__sub">
-            <span>Product:</span>
+            <span>პროდუქტი:</span>
             &nbsp;
             <span>Product Title</span>
           </div>
 
           <div className="grid-box__sub">
-            <span>Product Price:</span>
+            <span>პროდუქტის ფასი:</span>
             &nbsp;
             <span>100</span>
           </div>
@@ -47,13 +47,13 @@ const OrderItem: React.FC<OrderItemT> = () => {
 
         <div className="grid-box">
           <div className="grid-box__sub">
-            <span>Product Size:</span>
+            <span>პროდუქტის ზომა:</span>
             &nbsp;
             <span>32</span>
           </div>
 
           <div className="grid-box__sub">
-            <span>Product Quantity:</span>
+            <span>პროდუქტის რაოდენობა:</span>
             &nbsp;
             <span>4</span>
           </div>
@@ -61,14 +61,14 @@ const OrderItem: React.FC<OrderItemT> = () => {
 
         <div className="grid-box">
           <div className="grid-box__sub">
-            <span>Status:</span>
+            <span>სტატუსი:</span>
             &nbsp;
-            <span>SUCCESS</span>
+            <span>წარმატებული</span>
           </div>
 
           <div className="grid-box__sub">
             <Button show="secondary" className="view-invoice__btn">
-              View Order Invoice
+              ნახე შეკვეთის ინვოისი
             </Button>
           </div>
         </div>
