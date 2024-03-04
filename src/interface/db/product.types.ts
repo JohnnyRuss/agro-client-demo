@@ -13,6 +13,7 @@ type ProductT = {
 type ProductSizeT = {
   size: string;
   quantity: number;
+  _id: string;
 };
 
-export type { ProductT };
+export type { ProductT, ProductSizeT };

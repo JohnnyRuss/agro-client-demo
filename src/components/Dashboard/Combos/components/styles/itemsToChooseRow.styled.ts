@@ -38,10 +38,14 @@ export const ItemsToChooseRow = styled.div`
     }
   }
 
+  .infinite-scroll-component__outerdiv {
+  }
+
   .infinite-scroll-component {
     ${scrollbar};
     display: flex;
     flex-direction: column;
     gap: 3rem;
+    padding-right: 1rem;
   }
 `;

@@ -46,6 +46,9 @@ import { GoFileMedia } from "react-icons/go";
 // ========== gr ==========
 import { GrApps } from "react-icons/gr";
 
+// ========== lu ==========
+import { LuPackageCheck } from "react-icons/lu";
+
 const LocationIcon = CiLocationOn;
 const SearchIcon = CiSearch;
 const ShoppingCartIcon = CiShoppingCart;
@@ -73,6 +76,7 @@ const PublishIcon = MdOutlinePublish;
 const FilterIcon = CiFilter;
 const AppIcon = GrApps;
 const PlayIcon = FaPlay;
+const PackageCheckIcon = LuPackageCheck;
 
 export {
   LocationIcon,
@@ -102,4 +106,5 @@ export {
   FilterIcon,
   AppIcon,
   PlayIcon,
+  PackageCheckIcon,
 };

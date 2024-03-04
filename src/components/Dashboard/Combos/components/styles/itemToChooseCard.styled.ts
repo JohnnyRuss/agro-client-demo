@@ -4,6 +4,20 @@ export const ItemToChooseCard = styled.div`
   display: flex;
   align-items: flex-start;
   gap: 1rem;
+  padding: 0 1rem 1rem 1rem;
+  position: relative;
+
+  &.selected {
+    border-bottom: 2px solid ${({ theme }) => theme.colors.blue};
+  }
+
+  .package-checked {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+    font-size: ${({ theme }) => theme.fontSize.xl};
+    color: ${({ theme }) => theme.colors.green};
+  }
 
   h4[data-line-clamp] {
     text-transform: capitalize;
@@ -11,6 +25,7 @@ export const ItemToChooseCard = styled.div`
 
   .item--fig {
     width: 11rem;
+    min-width: 11rem;
     height: 11rem;
     overflow: hidden;
     border-radius: 0.5rem;
@@ -28,6 +43,7 @@ export const ItemToChooseCard = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    width: 100%;
 
     strong {
       font-weight: 600;
@@ -39,6 +55,7 @@ export const ItemToChooseCard = styled.div`
     align-items: center;
     gap: 2rem;
     margin-top: auto;
+    width: 100%;
 
     div {
       display: flex;
@@ -50,6 +67,14 @@ export const ItemToChooseCard = styled.div`
       font-weight: 600;
     }
 
+    .total-quantity--box .size-quantity {
+      color: ${({ theme }) => theme.colors.green};
+
+      &.danger {
+        color: ${({ theme }) => theme.colors.red};
+      }
+    }
+
     .size-box {
       select {
         outline: none;
@@ -59,6 +84,7 @@ export const ItemToChooseCard = styled.div`
     .add-btn {
       padding: 0.25rem 1rem;
       border-radius: 0.5rem;
+      margin-left: auto;
 
       &.danger {
         svg {

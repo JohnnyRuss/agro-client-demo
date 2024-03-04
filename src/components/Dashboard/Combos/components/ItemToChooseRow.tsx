@@ -31,11 +31,7 @@ const ItemToChooseRow: React.FC<ItemToChooseRowT> = memo(() => {
         onNext={getPaginatedProductsQuery}
       >
         {data.map((product) => (
-          <ItemToChooseCard
-            key={product._id}
-            isInAddedRow={false}
-            product={product}
-          />
+          <ItemToChooseCard key={product._id} product={product} />
         ))}
       </InfiniteScroll>
     </Styled.ItemsToChooseRow>
