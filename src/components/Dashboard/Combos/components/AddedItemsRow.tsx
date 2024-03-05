@@ -15,10 +15,17 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
     0
   );
 
+  const totalProductsCount = addedProducts.reduce(
+    (acc, p) => (acc += p.size.selectedCount),
+    0
+  );
+
   return (
     <Styled.AddedItemsRow>
       <div className="added-items__list-head">
-        <span>დამატებულია {addedProducts.length} პროდუქტი</span>
+        <span>
+          დამატებულია {addedProducts.length} პროდუქტი ({totalProductsCount})
+        </span>
 
         <div>
           <span>ჯამური ფასი:</span>
@@ -33,6 +40,7 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
             .sort((a, b) => b._id.toString().localeCompare(a._id.toString()))
             .map((product) => (
               <ChosenItemCard
+                className="added-item"
                 product={product}
                 key={`${product._id}-${product.size._id}`}
               />

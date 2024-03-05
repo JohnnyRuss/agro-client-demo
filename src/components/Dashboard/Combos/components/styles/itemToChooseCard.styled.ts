@@ -7,6 +7,10 @@ export const ItemToChooseCard = styled.div`
   padding: 0 1rem 1rem 1rem;
   position: relative;
 
+  &.added-item {
+    cursor: pointer;
+  }
+
   &.selected {
     border-bottom: 2px solid ${({ theme }) => theme.colors.blue};
   }

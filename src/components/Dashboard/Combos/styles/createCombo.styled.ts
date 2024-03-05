@@ -25,5 +25,6 @@ export const CreateCombo = styled.div`
 export const CreateComboModal = styled.div`
   width: 40rem;
   padding: 2rem 0;
-  height: 60vh;
+  min-height: 65vh;
+  max-height: 88vh;
 `;

@@ -1,50 +1,101 @@
-import { memo } from "react";
+import { memo, useEffect, useState } from "react";
+
+import { comboStore } from "@/store";
+import { useSearchParams } from "@/hooks/utils";
 
 import { Text } from "@/components/Layouts";
 import * as Styled from "./styles/comboActiveItem.styled";
 
+import { SelectedProductT } from "@/interface/store/combo.store.types";
+
 type ComboActiveItemT = {};
 
 const ComboActiveItem: React.FC<ComboActiveItemT> = memo(() => {
+  const { getParam } = useSearchParams();
+  const addedProducts = comboStore.use.addedProducts();
+
+  const [product, setProduct] = useState<SelectedProductT | undefined>(
+    undefined
+  );
+
+  const productId = getParam("product");
+  const sizeId = getParam("product-size");
+
+  useEffect(() => {
+    if ((!productId || !sizeId) && product) return setProduct(undefined);
+
+    const candidateProduct = addedProducts.find(
+      (product) => product._id === productId && product.size._id === sizeId
+    );
+
+    if (!candidateProduct) return;
+
+    setProduct(candidateProduct);
+  }, [productId, sizeId]);
+
+  const thumbnail = product?.assets?.find((asset) => asset?.endsWith(".webp"));
+
   return (
     <Styled.ComboActiveItem>
-      <figure className="active-item--fig">
-        <img
-          src="https://images.unsplash.com/photo-1562658601-0ae4a690ae1f?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          title=""
-          width="100%"
-          loading="lazy"
-        />
-      </figure>
+      {product ? (
+        <>
+          <figure className="active-item--fig">
+            <img
+              src={thumbnail}
+              alt={product.title}
+              title={product.title}
+              width="100%"
+              loading="lazy"
+            />
+          </figure>
 
-      <p className="product-title">single product one big title is here</p>
+          <p className="product-title">{product.title}</p>
 
-      <Text
-        className="product-description"
-        text="Lorem ipsum dolor sit amet consectetur adipisicing elit. Obcaecati possimus beatae nemo dicta ut eos.
-        Ut dolore quos voluptatum dignissimos voluptatem, sed itaque, aspernatur suscipit maxime asperiores quo delectus dolor numquam? Magni voluptatum facere possimus, minus rem repudiandae. Consectetur, neque?"
-      />
+          <Text className="product-description" text={product.description} />
 
-      <div className="grid-box">
-        <div className="grid-box__sub">
-          <span>Price:</span>
-          &nbsp;
-          <span>18</span>
-        </div>
+          <div className="grid-box">
+            <div className="grid-box__sub">
+              <span>ფასი:</span>
+              &nbsp;
+              <span>{product.price}</span>
+            </div>
 
-        <div className="grid-box__sub">
-          <span>Size:</span>
-          &nbsp;
-          <span>32</span>
-        </div>
+            <div className="grid-box__sub">
+              <span>ჯამური ფასი:</span>
+              &nbsp;
+              <span>{product.price * product.size.selectedCount}</span>
+            </div>
 
-        <div className="grid-box__sub">
-          <span>Quantity:</span>
-          &nbsp;
-          <span>6</span>
-        </div>
-      </div>
+            <div className="grid-box__sub">
+              <span>ზომა:</span>
+              &nbsp;
+              <span>{product.size.size}</span>
+            </div>
+
+            <div className="grid-box__sub">
+              <span>მაქს. რაოდენობა:</span>
+              &nbsp;
+              <span>{product.size.quantity}</span>
+            </div>
+
+            <div className="grid-box__sub">
+              <span>შერჩეული რაოდენობა:</span>
+              &nbsp;
+              <span>{product.size.selectedCount}</span>
+            </div>
+
+            <div className="grid-box__sub">
+              <span>ხელმისაწვდომია:</span>
+              &nbsp;
+              <span>{product.size.quantity - product.size.selectedCount}</span>
+            </div>
+          </div>
+        </>
+      ) : (
+        <figure className="empty-stand">
+          <img src="/assets/agro-products.jpg" alt="" width="100%" />
+        </figure>
+      )}
     </Styled.ComboActiveItem>
   );
 });

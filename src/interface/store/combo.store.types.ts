@@ -6,6 +6,8 @@ type ComboStateT = {
   combos: Array<ComboT>;
   createStatus: LoadingStatusT;
   addedProducts: Array<SelectedProductT>;
+  existingAssets: Array<string>;
+  newAssets: Array<File>;
 };
 
 type ComboActionsT = {
@@ -30,6 +32,12 @@ type ComboActionsT = {
     size: string;
     count: number;
   }) => void;
+
+  toggleExistingAsset: (asset: string) => void;
+
+  addNewFiles: (params: Array<File>) => void;
+
+  removeNewFile: (fileName: number) => void;
 };
 
 // ========== UTILS ==========

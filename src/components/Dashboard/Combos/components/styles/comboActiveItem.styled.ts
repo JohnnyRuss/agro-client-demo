@@ -32,7 +32,7 @@ export const ComboActiveItem = styled.div`
 
   .grid-box {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
 
     &__sub {
       span:first-child {
@@ -43,6 +43,18 @@ export const ComboActiveItem = styled.div`
         font-weight: 500;
         color: ${({ theme }) => theme.colors.green};
       }
+    }
+  }
+
+  .empty-stand {
+    height: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
     }
   }
 `;

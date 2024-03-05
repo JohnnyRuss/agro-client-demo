@@ -1,21 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { comboStore } from "@/store";
+import { useSearchParams } from "@/hooks/utils";
 
 import { LineClamp, Button } from "@/components/Layouts";
 import * as Styled from "./styles/itemToChooseCard.styled";
 import { PlusIcon, MinusIcon, DeleteIcon } from "@/components/Layouts/Icons";
 
-import {
-  SelectedProductT,
-  SelectedProductSizeT,
-} from "@/interface/store/combo.store.types";
+import { SelectedProductT } from "@/interface/store/combo.store.types";
 
 type ChosenItemCardT = {
   product: SelectedProductT;
+  className?: string;
 };
 
-const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product }) => {
+const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
+  const { setMultipleParams, getParam, removeMultipleParams } =
+    useSearchParams();
+
   const removeProduct = comboStore.use.removeProduct();
   const changeAddedProductCount = comboStore.use.changeAddedProductCount();
   const increaseAddedProductCount = comboStore.use.increaseAddedProductCount();
@@ -40,13 +42,27 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product }) => {
       size: product.size.size,
     });
 
-  const onRemoveProduct = () =>
+  const productId = getParam("product");
+  const sizeId = getParam("product-size");
+
+  const onRemoveProduct = (e: React.MouseEvent) => {
+    e.stopPropagation();
     removeProduct({ productId: product._id, size: product.size.size });
+
+    if (sizeId === product.size._id && productId === productId)
+      removeMultipleParams(["product", "product-size"]);
+  };
 
   const thumbnail = product.assets.find((asset) => asset?.endsWith(".webp"));
 
+  const onItemReview = () =>
+    setMultipleParams([
+      { key: "product", value: product._id },
+      { key: "product-size", value: product.size._id },
+    ]);
+
   return (
-    <Styled.ItemToChooseCard>
+    <Styled.ItemToChooseCard onClick={onItemReview} className={className || ""}>
       <figure className="item--fig">
         <img
           src={thumbnail}
@@ -62,10 +78,10 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product }) => {
 
         <div>
           <span>
-            <strong>ფასი:</strong>
+            <strong>ჯამური ფასი:</strong>
           </span>
           &nbsp;
-          <span>{product.price}₾</span>
+          <span>{product.price * product.size.selectedCount}₾</span>
         </div>
 
         <div className="item--actions">

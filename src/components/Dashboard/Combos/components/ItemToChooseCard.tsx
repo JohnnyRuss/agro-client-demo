@@ -31,16 +31,32 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
 
   /** Watch Size change and reset size state based on change*/
   const onSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedSize = product.sizes.find(
+    const chosenSize = product.sizes.find(
       (size) => size.size === e.target.value
     );
 
-    if (!selectedSize) return;
+    if (!chosenSize) return;
 
-    setSize({
-      ...selectedSize,
-      selectedCount: selectedSize.quantity > 0 ? 1 : 0,
-    });
+    const inAddedProductsIndex = addedProducts.findIndex(
+      (addedProduct) =>
+        addedProduct._id === product._id &&
+        addedProduct.size._id === chosenSize._id
+    );
+
+    if (inAddedProductsIndex >= 0) {
+      const addedProductSize = addedProducts[inAddedProductsIndex].size;
+
+      setSize(() => ({
+        ...chosenSize,
+        selectedCount: addedProductSize.selectedCount,
+        quantity: addedProductSize.quantity - addedProductSize.selectedCount,
+      }));
+    } else {
+      setSize(() => ({
+        ...chosenSize,
+        selectedCount: chosenSize.quantity > 0 ? 1 : 0,
+      }));
+    }
   };
 
   /**
@@ -125,12 +141,15 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
           addedProducts[selectedCurrentSizeIndex].size.selectedCount,
       }));
     } else {
-      const defaultSize = product.sizes[0];
+      const nativeSize = product.sizes.find(
+        (nativeSize) => nativeSize._id === size._id
+      );
 
-      setSize({
-        ...defaultSize,
-        selectedCount: defaultSize.quantity > 0 ? 1 : 0,
-      });
+      if (nativeSize)
+        setSize(() => ({
+          ...nativeSize,
+          selectedCount: nativeSize.quantity > 0 ? 1 : 0,
+        }));
     }
   }, [isSelectedCurrentSize, addedProducts]);
 
