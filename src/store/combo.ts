@@ -2,27 +2,31 @@ import { create } from "zustand";
 import { devtools, persist } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import { produce } from "immer";
-// import { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 
 import { logger } from "@/utils";
 import { getStatus, createSelectors } from "./helpers";
-import { axiosPrivateQuery } from "@/services/axios";
+import { axiosPrivateFormDataQuery, axiosPrivateQuery } from "@/services/axios";
 
-// import { ComboT } from "@/interface/db/combo.types";
 import {
   ComboStateT,
   ComboStoreT,
   SelectedProductT,
 } from "@/interface/store/combo.store.types";
+import { ComboShortT } from "@/interface/db/combo.types";
 
 const initialState: ComboStateT = {
   combos: [],
   createStatus: getStatus("IDLE"),
+  readStatus: getStatus("IDLE"),
+  deleteStatus: getStatus("IDLE"),
 
   // ========== LOCALES ==========
   addedProducts: [],
   existingAssets: [],
+  addedExistingAssets: [],
   newAssets: [],
+  assets_to_delete: [],
 };
 
 const useProductStore = create<ComboStoreT>()(
@@ -32,13 +36,37 @@ const useProductStore = create<ComboStoreT>()(
         (set, get) => ({
           ...initialState,
 
-          async createCombo(data) {
+          async create(data) {
             try {
               set(() => ({ createStatus: getStatus("PENDING") }));
 
-              await axiosPrivateQuery.post(``, data);
+              const addedProducts = get().addedProducts;
+              const addedExistingAssets = get().addedExistingAssets;
+              const newAssets = get().newAssets;
 
-              set(() => ({ createStatus: getStatus("SUCCESS") }));
+              const requestBody = {
+                title: data.title,
+                description: data.description,
+                price: +data.price,
+                products: addedProducts.map((product) => ({
+                  product: product._id,
+                  size: {
+                    size: product.size.size,
+                    quantity: product.size.selectedCount,
+                  },
+                })),
+                assets: addedExistingAssets,
+                new_assets: newAssets,
+              };
+
+              await axiosPrivateFormDataQuery.post("/combos", requestBody);
+
+              set(() => ({
+                createStatus: getStatus("SUCCESS"),
+                addedProducts: initialState.addedProducts,
+                existingAssets: initialState.existingAssets,
+                newAssets: initialState.newAssets,
+              }));
             } catch (error: any) {
               const message = logger(error);
               set(() => ({ createStatus: getStatus("FAIL", message) }));
@@ -46,9 +74,92 @@ const useProductStore = create<ComboStoreT>()(
             }
           },
 
+          async update({ comboId, data }) {
+            try {
+              set(() => ({ createStatus: getStatus("PENDING") }));
+
+              const addedProducts = get().addedProducts;
+              const addedExistingAssets = get().addedExistingAssets;
+              const newAssets = get().newAssets;
+              const assets_to_delete = get().assets_to_delete;
+
+              const requestBody = {
+                title: data.title,
+                description: data.description,
+                price: +data.price,
+                products: addedProducts.map((product) => ({
+                  product: product._id,
+                  size: {
+                    size: product.size.size,
+                    quantity: product.size.selectedCount,
+                  },
+                })),
+                assets: addedExistingAssets,
+                new_assets: newAssets,
+                assets_to_delete,
+              };
+
+              await axiosPrivateFormDataQuery.put(
+                `/combos/${comboId}`,
+                requestBody
+              );
+
+              set(() => ({
+                createStatus: getStatus("SUCCESS"),
+                addedProducts: initialState.addedProducts,
+                existingAssets: initialState.existingAssets,
+                newAssets: initialState.newAssets,
+                assets_to_delete: initialState.assets_to_delete,
+              }));
+            } catch (error: any) {
+              const message = logger(error);
+              set(() => ({
+                createStatus: getStatus("FAIL", message),
+              }));
+              throw error;
+            }
+          },
+
+          async delete(params) {
+            try {
+              set(() => ({ deleteStatus: getStatus("PENDING") }));
+
+              axiosPrivateQuery.delete(`/combos/${params.comboId}`);
+
+              const combos = get().combos;
+
+              set(() => ({
+                deleteStatus: getStatus("SUCCESS"),
+                combos: [...combos].filter(
+                  (combo) => combo._id !== params.comboId
+                ),
+              }));
+            } catch (error: any) {
+              const message = logger(error);
+              set(() => ({ deleteStatus: getStatus("SUCCESS", message) }));
+              throw error;
+            }
+          },
+
+          async getAll() {
+            try {
+              set(() => ({ readStatus: getStatus("PENDING") }));
+
+              const { data }: AxiosResponse<Array<ComboShortT>> =
+                await axiosPrivateQuery.get("combos?dashboard=1");
+
+              set(() => ({ readStatus: getStatus("SUCCESS"), combos: data }));
+            } catch (error) {
+              const message = logger(error);
+              set(() => ({ readStatus: getStatus("FAIL", message) }));
+              throw error;
+            }
+          },
+
           // ========== LOCALES ==========
           addProduct(product) {
             const addedProducts = get().addedProducts;
+            const existingAssets = get().existingAssets;
 
             const candidateProductIndex = findAddedProductIndex({
               productId: product._id,
@@ -68,7 +179,10 @@ const useProductStore = create<ComboStoreT>()(
                 })
               );
             } else {
-              set(() => ({ addedProducts: [...addedProducts, product] }));
+              set(() => ({
+                addedProducts: [...addedProducts, product],
+                existingAssets: [...existingAssets, ...product.assets],
+              }));
             }
           },
 
@@ -86,6 +200,10 @@ const useProductStore = create<ComboStoreT>()(
                 draft.addedProducts.splice(candidateProductIndex, 1);
 
                 draft.existingAssets = draft.existingAssets.filter(
+                  (asset) => !removedProductAssets.includes(asset)
+                );
+
+                draft.addedExistingAssets = draft.addedExistingAssets.filter(
                   (asset) => !removedProductAssets.includes(asset)
                 );
               })
@@ -153,12 +271,27 @@ const useProductStore = create<ComboStoreT>()(
           },
 
           toggleExistingAsset(asset) {
-            const assets = get().existingAssets;
+            const addedAssets = get().addedExistingAssets;
+            const assets_to_delete = get().assets_to_delete;
+
+            const addedProductsAssets = get().addedProducts.flatMap(
+              (product) => product.assets
+            );
+
+            const isAdding = !addedAssets.includes(asset);
+            const isOwnAsset = !addedProductsAssets.includes(asset);
+
+            if (isOwnAsset)
+              set(() => ({
+                assets_to_delete: isAdding
+                  ? assets_to_delete.filter((asset) => asset !== asset)
+                  : [...assets_to_delete, asset],
+              }));
 
             set(() => ({
-              existingAssets: assets.includes(asset)
-                ? assets.filter((assetUrl) => assetUrl !== asset)
-                : [...assets, asset],
+              addedExistingAssets: isAdding
+                ? [...addedAssets, asset]
+                : addedAssets.filter((assetUrl) => assetUrl !== asset),
             }));
           },
 
@@ -172,6 +305,47 @@ const useProductStore = create<ComboStoreT>()(
                 draft.newAssets.splice(fileIndex, 1);
               })
             );
+          },
+
+          setComboDefaults(params) {
+            set(() => ({
+              existingAssets: Array.from(
+                new Set(
+                  params.products
+                    .flatMap((product) => product.product.assets)
+                    .concat(params.assets)
+                )
+              ),
+              addedExistingAssets: params.assets,
+              addedProducts: params.products.map(({ product, size }) => ({
+                _id: product._id,
+                title: product.title,
+                description: product.description,
+                size: {
+                  size: size.size,
+                  selectedCount: size.quantity,
+                  _id:
+                    product.sizes.find(
+                      (productSize) => productSize.size === size.size
+                    )?._id || "",
+                  quantity:
+                    product.sizes.find(
+                      (productSize) => productSize.size === size.size
+                    )?.quantity || 0,
+                },
+                price: product.price,
+                assets: product.assets,
+              })),
+            }));
+          },
+
+          cleanUpComboForm() {
+            set(() => ({
+              newAssets: initialState.newAssets,
+              addedProducts: initialState.addedProducts,
+              existingAssets: initialState.existingAssets,
+              assets_to_delete: initialState.assets_to_delete,
+            }));
           },
         }),
         {

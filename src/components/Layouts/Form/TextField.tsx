@@ -7,7 +7,7 @@ type TextFieldT = {
   message: string;
   label?: string;
   hasError: boolean;
-  type?: "text" | "password";
+  type?: "text" | "password" | "number";
   fieldProps: HookFormTextFieldT;
 } & React.ComponentProps<"input">;
 

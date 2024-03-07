@@ -1,49 +1,63 @@
-import { useSearchParams } from "@/hooks/utils";
+import { memo } from "react";
 
-import { comboStore } from "@/store";
+import { useCreateComboContext } from "@/Providers/useProviders";
 
+import {
+  TextField,
+  TextareaField,
+  ErrorMessage,
+  StandSpinner,
+} from "@/components/Layouts";
 import * as Styled from "./styles/createComboForm.styled";
-import { TextField, TextareaField } from "@/components/Layouts";
 import { MediaIcon, CloseIcon } from "@/components/Layouts/Icons";
 
-type CreateComboFormT = {};
+type CreateComboFormT = {
+  hidden: boolean;
+};
 
-const CreateComboForm: React.FC<CreateComboFormT> = () => {
-  const { setParam } = useSearchParams();
-
-  const newAssets = comboStore.use.newAssets();
-  const addNewFiles = comboStore.use.addNewFiles();
-  const removeNewFile = comboStore.use.removeNewFile();
-  const addedExistingAssets = comboStore.use.existingAssets();
-
-  const onChooseNewAsset = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const targetFiles: FileList | null = e.target.files;
-    const filesArray = targetFiles ? Array.from(targetFiles) : [];
-
-    if (filesArray.length <= 0) return;
-
-    addNewFiles(filesArray);
-  };
-
-  const onRemoveNewAsset = (fileIndex: number) => removeNewFile(fileIndex);
-
-  const onStartSelectMedia = () => setParam("media", "1");
-
-  // TODO:
-  // 1. handle form fields
+const CreateComboForm: React.FC<CreateComboFormT> = memo(({ hidden }) => {
+  const {
+    title,
+    onTitleChange,
+    description,
+    onDescriptionChange,
+    price,
+    onPriceChange,
+    addedExistingAssets,
+    onStartSelectMedia,
+    newAssets,
+    onRemoveNewAsset,
+    onChooseNewAsset,
+    errorMessage,
+    onPublish,
+    status,
+  } = useCreateComboContext();
 
   return (
-    <Styled.CreateComboForm className="create-combo__form-box">
+    <Styled.CreateComboForm
+      className="create-combo__form-box"
+      style={{ display: hidden ? "none" : "flex" }}
+    >
       <TextField
         label="სათაური"
-        fieldProps={{ name: "title", onChange: () => {}, value: "" }}
+        fieldProps={{
+          name: "title",
+          onChange: (e) =>
+            onTitleChange(e as React.ChangeEvent<HTMLInputElement>),
+          value: title,
+        }}
         hasError={false}
         message=""
       />
 
       <TextareaField
         label="აღწერა"
-        fieldProps={{ name: "title", onChange: () => {}, value: "" }}
+        fieldProps={{
+          name: "title",
+          onChange: (e) =>
+            onDescriptionChange(e as React.ChangeEvent<HTMLInputElement>),
+          value: description,
+        }}
         hasError={false}
         message=""
         rows={6}
@@ -51,7 +65,13 @@ const CreateComboForm: React.FC<CreateComboFormT> = () => {
 
       <TextField
         label="ფასი"
-        fieldProps={{ name: "title", onChange: () => {}, value: "" }}
+        type="number"
+        fieldProps={{
+          name: "title",
+          onChange: (e) =>
+            onPriceChange(e as React.ChangeEvent<HTMLInputElement>),
+          value: price,
+        }}
         hasError={false}
         message=""
       />
@@ -60,13 +80,23 @@ const CreateComboForm: React.FC<CreateComboFormT> = () => {
         <div className="chosen-existing--assets__review">
           {addedExistingAssets.slice(0, 5).map((asset, index) => (
             <figure key={asset}>
-              <img
-                src={asset}
-                alt={asset}
-                title={asset}
-                loading="eager"
-                width={50}
-              />
+              {asset.endsWith(".webp") ? (
+                <img
+                  src={asset}
+                  alt={asset}
+                  title={asset}
+                  loading="eager"
+                  width={50}
+                />
+              ) : (
+                <video
+                  src={asset}
+                  width="100%"
+                  loop={true}
+                  muted={true}
+                  autoPlay={true}
+                />
+              )}
               {addedExistingAssets.length > 5 && index === 4 && (
                 <span>+{addedExistingAssets.length - 5}</span>
               )}
@@ -120,9 +150,15 @@ const CreateComboForm: React.FC<CreateComboFormT> = () => {
         />
       </label>
 
-      <button className="create-combo__form-btn publish">გამოქვეყნება</button>
+      {errorMessage && <ErrorMessage message={errorMessage} align="center" />}
+
+      <button className="create-combo__form-btn publish" onClick={onPublish}>
+        გამოქვეყნება
+      </button>
+
+      {status.loading && <StandSpinner />}
     </Styled.CreateComboForm>
   );
-};
+});
 
 export default CreateComboForm;

@@ -1,33 +1,24 @@
-import { useSearchParams } from "@/hooks/utils";
+import { memo } from "react";
 
-import { comboStore } from "@/store";
+import { useCreateComboContext } from "@/Providers/useProviders";
 
 import * as Styled from "./styles/chooseThumbnails.styled";
 import { ArrowLeftIcon } from "@/components/Layouts/Icons";
 
-type ChooseThumbnailsT = {};
+type ChooseThumbnailsT = {
+  hidden: boolean;
+};
 
-const ChooseThumbnails: React.FC<ChooseThumbnailsT> = () => {
-  const { removeParam } = useSearchParams();
-
-  const addedProducts = comboStore.use.addedProducts();
-  const toggleAsset = comboStore.use.toggleExistingAsset();
-  const addedAssets = comboStore.use.existingAssets();
-
-  const images = addedProducts
-    .flatMap((product) => product.assets)
-    .filter((asset) => asset.endsWith(".webp"));
-
-  const onToggleMedia = (src: string) => toggleAsset(src);
-
-  const onDoneSelectMedia = () => removeParam("media");
-
-  // TODO:
-  // 1. Create set from images array
-  // 2. show videos as well
+const ChooseThumbnails: React.FC<ChooseThumbnailsT> = memo(({ hidden }) => {
+  const {
+    existingAssets,
+    onDoneSelectMedia,
+    addedExistingAssets,
+    onToggleExistingAsset,
+  } = useCreateComboContext();
 
   return (
-    <Styled.ChooseThumbnails>
+    <Styled.ChooseThumbnails style={{ display: hidden ? "none" : "flex" }}>
       <div className="assets-box--head">
         <button
           onClick={onDoneSelectMedia}
@@ -39,25 +30,43 @@ const ChooseThumbnails: React.FC<ChooseThumbnailsT> = () => {
         <span>
           არჩეულია &nbsp;
           <strong>
-            {addedAssets.length}/{images.length}
+            {addedExistingAssets.length}/{existingAssets.length}
           </strong>
         </span>
       </div>
 
-      {images.length > 0 ? (
+      {existingAssets.length > 0 ? (
         <div className="assets-box__list-wrapper">
           <div className="assets-box__list">
-            {images.map((src) => (
-              <img
-                src={src}
-                alt={src}
-                title={src}
-                width="100%"
-                loading="lazy"
-                onClick={() => onToggleMedia(src)}
-                className={addedAssets.includes(src) ? "selected" : ""}
-              />
-            ))}
+            {existingAssets.map((src) =>
+              src.endsWith(".webp") ? (
+                <img
+                  key={src}
+                  src={src}
+                  alt={src}
+                  title={src}
+                  width="100%"
+                  loading="lazy"
+                  onClick={() => onToggleExistingAsset(src)}
+                  className={
+                    addedExistingAssets.includes(src) ? "selected" : ""
+                  }
+                />
+              ) : (
+                <video
+                  key={src}
+                  src={src}
+                  width="100%"
+                  loop={true}
+                  muted={true}
+                  autoPlay={true}
+                  onClick={() => onToggleExistingAsset(src)}
+                  className={
+                    addedExistingAssets.includes(src) ? "selected" : ""
+                  }
+                />
+              )
+            )}
           </div>
         </div>
       ) : (
@@ -71,6 +80,6 @@ const ChooseThumbnails: React.FC<ChooseThumbnailsT> = () => {
       </button>
     </Styled.ChooseThumbnails>
   );
-};
+});
 
 export default ChooseThumbnails;

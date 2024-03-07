@@ -23,17 +23,23 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
   const increaseAddedProductCount = comboStore.use.increaseAddedProductCount();
   const decreaseAddedProductCount = comboStore.use.decreaseAddedProductCount();
 
-  const onIncreaseQuantity = () =>
+  const onIncreaseQuantity = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     increaseAddedProductCount({
       productId: product._id,
       size: product.size.size,
     });
+  };
 
-  const onDecreaseQuantity = () =>
+  const onDecreaseQuantity = (e: React.MouseEvent) => {
+    e.stopPropagation();
+
     decreaseAddedProductCount({
       productId: product._id,
       size: product.size.size,
     });
+  };
 
   const onQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     changeAddedProductCount({

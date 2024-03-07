@@ -1,4 +1,12 @@
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
+
+const animatePointerEvents = keyframes`
+  from{
+    pointer-events: none;
+  } to{
+    pointer-events: all;
+  }
+`;
 
 export const ComboCard = styled.div`
   padding: 1rem;
@@ -11,24 +19,56 @@ export const ComboCard = styled.div`
   .combo-assets {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    position: relative;
+    grid-template-rows: auto;
     width: 100%;
     height: 20rem;
+    position: relative;
     overflow: hidden;
     border-radius: 0.5rem;
-    position: relative;
     background-color: ${({ theme }) => theme.colors.gray};
 
-    img {
+    .combo-card__img {
+      display: block;
       width: 100%;
       height: 100%;
       max-width: 100%;
       max-height: 100%;
       object-fit: cover;
-      transition: all 0.3s ease;
+      border: 2px solid transparent;
+      border-radius: inherit;
+      cursor: pointer;
+    }
 
-      &:hover {
+    &:has(.combo-card__img.hovered) {
+      grid-template-columns: repeat(6, 1fr);
+      grid-template-rows: repeat(4rem, 1fr);
+      justify-items: center;
+
+      .combo-card__img {
+        grid-row: 1;
+        position: relative;
+        z-index: 999;
+        width: 4rem;
+        height: 4rem;
+        border-radius: 100%;
+        margin-top: 0.5rem;
+        animation: ${animatePointerEvents} 0.6s 0s forwards;
+
+        &.hovered-thumbnail {
+          border-color: ${({ theme }) => theme.colors.blue};
+        }
+      }
+
+      .combo-card__img.hovered {
+        border-radius: 0;
         position: absolute;
+        z-index: 9;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        margin-top: 0;
+        cursor: auto;
+        border-radius: 0.5rem;
       }
     }
   }

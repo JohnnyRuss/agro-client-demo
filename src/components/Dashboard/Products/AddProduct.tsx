@@ -8,9 +8,9 @@ import { useGetCategoriesQuery } from "@/hooks/api/dashboard/categories";
 import { useCreateProductQuery } from "@/hooks/api/dashboard/products";
 
 import * as Form from "@/components/Layouts/Form";
-import { Button, StandSpinner } from "@/components/Layouts";
-import { CloseIcon, PlusIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/addProduct.styled";
+import { CloseIcon, PlusIcon } from "@/components/Layouts/Icons";
+import { Button, StandSpinner, ErrorMessage } from "@/components/Layouts";
 
 import { ProductT } from "@/interface/db/product.types";
 
@@ -170,6 +170,10 @@ const AddProduct: React.FC = () => {
             />
           )}
         />
+
+        {form.status.error && (
+          <ErrorMessage message={form.status.message} align="center" />
+        )}
 
         <Button onClick={form.onCreateQuery} disabled={form.status.loading}>
           {isEditing ? "რედაქტირება" : "დამატება"}

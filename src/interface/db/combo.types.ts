@@ -1,18 +1,35 @@
+import { ProductSizeT } from "@/interface/db/product.types";
+
 type ComboT = {
+  _id: string;
   title: string;
   description: string;
   price: string;
   assets: Array<string>;
-  combo: any;
   products: Array<{
     product: {
+      _id: string;
       title: string;
       description: string;
       price: string;
+      assets: Array<string>;
+      sizes: Array<ProductSizeT>;
     };
-    quantity: number;
+    size: {
+      size: string;
+      quantity: number;
+    };
   }>;
   createdAt: string;
 };
 
-export type { ComboT };
+type ComboShortT = {
+  _id: string;
+  title: string;
+  description: string;
+  price: string;
+  assets: Array<string>;
+  products: [{ product: string; size: { size: string; quantity: number } }];
+};
+
+export type { ComboT, ComboShortT };

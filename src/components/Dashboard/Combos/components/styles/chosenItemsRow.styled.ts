@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { scrollbar } from "@/styles/utils";
 
-export const AddedItemsRow = styled.div`
+export const ChosenItemsRow = styled.div`
   flex: 1;
   padding: 2rem;
   border-right: 1px solid ${({ theme }) => theme.colors.gray};

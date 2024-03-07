@@ -23,6 +23,7 @@ export const CreateComboForm = styled.div`
       position: relative;
       border-radius: 0.5rem;
 
+      video,
       img {
         width: 100%;
         height: 100%;

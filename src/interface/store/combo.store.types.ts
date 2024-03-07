@@ -1,18 +1,44 @@
-import { LoadingStatusT } from "@/interface/store/common.types";
+import {
+  CreateComboArgsT,
+  DeleteComboArgsT,
+  UpdateComboArgsT,
+} from "@/interface/API/combo.api.tes";
 import { ComboT } from "@/interface/db/combo.types";
+import { LoadingStatusT } from "@/interface/store/common.types";
 import { ProductT, ProductSizeT } from "@/interface/db/product.types";
 
 type ComboStateT = {
   combos: Array<ComboT>;
   createStatus: LoadingStatusT;
+  deleteStatus: LoadingStatusT;
+  readStatus: LoadingStatusT;
   addedProducts: Array<SelectedProductT>;
   existingAssets: Array<string>;
+  addedExistingAssets: Array<string>;
   newAssets: Array<File>;
+  assets_to_delete: Array<string>;
 };
 
 type ComboActionsT = {
-  createCombo: (data: any) => Promise<void>;
+  create: (
+    data: Omit<CreateComboArgsT, "products" | "assets" | "new_assets">
+  ) => Promise<void>;
+
+  getAll: () => Promise<void>;
+
+  delete: (params: DeleteComboArgsT) => Promise<void>;
+
+  update: (
+    params: Omit<UpdateComboArgsT, "data"> & {
+      data: Omit<CreateComboArgsT, "products" | "assets" | "new_assets">;
+    }
+  ) => Promise<void>;
+
   // ========== LOCALES ==========
+  setComboDefaults: (params: ComboT) => void;
+
+  cleanUpComboForm: () => void;
+
   addProduct: (product: SelectedProductT) => void;
 
   removeProduct: (params: { productId: string; size: string }) => void;

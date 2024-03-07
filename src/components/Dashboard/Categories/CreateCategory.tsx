@@ -11,6 +11,7 @@ import {
   FormTitle,
   TextField,
   StandSpinner,
+  ErrorMessage,
 } from "@/components/Layouts";
 import * as Styled from "./styles/createCategory.styled";
 
@@ -62,6 +63,8 @@ const CreateCategory: React.FC = () => {
       </form>
 
       {status.loading && <StandSpinner />}
+
+      {status.error && <ErrorMessage message={status.message} align="center" />}
     </Styled.CreateCategory>
   );
 };

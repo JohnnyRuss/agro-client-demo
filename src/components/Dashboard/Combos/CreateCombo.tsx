@@ -19,7 +19,7 @@ const CreateCombo: React.FC = () => {
       <Styled.CreateCombo>
         <UI.ItemToChooseRow />
 
-        <UI.AddedItemsRow />
+        <UI.ChosenItemsRow />
 
         <UI.ComboActiveItem />
 
@@ -30,7 +30,8 @@ const CreateCombo: React.FC = () => {
 
       <Modal open={isPublishing} onClose={onCloseComboModal}>
         <Styled.CreateComboModal>
-          {isSelectingMedia ? <UI.ChooseThumbnails /> : <UI.CreateComboForm />}
+          <UI.ChooseThumbnails hidden={isSelectingMedia ? false : true} />
+          <UI.CreateComboForm hidden={isSelectingMedia ? true : false} />
         </Styled.CreateComboModal>
       </Modal>
     </>

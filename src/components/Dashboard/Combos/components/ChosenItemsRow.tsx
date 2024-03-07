@@ -3,12 +3,15 @@ import { memo } from "react";
 import { comboStore } from "@/store";
 
 import ChosenItemCard from "./ChosenItemCard";
-import * as Styled from "./styles/addedItemsRow.styled";
+import * as Styled from "./styles/chosenItemsRow.styled";
 
 type AddedItemsRowT = {};
 
-const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
+const ChosenItemsRow: React.FC<AddedItemsRowT> = memo(() => {
   const addedProducts = comboStore.use.addedProducts();
+
+  const addedProductsSize = new Set(addedProducts.map((product) => product._id))
+    .size;
 
   const priceSum = addedProducts.reduce(
     (acc, p) => (acc += p.price * p.size.selectedCount),
@@ -21,10 +24,10 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
   );
 
   return (
-    <Styled.AddedItemsRow>
+    <Styled.ChosenItemsRow>
       <div className="added-items__list-head">
         <span>
-          დამატებულია {addedProducts.length} პროდუქტი ({totalProductsCount})
+          დამატებულია {addedProductsSize} პროდუქტი ({totalProductsCount})
         </span>
 
         <div>
@@ -47,8 +50,8 @@ const AddedItemsRow: React.FC<AddedItemsRowT> = memo(() => {
             ))}
         </div>
       </div>
-    </Styled.AddedItemsRow>
+    </Styled.ChosenItemsRow>
   );
 });
 
-export default AddedItemsRow;
+export default ChosenItemsRow;

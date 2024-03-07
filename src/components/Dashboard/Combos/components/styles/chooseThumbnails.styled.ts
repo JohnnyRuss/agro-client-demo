@@ -43,6 +43,7 @@ export const ChooseThumbnails = styled.div`
     gap: 1rem;
     padding-right: 1rem;
 
+    video,
     img {
       width: 100%;
       height: 10rem;
@@ -51,6 +52,7 @@ export const ChooseThumbnails = styled.div`
       cursor: pointer;
     }
 
+    video.selected,
     img.selected {
       border: 3px solid ${({ theme }) => theme.colors.blue};
     }

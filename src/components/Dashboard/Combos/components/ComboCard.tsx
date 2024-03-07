@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { PATHS } from "@/config/paths";
@@ -7,66 +8,83 @@ import * as Styled from "./styles/comboCard.styled";
 import { LineClamp, Button } from "@/components/Layouts";
 import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
 
-const images = [
-  "https://images.unsplash.com/photo-1632723893457-47e3abc47526?q=80&w=2071&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1595787572976-f6fb4ee44005?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1625758474222-92183cb2c02c?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1633375011368-b3d9b70ceef8?q=80&w=2030&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1581177094826-3b9a100bf887?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1527454803819-fd7364ac2c83?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
+import { ComboT } from "@/interface/db/combo.types";
 
-type ComboCardT = {};
+type ComboCardT = {
+  combo: ComboT;
+  onDelete: (comboId: string) => void;
+};
 
-const ComboCard: React.FC<ComboCardT> = () => {
+const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
   const navigate = useNavigate();
 
   const { activateDialog } = useAppUIContext();
 
   const onEdit = () =>
-    navigate(`${PATHS.dashboard_create_combo_page}?category=${"1234"}`);
+    navigate(`${PATHS.dashboard_create_combo_page}?combo=${combo._id}`, {
+      state: { combo },
+    });
 
   const onStartDelete = () =>
     activateDialog({
-      target: "<COMBO>",
-      message: "Are you sure you want to delete this Bundle ?",
-      onConfirm: () => {},
-      title: "Delete Bundle",
       type: "danger",
+      target: "ნაკრების",
+      title: "ნაკრების წაშლა",
+      onConfirm: () => onDelete(combo._id),
+      message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
     });
+
+  const [hoveredImg, setHoveredImg] = useState("");
+
+  const images = combo.assets.filter((asset) => asset.endsWith(".webp"));
+
+  const productsVariety = Array.from(
+    new Set(combo.products.map((item) => item.product))
+  ).length;
 
   return (
     <Styled.ComboCard className="combos-list__item">
       <div className="combo-assets">
-        {images.map((src) => (
-          <img key={src} src={src} alt="" title="" loading="lazy" />
+        {images.slice(0, 6).map((src) => (
+          <img
+            key={src}
+            src={src}
+            alt={src}
+            title={src}
+            loading="lazy"
+            onMouseOver={() => setHoveredImg(src)}
+            className={`combo-card__img ${
+              hoveredImg === src ? "hovered-thumbnail" : ""
+            }`}
+          />
         ))}
+
+        {hoveredImg && (
+          <img
+            src={hoveredImg}
+            alt=""
+            className="combo-card__img hovered"
+            onMouseLeave={() => setHoveredImg("")}
+          />
+        )}
       </div>
 
       <div className="combo-details">
-        <LineClamp
-          clamp={2}
-          component="h4"
-          text="Combo title with big text very big text something about ten words"
-        />
+        <LineClamp clamp={2} component="h4" text={combo.title} />
 
-        <LineClamp
-          clamp={4}
-          component="div"
-          text="Combo description with big text very big text something about twenty words so i am gonna drop couple of words"
-        />
+        <LineClamp clamp={4} component="div" text={combo.description} />
 
         <div className="combo-details--duplex">
           <div>
             <span>ფასი:</span>
             &nbsp;
-            <span>100</span>
+            <span>{combo.price}₾</span>
           </div>
 
           <div>
             <span>პროდუქტების ვარიაცია:</span>
             &nbsp;
-            <span>5</span>
+            <span>{productsVariety}</span>
           </div>
         </div>
 

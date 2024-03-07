@@ -29,6 +29,10 @@ const commonStyles = css`
     width: 100%;
     font-size: ${({ theme }) => theme.fontSize.sm};
     color: ${({ theme }) => theme.colors.gray_dark};
+
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
   }
 `;
 
