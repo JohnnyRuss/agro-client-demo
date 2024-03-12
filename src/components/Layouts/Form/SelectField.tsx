@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 
 import * as Styled from "./form.styled";
 import { Spinner } from "@/components/Layouts";
-import { ArrowTriangleIcon } from "@/components/Layouts/Icons";
+import { ArrowTriangleIcon, CloseIcon } from "@/components/Layouts/Icons";
 
 type OptionT = {
   title: string;
@@ -35,6 +35,7 @@ const SelectField: React.FC<SelectFieldT> = ({
     e.preventDefault();
     setOpenDropdown(true);
   };
+
   const onCloseDropdown = () => setOpenDropdown(false);
 
   const onSelectItem = (value: OptionT) => {
@@ -43,13 +44,15 @@ const SelectField: React.FC<SelectFieldT> = ({
     setOpenDropdown(false);
   };
 
+  const onClean = () => setEnteredValue("");
+
   useEffect(() => {
     if (!value.value && enteredValue) setEnteredValue("");
     else if (value.value && !enteredValue) setEnteredValue(value.title);
   }, [value.value]);
 
   return (
-    <Styled.SelectField>
+    <Styled.SelectField className={openDropdown ? "active" : ""}>
       {label && <label htmlFor="">{label}</label>}
 
       <div className="dropdown-wrapper">
@@ -63,9 +66,15 @@ const SelectField: React.FC<SelectFieldT> = ({
             onClick={onOpenDropdown}
           />
 
-          <button onClick={onOpenDropdown}>
-            <ArrowTriangleIcon />
-          </button>
+          {openDropdown && enteredValue ? (
+            <button onClick={onClean}>
+              <CloseIcon />
+            </button>
+          ) : (
+            <button onClick={onOpenDropdown}>
+              <ArrowTriangleIcon />
+            </button>
+          )}
         </div>
 
         {openDropdown && (

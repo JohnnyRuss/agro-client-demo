@@ -18,6 +18,59 @@ const Routes: Array<RouteT> = [
     children: [],
   },
 
+  // ========== PRODUCTS ==========
+  {
+    path: PATHS.product_page,
+    title: "product-page",
+    element: <Pages.ProductDetailsPage />,
+    children: [],
+  },
+
+  // ========== COMBOS ==========
+  {
+    path: PATHS.combo_page,
+    title: "combo-page",
+    element: <Pages.ComboDetailsPage />,
+    children: [],
+  },
+
+  // ========== SHOP ==========
+  {
+    path: PATHS.shopping_page,
+    title: "shopping-page",
+    element: <Pages.ShoppingPage />,
+    children: [
+      {
+        path: PATHS.all_products_page,
+        title: "all-products-page",
+        element: <Pages.AllProductsPage />,
+        children: [],
+      },
+      {
+        path: PATHS.all_combos_page,
+        title: "all-combos-page",
+        element: <Pages.AllCombosPage />,
+        children: [],
+      },
+    ],
+  },
+
+  // ========== SHOPPING_CART ==========
+  {
+    path: PATHS.shopping_cart_page,
+    title: "shopping-cart-page",
+    element: <Pages.ShoppingCartPage />,
+    children: [],
+  },
+
+  // ========== ABOUT_US ==========
+  {
+    path: PATHS.about_us_page,
+    title: "about-us-page",
+    element: <Pages.AboutUsPage />,
+    children: [],
+  },
+
   // ========== DASHBOARD ==========
   {
     path: PATHS.dashboard_page,

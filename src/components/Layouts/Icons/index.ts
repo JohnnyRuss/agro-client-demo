@@ -11,9 +11,11 @@ import {
 
 // ========== md ==========
 import {
-  MdOutlineEmail,
   MdDelete,
   MdClose,
+  MdOpenInNew,
+  MdOutlineSort,
+  MdOutlineEmail,
   MdOutlinePublish,
 } from "react-icons/md";
 
@@ -77,6 +79,8 @@ const FilterIcon = CiFilter;
 const AppIcon = GrApps;
 const PlayIcon = FaPlay;
 const PackageCheckIcon = LuPackageCheck;
+const OpenInNewIcon = MdOpenInNew;
+const SortIcon = MdOutlineSort;
 
 export {
   LocationIcon,
@@ -107,4 +111,6 @@ export {
   AppIcon,
   PlayIcon,
   PackageCheckIcon,
+  OpenInNewIcon,
+  SortIcon,
 };

@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { PATHS } from "@/config/paths";
 import { useAppUIContext } from "@/Providers/useProviders";
 
-import * as Styled from "./styles/comboCard.styled";
+import * as Styled from "./comboCard.styled";
 import { LineClamp, Button } from "@/components/Layouts";
 import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
 
@@ -12,10 +12,17 @@ import { ComboT } from "@/interface/db/combo.types";
 
 type ComboCardT = {
   combo: ComboT;
-  onDelete: (comboId: string) => void;
+  showActions?: boolean;
+  redirectPath: string;
+  onDelete?: (comboId: string) => void;
 };
 
-const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
+const ComboCard: React.FC<ComboCardT> = ({
+  combo,
+  redirectPath,
+  onDelete = () => {},
+  showActions = true,
+}) => {
   const navigate = useNavigate();
 
   const { activateDialog } = useAppUIContext();
@@ -34,9 +41,12 @@ const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
       message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
     });
 
+  const onViewCombo = () => navigate(redirectPath);
+
   const [hoveredImg, setHoveredImg] = useState("");
 
-  const images = combo.assets.filter((asset) => asset.endsWith(".webp"));
+  // const images = combo.assets.filter((asset) => asset.endsWith(".webp"));
+  const images = combo.assets;
 
   const productsVariety = Array.from(
     new Set(combo.products.map((item) => item.product))
@@ -45,7 +55,7 @@ const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
   return (
     <Styled.ComboCard className="combos-list__item">
       <div className="combo-assets">
-        {images.slice(0, 6).map((src) => (
+        {images.slice(0, hoveredImg ? 6 : 2).map((src) => (
           <img
             key={src}
             src={src}
@@ -60,17 +70,28 @@ const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
         ))}
 
         {hoveredImg && (
-          <img
-            src={hoveredImg}
-            alt=""
-            className="combo-card__img hovered"
-            onMouseLeave={() => setHoveredImg("")}
-          />
+          <>
+            <img
+              src={hoveredImg}
+              alt=""
+              className="combo-card__img hovered"
+              onMouseLeave={() => setHoveredImg("")}
+            />
+
+            <button className="view-details__btn" onClick={onViewCombo}>
+              ნახე დეტალურად
+            </button>
+          </>
         )}
       </div>
 
       <div className="combo-details">
-        <LineClamp clamp={2} component="h4" text={combo.title} />
+        <LineClamp
+          clamp={2}
+          component="h4"
+          text={combo.title}
+          onClick={onViewCombo}
+        />
 
         <LineClamp clamp={4} component="div" text={combo.description} />
 
@@ -88,17 +109,19 @@ const ComboCard: React.FC<ComboCardT> = ({ combo, onDelete }) => {
           </div>
         </div>
 
-        <div className="combo-details--duplex">
-          <Button show="danger" onClick={onStartDelete}>
-            <DeleteIcon />
-            წაშლა
-          </Button>
+        {showActions && (
+          <div className="combo-details--duplex">
+            <Button show="danger" onClick={onStartDelete}>
+              <DeleteIcon />
+              წაშლა
+            </Button>
 
-          <Button onClick={onEdit}>
-            <EditIcon />
-            რედაქტირება
-          </Button>
-        </div>
+            <Button onClick={onEdit}>
+              <EditIcon />
+              რედაქტირება
+            </Button>
+          </div>
+        )}
       </div>
     </Styled.ComboCard>
   );

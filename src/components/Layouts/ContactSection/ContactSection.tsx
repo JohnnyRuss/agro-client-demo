@@ -4,14 +4,17 @@ import {
   ViberIcon,
   WhatsUpIcon,
   PhoneIcon,
+  FacebookIcon,
+  TwitterIcon,
+  InstagramIcon,
 } from "@/components/Layouts/Icons";
-import * as Styled from "./styles/contact.styled";
+import * as Styled from "./contactSection.styled";
 
 type ContactT = {};
 
-const Contact: React.FC<ContactT> = () => {
+const ContactSection: React.FC<ContactT> = () => {
   return (
-    <Styled.Contact>
+    <Styled.ContactSection>
       <div className="contact-box col-2">
         <span className="contact-box__icon">
           <LocationIcon />
@@ -42,7 +45,7 @@ const Contact: React.FC<ContactT> = () => {
         </div>
       </div>
 
-      <div className="contact-box col-3">
+      <div className="contact-box col-2">
         <span className="contact-box__icon">
           <WhatsUpIcon />
         </span>
@@ -52,7 +55,7 @@ const Contact: React.FC<ContactT> = () => {
         </div>
       </div>
 
-      <div className="contact-box col-3">
+      <div className="contact-box col-2">
         <span className="contact-box__icon">
           <ViberIcon />
         </span>
@@ -61,8 +64,38 @@ const Contact: React.FC<ContactT> = () => {
           <span>Viber</span>
         </div>
       </div>
-    </Styled.Contact>
+
+      <div className="contact-box col-2">
+        <span className="contact-box__icon">
+          <FacebookIcon />
+        </span>
+
+        <div className="contact-box__detail">
+          <span>Facebook</span>
+        </div>
+      </div>
+
+      <div className="contact-box col-3">
+        <span className="contact-box__icon">
+          <TwitterIcon />
+        </span>
+
+        <div className="contact-box__detail">
+          <span>Twitter</span>
+        </div>
+      </div>
+
+      <div className="contact-box col-3">
+        <span className="contact-box__icon">
+          <InstagramIcon />
+        </span>
+
+        <div className="contact-box__detail">
+          <span>Instagram</span>
+        </div>
+      </div>
+    </Styled.ContactSection>
   );
 };
 
-export default Contact;
+export default ContactSection;

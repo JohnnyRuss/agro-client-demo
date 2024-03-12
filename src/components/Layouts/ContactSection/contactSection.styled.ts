@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const Contact = styled.div`
+export const ContactSection = styled.div`
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   gap: 4rem;
@@ -67,6 +67,11 @@ export const Contact = styled.div`
     .contact-box {
       grid-column: span 1 !important;
       font-size: ${({ theme }) => theme.fontSize.sm};
+    }
+
+    .contact-box.col-3 {
+      flex-direction: row;
+      justify-content: flex-start;
     }
   }
 `;

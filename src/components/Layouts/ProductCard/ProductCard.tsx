@@ -1,18 +1,22 @@
+import { Link } from "react-router-dom";
+
+import { DYNAMIC_ROUTES } from "@/config/paths";
+
 import * as Styled from "./productCard.styled";
-import { HeartIcon, ShoppingCartIcon } from "@/components/Layouts/Icons";
+import { ShoppingCartIcon } from "@/components/Layouts/Icons";
 
 type ProductCardT = {};
 
 const ProductCard: React.FC<ProductCardT> = () => {
   return (
     <Styled.ProductCard>
-      <div className="card-header">
+      {/* <div className="card-header">
         <button>
           <HeartIcon />
         </button>
 
         <span>sale!</span>
-      </div>
+      </div> */}
 
       <figure className="card-fig">
         <img
@@ -26,7 +30,9 @@ const ProductCard: React.FC<ProductCardT> = () => {
 
       <div className="card-details">
         <div className="flex-col">
-          <p className="card-title">Spring Mix</p>
+          <Link to={DYNAMIC_ROUTES.product_page("123")} className="card-title">
+            Spring Mix
+          </Link>
           <span className="card-price">$15.00</span>
         </div>
 

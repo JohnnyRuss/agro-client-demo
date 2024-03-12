@@ -79,10 +79,8 @@ export const ItemToChooseCard = styled.div`
       }
     }
 
-    .size-box {
-      select {
-        outline: none;
-      }
+    .size-box select {
+      outline: none;
     }
 
     .add-btn {
@@ -93,25 +91,6 @@ export const ItemToChooseCard = styled.div`
       &.danger {
         svg {
           font-size: ${({ theme }) => theme.fontSize.xl} !important;
-        }
-      }
-    }
-
-    .control-quantity {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-
-      input {
-        width: 5rem;
-        height: 3rem;
-        outline: none;
-        border: 1px solid ${({ theme }) => theme.colors.gray_shade};
-        border-radius: 0.4rem;
-        text-align: center;
-
-        &::-webkit-inner-spin-button {
-          display: none;
         }
       }
     }

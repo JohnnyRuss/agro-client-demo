@@ -4,8 +4,12 @@ export const ProductCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 9rem;
+  background-color: #fbfafa;
+  padding: 2rem;
+  padding-top: 6rem;
+  border-radius: 1rem;
 
-  .card-header {
+  /* .card-header {
     width: 100%;
     display: flex;
     align-items: center;
@@ -23,7 +27,7 @@ export const ProductCard = styled.div`
       font-size: ${({ theme }) => theme.fontSize.xs};
       text-transform: capitalize;
     }
-  }
+  } */
 
   .card-fig {
     width: 100%;

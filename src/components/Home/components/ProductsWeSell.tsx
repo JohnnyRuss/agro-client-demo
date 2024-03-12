@@ -1,7 +1,7 @@
 import { generateArray } from "@/utils";
 
 import SectionTitle from "./SectionTitle";
-import ProductsFilter from "./ProductsFilter";
+// import ProductsFilter from "./ProductsFilter";
 import { ProductCard } from "@/components/Layouts";
 import * as Styled from "./styles/productsWeSell.styled";
 
@@ -13,7 +13,7 @@ const ProductsWeSell: React.FC<ProductsWeSellT> = () => {
       <div className="products-head">
         <SectionTitle subTitle="PRODUCTS" title="Products" />
 
-        <ProductsFilter />
+        {/* <ProductsFilter /> */}
       </div>
 
       <ul className="products-list">

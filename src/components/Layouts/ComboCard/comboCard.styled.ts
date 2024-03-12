@@ -39,6 +39,17 @@ export const ComboCard = styled.div`
       cursor: pointer;
     }
 
+    .view-details__btn {
+      position: absolute;
+      z-index: 8;
+      background-color: rgba(0, 0, 0, 0.7);
+      color: ${({ theme }) => theme.colors.white};
+      bottom: 1rem;
+      right: 1rem;
+      padding: 0.5rem 2.5rem;
+      border-radius: 10rem;
+    }
+
     &:has(.combo-card__img.hovered) {
       grid-template-columns: repeat(6, 1fr);
       grid-template-rows: repeat(4rem, 1fr);
@@ -47,7 +58,7 @@ export const ComboCard = styled.div`
       .combo-card__img {
         grid-row: 1;
         position: relative;
-        z-index: 999;
+        z-index: 8;
         width: 4rem;
         height: 4rem;
         border-radius: 100%;
@@ -62,7 +73,7 @@ export const ComboCard = styled.div`
       .combo-card__img.hovered {
         border-radius: 0;
         position: absolute;
-        z-index: 9;
+        z-index: 7;
         inset: 0;
         width: 100%;
         height: 100%;
@@ -77,7 +88,10 @@ export const ComboCard = styled.div`
     display: flex;
     flex-direction: column;
     gap: 1rem;
+
     h4[data-line-clamp] {
+      cursor: pointer;
+      text-transform: capitalize;
       font-size: ${({ theme }) => theme.fontSize.base};
     }
 

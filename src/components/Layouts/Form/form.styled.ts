@@ -103,13 +103,20 @@ export const OTPField = styled.div`
 
 export const SelectField = styled.div`
   ${commonStyles};
+  position: relative;
+  z-index: 1;
+
+  &.active {
+    z-index: 99;
+  }
 
   .text-field__wrapper {
     display: flex;
+    cursor: pointer;
     align-items: center;
     border-radius: 0.5rem;
     border: 1px solid ${({ theme }) => theme.colors.gray_shade};
-    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.white};
 
     button {
       display: flex;
@@ -125,11 +132,6 @@ export const SelectField = styled.div`
     }
   }
 
-  .dropdown-wrapper {
-    position: relative;
-    z-index: 9;
-  }
-
   .dropdown-backdrop {
     position: fixed;
     inset: 0;
@@ -140,9 +142,9 @@ export const SelectField = styled.div`
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(100% + 1.5rem);
     padding: 1.5rem;
     border-radius: 0.5rem;
+    top: calc(100% + 1.5rem);
     background-color: ${({ theme }) => theme.colors.white};
     box-shadow: ${({ theme }) => theme.boxShadow.radial_md};
     border: 1px solid ${({ theme }) => theme.colors.gray};

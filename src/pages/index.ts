@@ -1,6 +1,19 @@
 export { default as HomePage } from "./Home/HomePage";
 export { default as UnknownPage } from "./UnknownPage";
 
+//========== PRODUCTS ==========
+export { default as ShoppingPage } from "./Shop/ShoppingPage";
+export { default as AllProductsPage } from "./Products/AllProductsPage";
+export { default as ProductDetailsPage } from "./Products/ProductDetailsPage";
+export { default as AllCombosPage } from "./Combo/AllCombosPage";
+export { default as ComboDetailsPage } from "./Combo/ComboDetailsPage";
+
+//========== ABOUT_US ==========
+export { default as AboutUsPage } from "./AboutUs/AboutUsPage";
+
+// ========== SHOPPING_CART ==========
+export { default as ShoppingCartPage } from "./ShoppingCart/ShoppingCartPage";
+
 //========== DASHBOARD ==========
 export { default as DashboardPage } from "./Dashboard/DashboardPage";
 

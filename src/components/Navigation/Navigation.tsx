@@ -1,4 +1,5 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { PATHS } from "@/config/paths.ts";
 
 import {
   PhoneIcon,
@@ -55,22 +56,38 @@ const Navigation: React.FC<NavigationT> = () => {
       <Styled.Navigation>
         <div className="nav-row">
           <div className="nav-row__left">
-            <figure>A</figure>
+            <Link to={PATHS.home_page} className="logo-link">
+              <img src="/assets/logo-small.webp" alt="" width="45" />
+            </Link>
           </div>
 
           <div className="nav-row__center">
             <ul className="routes-list">
               <li className="routes-list__item">
-                <Link to={""}>Home</Link>
+                <NavLink
+                  to={PATHS.home_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  მთავარი
+                </NavLink>
               </li>
+
               <li className="routes-list__item">
-                <Link to={""}>Shop</Link>
+                <NavLink
+                  to={PATHS.shopping_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  პროდუქტები
+                </NavLink>
               </li>
+
               <li className="routes-list__item">
-                <Link to={""}>About Us</Link>
-              </li>
-              <li className="routes-list__item">
-                <Link to={""}>Contact Us</Link>
+                <NavLink
+                  to={PATHS.about_us_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  ჩვენს შესახებ
+                </NavLink>
               </li>
             </ul>
 
@@ -87,7 +104,7 @@ const Navigation: React.FC<NavigationT> = () => {
               />
             </div>
 
-            <Link to={""} className="cart-btn">
+            <Link to={PATHS.shopping_cart_page} className="cart-btn">
               <ShoppingCartIcon />
             </Link>
           </div>

@@ -3,9 +3,8 @@ import {
   useDeleteComboQuery,
 } from "@/hooks/api/dashboard/combos";
 
-import ComboCard from "./components/ComboCard";
 import * as Styled from "./styles/yourCombos.styled";
-import { StandSpinner, ErrorMessage } from "@/components/Layouts";
+import { StandSpinner, ErrorMessage, ComboCard } from "@/components/Layouts";
 
 const YourCombos: React.FC = () => {
   const { data, status } = useGetCombosQuery();
@@ -21,6 +20,7 @@ const YourCombos: React.FC = () => {
         <div className="combos-list">
           {data.map((combo) => (
             <ComboCard
+              redirectPath=""
               combo={combo}
               key={combo._id}
               onDelete={deleteComboQuery}

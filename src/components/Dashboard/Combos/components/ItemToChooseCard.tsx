@@ -2,13 +2,9 @@ import React, { useEffect, useState } from "react";
 
 import { comboStore } from "@/store";
 
-import {
-  PlusIcon,
-  MinusIcon,
-  PackageCheckIcon,
-} from "@/components/Layouts/Icons";
-import { LineClamp, Button } from "@/components/Layouts";
 import * as Styled from "./styles/itemToChooseCard.styled";
+import { PackageCheckIcon } from "@/components/Layouts/Icons";
+import { LineClamp, Button, Counter } from "@/components/Layouts";
 
 import { ProductT } from "@/interface/db/product.types";
 import { SelectedProductSizeT } from "@/interface/store/combo.store.types";
@@ -207,19 +203,12 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
             </span>
           </div>
 
-          <div className="control-quantity">
-            <button onClick={onDecreaseQuantity}>
-              <MinusIcon />
-            </button>
-            <input
-              type="number"
-              value={size.selectedCount}
-              onChange={onQuantityChange}
-            />
-            <button onClick={onIncreaseQuantity}>
-              <PlusIcon />
-            </button>
-          </div>
+          <Counter
+            value={size.selectedCount}
+            onChangeCount={onQuantityChange}
+            onDecreaseCount={onDecreaseQuantity}
+            onIncreaseCount={onIncreaseQuantity}
+          />
 
           <Button
             onClick={onAddProduct}

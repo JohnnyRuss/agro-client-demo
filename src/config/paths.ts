@@ -1,6 +1,19 @@
 const PATHS = {
   root_page: "/",
   home_page: "/home",
+  // ========== PRODUCT ==========
+  shopping_page: "/shop",
+  all_combos_page: "/shop/combos",
+  combo_page: "/shop/combos/:comboId",
+  all_products_page: "/shop/products",
+  product_page: "/shop/products/:productId",
+
+  // ========== ABOUT_US ==========
+  about_us_page: "/about-us",
+
+  // ========== SHOPPING_CART ==========
+  shopping_cart_page: "/cart",
+
   // ========== DASHBOARD ==========
   dashboard_page: "/dashboard",
 
@@ -29,7 +42,12 @@ const PATHS = {
   unknown_page: "*",
 };
 
-const DYNAMIC_ROUTES = {};
+const DYNAMIC_ROUTES = {
+  product_page: (productId: string) =>
+    PATHS.product_page.replace(":productId", productId),
+  combo_page: (comboId: string) =>
+    PATHS.combo_page.replace(":comboId", comboId),
+};
 
 const PRIVATE_ROUTES: Array<string> = [];
 

@@ -24,6 +24,9 @@ export { default as SuspenseContainer } from "./SuspenseContainer/SuspenseContai
 export { default as ProductCard } from "./ProductCard/ProductCard";
 export { default as Button } from "./Button/Button";
 export { default as InfiniteScroll } from "./InfiniteScroll/InfiniteScroll";
+export { default as Counter } from "./Counter/Counter";
+export { default as ComboCard } from "./ComboCard/ComboCard";
+export { default as ContactSection } from "./ContactSection/ContactSection";
 
 // ========== SPINNERS ==========
 export { default as Spinner } from "./Spinner/Spinner";
