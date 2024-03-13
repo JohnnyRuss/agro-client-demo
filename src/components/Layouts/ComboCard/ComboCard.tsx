@@ -45,8 +45,7 @@ const ComboCard: React.FC<ComboCardT> = ({
 
   const [hoveredImg, setHoveredImg] = useState("");
 
-  // const images = combo.assets.filter((asset) => asset.endsWith(".webp"));
-  const images = combo.assets;
+  const images = combo.assets.filter((asset) => asset.endsWith(".webp"));
 
   const productsVariety = Array.from(
     new Set(combo.products.map((item) => item.product))

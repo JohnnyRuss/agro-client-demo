@@ -3,8 +3,8 @@ import { PlusIcon, MinusIcon } from "@/components/Layouts/Icons";
 
 type CounterT = {
   value: string | number;
-  onIncreaseCount: () => void;
-  onDecreaseCount: () => void;
+  onIncreaseCount: (e: React.MouseEvent) => void;
+  onDecreaseCount: (e: React.MouseEvent) => void;
   onChangeCount: (e: React.ChangeEvent<HTMLInputElement>) => void;
 };
 

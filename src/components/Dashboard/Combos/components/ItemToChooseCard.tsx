@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 
 import { comboStore } from "@/store";
+import { useSizeChange } from "@/hooks/utils";
 
 import * as Styled from "./styles/itemToChooseCard.styled";
 import { PackageCheckIcon } from "@/components/Layouts/Icons";
 import { LineClamp, Button, Counter } from "@/components/Layouts";
 
 import { ProductT } from "@/interface/db/product.types";
-import { SelectedProductSizeT } from "@/interface/store/combo.store.types";
 
 type ItemToChooseCardT = {
   product: ProductT;
@@ -17,13 +17,13 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
   const addProduct = comboStore.use.addProduct();
   const addedProducts = comboStore.use.addedProducts();
 
-  /* Set Size locally before current product will be added to store */
-  const [size, setSize] = useState<SelectedProductSizeT>({
-    _id: "",
-    size: "",
-    quantity: 0,
-    selectedCount: 0,
-  });
+  const {
+    size,
+    setSize,
+    onIncreaseQuantity,
+    onDecreaseQuantity,
+    onQuantityChange,
+  } = useSizeChange(product.sizes);
 
   /** Watch Size change and reset size state based on change*/
   const onSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -56,36 +56,6 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
   };
 
   /**
-   * control product quantity according to specific size max count
-   * size should be changed by the button or from the input itself
-   */
-  const onIncreaseQuantity = () =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount:
-        prev.selectedCount === prev.quantity
-          ? prev.selectedCount
-          : prev.selectedCount + 1,
-    }));
-
-  const onDecreaseQuantity = () =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount: prev.selectedCount === 0 ? 0 : prev.selectedCount - 1,
-    }));
-
-  const onQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount:
-        +e.target.value > prev.quantity
-          ? prev.quantity
-          : +e.target.value < 0
-          ? 0
-          : +e.target.value,
-    }));
-
-  /**
    * add product to store to access globally.
    * quantity manipulation on added products effects directly on the store state.
    * added product quantity is bind bidirectional way between itemsToChoose and chosenItems (controlled by useEffects bellow)
@@ -97,18 +67,6 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
 
     addProduct({ ...sizeOmittedProduct, size });
   };
-
-  /**
-   * set default size on size state
-   */
-  useEffect(() => {
-    const defaultSize = product.sizes[0];
-
-    setSize({
-      ...defaultSize,
-      selectedCount: defaultSize.quantity > 0 ? 1 : 0,
-    });
-  }, []);
 
   const thumbnail = product.assets.find((asset) => asset?.endsWith(".webp"));
   const isSelected = addedProducts.some((p) => p._id === product._id);

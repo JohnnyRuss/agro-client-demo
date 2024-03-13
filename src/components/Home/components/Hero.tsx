@@ -16,9 +16,9 @@ const Hero: React.FC<HeroT> = () => {
 
       <div className="hero__content-box">
         <div className="hero-stand">
-          <p>Welcome To Our</p>
-          <p className="primary">Farming House</p>
-          <button>See Products</button>
+          <p>მოგესალმებათ</p>
+          <p className="primary">AGRO-ORNAMENT</p>
+          <button>ნახეთ პროდუქტები</button>
         </div>
       </div>
     </Styled.Hero>

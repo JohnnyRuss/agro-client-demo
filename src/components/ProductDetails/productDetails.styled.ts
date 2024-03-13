@@ -64,6 +64,10 @@ export const ProductDetails = styled.div`
         gap: 0.5rem;
       }
 
+      &__size select {
+        outline: none;
+      }
+
       &__add-btn {
         padding: 1rem 6rem;
       }

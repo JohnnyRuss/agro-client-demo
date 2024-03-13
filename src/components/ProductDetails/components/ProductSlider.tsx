@@ -1,17 +1,15 @@
-import ReactImageMagnify from "react-image-magnify";
-import Carousel from "react-multi-carousel";
+import { useState, useEffect } from "react";
+
 import "react-multi-carousel/lib/styles.css";
+import Carousel from "react-multi-carousel";
+import ReactImageMagnify from "react-image-magnify";
 
 import * as Styled from "./productSlider.styled";
+import { PlayIcon } from "@/components/Layouts/Icons";
 
-const images = [
-  "https://images.unsplash.com/photo-1682685797365-6f57bbebffed?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1707343848873-d6a834b5f9b9?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1682685796444-acc2f5c1b7b6?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1707343848723-bd87dea7b118?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1682687221213-56e250b36fdd?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDF8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-  "https://images.unsplash.com/photo-1709286636205-c419afdf70aa?q=80&w=2009&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-];
+type ProductSliderT = {
+  assets: Array<string>;
+};
 
 const responsive = {
   all: {
@@ -20,28 +18,43 @@ const responsive = {
   },
 };
 
-const ProductSlider: React.FC = () => {
+const ProductSlider: React.FC<ProductSliderT> = ({ assets }) => {
+  const [activeAsset, setActiveAsset] = useState("");
+
+  const onChangeAsset = (src: string) => setActiveAsset(src);
+
+  useEffect(() => {
+    setActiveAsset(assets[0]);
+  }, [assets]);
+
   return (
     <Styled.ProductSlider>
-      <ReactImageMagnify
-        {...{
-          smallImage: {
-            alt: "Wristwatch by Ted Baker London",
-            isFluidWidth: true,
-            height: 400,
-            width: 550,
-            src: "https://images.unsplash.com/photo-1631337902392-b4bb679fbfdb?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-          },
-          largeImage: {
-            src: "https://images.unsplash.com/photo-1631337902392-b4bb679fbfdb?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
-            width: 800,
-            height: 800,
-          },
-        }}
-        imageClassName="magnify-app--box__img"
-        className="magnify-app--box"
-        enlargedImagePosition="over"
-      />
+      {activeAsset &&
+        (activeAsset.endsWith(".webp") ? (
+          <ReactImageMagnify
+            {...{
+              smallImage: {
+                width: 550,
+                height: 400,
+                src: activeAsset,
+                isFluidWidth: true,
+                alt: "Wristwatch by Ted Baker London",
+              },
+              largeImage: {
+                width: 800,
+                height: 800,
+                src: activeAsset,
+              },
+            }}
+            enlargedImagePosition="over"
+            className="magnify-app--box"
+            imageClassName="magnify-app--box__img"
+          />
+        ) : (
+          <figure className="active-slide__video-fig">
+            <video src={activeAsset} muted={true} autoPlay={true} loop={true} />
+          </figure>
+        ))}
 
       <Carousel
         responsive={responsive}
@@ -50,9 +63,22 @@ const ProductSlider: React.FC = () => {
         transitionDuration={300}
         slidesToSlide={2}
       >
-        {images.map((image) => (
-          <figure>
-            <img src={image} alt="" />
+        {assets.map((asset) => (
+          <figure
+            key={asset}
+            onClick={() => onChangeAsset(asset)}
+            className={`slider-thumbnail__fig ${
+              activeAsset === asset ? "active" : ""
+            }`}
+          >
+            {asset.endsWith(".webp") ? (
+              <img src={asset} alt="" />
+            ) : (
+              <>
+                <PlayIcon />
+                <video src={asset} />
+              </>
+            )}
           </figure>
         ))}
       </Carousel>

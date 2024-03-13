@@ -10,7 +10,7 @@ type CombosT = {
 const routes = [
   {
     title: "შენი ნაკრებები",
-    path: PATHS.dashboard_your_combos_page,
+    path: `${PATHS.dashboard_your_combos_page}?dashboard=1`,
   },
   {
     title: "შექმენი ნაკრები",

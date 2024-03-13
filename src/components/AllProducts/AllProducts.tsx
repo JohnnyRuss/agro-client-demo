@@ -1,14 +1,32 @@
-import { generateArray } from "@/utils";
+import { useGetProductsQuery } from "@/hooks/api/products";
 
-import { ProductCard } from "@/components/Layouts";
+import {
+  ProductCard,
+  StandSpinner,
+  ErrorMessage,
+  InfiniteScroll,
+} from "@/components/Layouts";
 import * as Styled from "./allProducts.styled";
 
 const AllProducts: React.FC = () => {
+  const { data, getPaginatedProductsQuery, hasMore, status, total } =
+    useGetProductsQuery(true);
+
   return (
     <Styled.AllProducts>
-      {generateArray(12).map((id) => (
-        <ProductCard key={id} />
-      ))}
+      <InfiniteScroll
+        total={total}
+        hasMore={hasMore}
+        onNext={getPaginatedProductsQuery}
+      >
+        {data.map((product) => (
+          <ProductCard key={product._id} product={product} />
+        ))}
+      </InfiniteScroll>
+
+      {status.loading && <StandSpinner />}
+
+      {status.error && <ErrorMessage message={status.message} align="center" />}
     </Styled.AllProducts>
   );
 };

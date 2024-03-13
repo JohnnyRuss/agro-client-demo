@@ -1,74 +1,83 @@
-import React from "react";
+import { useSizeChange } from "@/hooks/utils";
+import { useGetProductQuery } from "@/hooks/api/products";
 
-import { useCounter } from "@/hooks/utils";
-
-import { Counter, Button } from "@/components/Layouts";
+import {
+  Counter,
+  Button,
+  StandSpinner,
+  ErrorMessage,
+} from "@/components/Layouts";
 import * as Styled from "./productDetails.styled";
 import ProductSlider from "./components/ProductSlider";
 import RelatedProducts from "./components/RelatedProducts";
 
-type ProductDetailsT = {};
+const ProductDetails: React.FC = () => {
+  const { data, status } = useGetProductQuery();
 
-const ProductDetails: React.FC<ProductDetailsT> = () => {
-  const { counter, onChangeCount, onDecreaseCount, onIncreaseCount } =
-    useCounter();
+  const {
+    size,
+    onSizeChange,
+    onQuantityChange,
+    onIncreaseQuantity,
+    onDecreaseQuantity,
+  } = useSizeChange(data.sizes);
 
   return (
     <Styled.ProductDetails>
-      <div className="details-wrapper">
-        <ProductSlider />
+      {status.status === "SUCCESS" && (
+        <div className="details-wrapper">
+          <ProductSlider assets={data.assets} />
 
-        <div className="details">
-          <p className="details-title">პროდუქტის სათაური</p>
+          <div className="details">
+            <p className="details-title">{data.title}</p>
 
-          <div className="details-category">
-            <span>კატეგორია:</span>
-            &nbsp;
-            <span>სარწყავი</span>
-          </div>
-
-          <p className="details-price">150₾</p>
-
-          <p className="details-description">
-            Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ut
-            explicabo eius beatae dolores incidunt tenetur, aliquam fugit
-            reprehenderit, vel sapiente, dolor maiores nesciunt id deleniti
-            omnis. Delectus quibusdam similique quia?
-          </p>
-
-          <div className="details-actions">
-            <div className="details-actions__size">
-              <label>ზომა:</label>
+            <div className="details-category">
+              <span>კატეგორია:</span>
               &nbsp;
-              <select name="size" id="">
-                <option value="">1</option>
-                <option value="">2</option>
-                <option value="">3</option>
-                <option value="">4</option>
-                <option value="">5</option>
-                <option value="">6</option>
-              </select>
-              &nbsp;
-              <span>20</span>
+              <span>{data.category.title}</span>
             </div>
 
-            <div className="details-actions__quantity">
-              <label>რაოდენობა:</label>
-              &nbsp;
-              <Counter
-                value={counter}
-                onChangeCount={onChangeCount}
-                onIncreaseCount={onIncreaseCount}
-                onDecreaseCount={onDecreaseCount}
-              />
-            </div>
+            <p className="details-price">150₾</p>
 
-            <Button className="details-actions__add-btn" show="secondary">
-              დამატება
-            </Button>
+            <p className="details-description">{data.description}</p>
+
+            <div className="details-actions">
+              <div className="details-actions__size">
+                <label>ზომა:</label>
+                &nbsp;
+                <select name="size" onChange={onSizeChange}>
+                  {data.sizes.map((size) => (
+                    <option value={size.size} key={size._id}>
+                      {size.size}
+                    </option>
+                  ))}
+                </select>
+                &nbsp;
+                {size.size && <span>{size.quantity}</span>}
+              </div>
+
+              <div className="details-actions__quantity">
+                <label>რაოდენობა:</label>
+                &nbsp;
+                <Counter
+                  value={size.selectedCount}
+                  onChangeCount={onQuantityChange}
+                  onDecreaseCount={onDecreaseQuantity}
+                  onIncreaseCount={onIncreaseQuantity}
+                />
+              </div>
+
+              <Button className="details-actions__add-btn" show="secondary">
+                დამატება
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
+      )}
+
+      {status.loading && <StandSpinner />}
+
+      {status.error && <ErrorMessage message={status.message} />}
 
       <RelatedProducts />
     </Styled.ProductDetails>

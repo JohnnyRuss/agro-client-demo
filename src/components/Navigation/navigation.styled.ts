@@ -45,7 +45,7 @@ export const Navigation = styled.nav`
 
       li a.active {
         font-weight: 600;
-        color: ${({ theme }) => theme.colors.green};
+        color: ${({ theme }) => theme.colors.primary};
       }
     }
 

@@ -1,6 +1,6 @@
 import { memo } from "react";
 
-import { useGetProductsQuery } from "@/hooks/api/dashboard/products";
+import { useGetProductsQuery } from "@/hooks/api/products";
 
 import {
   Button,
@@ -16,7 +16,7 @@ type ItemToChooseRowT = {};
 
 const ItemToChooseRow: React.FC<ItemToChooseRowT> = memo(() => {
   const { data, hasMore, total, getPaginatedProductsQuery, status } =
-    useGetProductsQuery();
+    useGetProductsQuery(true);
 
   return (
     <Styled.ItemsToChooseRow>

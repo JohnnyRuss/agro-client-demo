@@ -5,6 +5,7 @@ import { produce } from "immer";
 import { AxiosResponse } from "axios";
 
 import { logger } from "@/utils";
+import { COMBOS_PER_PAGE } from "@/config/config";
 import { getStatus, createSelectors } from "./helpers";
 import { axiosPrivateFormDataQuery, axiosPrivateQuery } from "@/services/axios";
 
@@ -13,12 +14,14 @@ import {
   ComboStoreT,
   SelectedProductT,
 } from "@/interface/store/combo.store.types";
-import { ComboShortT } from "@/interface/db/combo.types";
+import { GetAllCombosResponseT } from "@/interface/API/combo.api.types";
 
 const initialState: ComboStateT = {
+  currentPage: 0,
+  hasMore: false,
   combos: [],
-  createStatus: getStatus("IDLE"),
   readStatus: getStatus("IDLE"),
+  createStatus: getStatus("IDLE"),
   deleteStatus: getStatus("IDLE"),
 
   // ========== LOCALES ==========
@@ -141,19 +144,56 @@ const useProductStore = create<ComboStoreT>()(
             }
           },
 
-          async getAll() {
+          async getAll(params) {
             try {
               set(() => ({ readStatus: getStatus("PENDING") }));
 
-              const { data }: AxiosResponse<Array<ComboShortT>> =
-                await axiosPrivateQuery.get("combos?dashboard=1");
+              const { currentPage, hasMore, data } = await getCombosQuery({
+                page: params.page,
+                queryStr: params.query || "",
+                limit: COMBOS_PER_PAGE,
+              });
 
-              set(() => ({ readStatus: getStatus("SUCCESS"), combos: data }));
+              set(() => ({
+                hasMore,
+                currentPage,
+                combos: data,
+                readStatus: getStatus("SUCCESS"),
+              }));
             } catch (error) {
               const message = logger(error);
               set(() => ({ readStatus: getStatus("FAIL", message) }));
               throw error;
             }
+          },
+
+          async getAllPaginated(params) {
+            try {
+              const { currentPage, hasMore, data } = await getCombosQuery({
+                page: params.page,
+                queryStr: params.query || "",
+                limit: params.limit || COMBOS_PER_PAGE,
+              });
+
+              set(() => ({
+                hasMore,
+                currentPage,
+                combos: [...get().combos, ...data],
+              }));
+            } catch (error: any) {
+              const message = logger(error);
+              set(() => ({ readStatus: getStatus("FAIL", message) }));
+              throw error;
+            }
+          },
+
+          cleanUpAll() {
+            set(() => ({
+              hasMore: initialState.hasMore,
+              currentPage: initialState.currentPage,
+              combos: initialState.combos,
+              readStatus: initialState.readStatus,
+            }));
           },
 
           // ========== LOCALES ==========
@@ -374,4 +414,27 @@ function findAddedProductIndex(params: {
   );
 
   return candidateProductIndex;
+}
+
+async function getCombosQuery(params: {
+  queryStr: string;
+  page: number;
+  limit: number;
+}): Promise<GetAllCombosResponseT> {
+  try {
+    const queryStrings = [
+      params.queryStr.replace("?", ""),
+      `page=${params.page}&limit=${params.limit}`,
+    ];
+
+    const queryStr = queryStrings.join(params.queryStr ? "&" : "");
+
+    const { data }: AxiosResponse<GetAllCombosResponseT> =
+      await axiosPrivateQuery.get(`/combos?${queryStr}`);
+
+    return data;
+  } catch (error: any) {
+    const message = logger(error);
+    throw new Error(message);
+  }
 }

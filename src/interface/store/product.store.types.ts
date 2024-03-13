@@ -3,11 +3,12 @@ import { LoadingStatusT } from "@/interface/store/common.types";
 import * as ProductAPI_T from "@/interface/API/products.api.types";
 
 type ProductStateT = {
-  product: ProductT;
-  products: Array<ProductT>;
-  currentPage: number;
   hasMore: boolean;
+  currentPage: number;
+  products: Array<ProductT>;
   readStatus: LoadingStatusT;
+  product: ProductT;
+  readSingleStatus: LoadingStatusT;
   createStatus: LoadingStatusT;
   deleteStatus: LoadingStatusT;
 };

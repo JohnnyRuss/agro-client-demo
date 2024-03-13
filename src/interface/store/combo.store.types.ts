@@ -2,21 +2,24 @@ import {
   CreateComboArgsT,
   DeleteComboArgsT,
   UpdateComboArgsT,
-} from "@/interface/API/combo.api.tes";
+  GetAllCombosArgsT,
+} from "@/interface/API/combo.api.types";
 import { ComboT } from "@/interface/db/combo.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
 import { ProductT, ProductSizeT } from "@/interface/db/product.types";
 
 type ComboStateT = {
-  combos: Array<ComboT>;
   createStatus: LoadingStatusT;
-  deleteStatus: LoadingStatusT;
-  readStatus: LoadingStatusT;
-  addedProducts: Array<SelectedProductT>;
-  existingAssets: Array<string>;
-  addedExistingAssets: Array<string>;
   newAssets: Array<File>;
   assets_to_delete: Array<string>;
+  addedExistingAssets: Array<string>;
+  existingAssets: Array<string>;
+  addedProducts: Array<SelectedProductT>;
+  deleteStatus: LoadingStatusT;
+  hasMore: boolean;
+  currentPage: number;
+  combos: Array<ComboT>;
+  readStatus: LoadingStatusT;
 };
 
 type ComboActionsT = {
@@ -24,7 +27,11 @@ type ComboActionsT = {
     data: Omit<CreateComboArgsT, "products" | "assets" | "new_assets">
   ) => Promise<void>;
 
-  getAll: () => Promise<void>;
+  getAll: (params: GetAllCombosArgsT) => Promise<void>;
+
+  getAllPaginated: (params: GetAllCombosArgsT) => Promise<void>;
+
+  cleanUpAll: () => void;
 
   delete: (params: DeleteComboArgsT) => Promise<void>;
 

@@ -44,6 +44,7 @@ export const Hero = styled.div`
 
       &.primary {
         color: ${({ theme }) => theme.colors.primary};
+        font-weight: 700;
       }
     }
 

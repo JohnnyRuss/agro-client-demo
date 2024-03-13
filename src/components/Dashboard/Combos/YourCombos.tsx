@@ -3,11 +3,17 @@ import {
   useDeleteComboQuery,
 } from "@/hooks/api/dashboard/combos";
 
+import {
+  ComboCard,
+  StandSpinner,
+  ErrorMessage,
+  InfiniteScroll,
+} from "@/components/Layouts";
 import * as Styled from "./styles/yourCombos.styled";
-import { StandSpinner, ErrorMessage, ComboCard } from "@/components/Layouts";
 
 const YourCombos: React.FC = () => {
-  const { data, status } = useGetCombosQuery();
+  const { data, status, hasMore, getPaginatedCombosQuery, total } =
+    useGetCombosQuery(true);
   const { deleteComboQuery, status: deleteStatus } = useDeleteComboQuery();
 
   const loading = status.loading || deleteStatus.loading;
@@ -17,7 +23,11 @@ const YourCombos: React.FC = () => {
   return (
     <Styled.YourCombos>
       {status.status === "SUCCESS" && (
-        <div className="combos-list">
+        <InfiniteScroll
+          hasMore={hasMore}
+          onNext={getPaginatedCombosQuery}
+          total={total}
+        >
           {data.map((combo) => (
             <ComboCard
               redirectPath=""
@@ -26,7 +36,7 @@ const YourCombos: React.FC = () => {
               onDelete={deleteComboQuery}
             />
           ))}
-        </div>
+        </InfiniteScroll>
       )}
 
       {hasError && <ErrorMessage message={errorMessage} />}

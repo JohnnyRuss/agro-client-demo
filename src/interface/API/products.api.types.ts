@@ -4,6 +4,7 @@ import { ProductSchemaT } from "@/utils/validations/dashboard/ProductSchema";
 type GetAllProductsArgsT = {
   page: number;
   query?: string;
+  limit?: number;
 };
 
 type GetAllProductsResponseT = {

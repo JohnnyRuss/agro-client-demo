@@ -1,4 +1,4 @@
-import { useGetProductsQuery } from "@/hooks/api/dashboard/products";
+import { useGetProductsQuery } from "@/hooks/api/products";
 import { useDeleteProductQuery } from "@/hooks/api/dashboard/products";
 
 import {
@@ -11,7 +11,7 @@ import * as Styled from "./styles/yourProducts.styled";
 
 const YourProducts: React.FC = () => {
   const { data, status, hasMore, total, getPaginatedProductsQuery } =
-    useGetProductsQuery();
+    useGetProductsQuery(true);
 
   const { onDeleteQuery, status: deleteStatus } = useDeleteProductQuery();
 

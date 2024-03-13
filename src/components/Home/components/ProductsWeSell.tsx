@@ -1,24 +1,34 @@
-import { generateArray } from "@/utils";
+import { useEffect } from "react";
+
+import { useGetProductsQuery } from "@/hooks/api/products";
 
 import SectionTitle from "./SectionTitle";
 // import ProductsFilter from "./ProductsFilter";
 import { ProductCard } from "@/components/Layouts";
 import * as Styled from "./styles/productsWeSell.styled";
 
-type ProductsWeSellT = {};
+const ProductsWeSell: React.FC = () => {
+  const { getPaginatedProductsQuery, data, cleanUpAll } = useGetProductsQuery();
 
-const ProductsWeSell: React.FC<ProductsWeSellT> = () => {
+  useEffect(() => {
+    getPaginatedProductsQuery({ page: 1, limit: 6 });
+
+    return () => {
+      cleanUpAll();
+    };
+  }, []);
+
   return (
     <Styled.ProductsWeSell>
       <div className="products-head">
-        <SectionTitle subTitle="PRODUCTS" title="Products" />
+        <SectionTitle subTitle="პროდუქტები" title="პროდუქტები" />
 
         {/* <ProductsFilter /> */}
       </div>
 
       <ul className="products-list">
-        {generateArray(6).map((id) => (
-          <ProductCard key={id} />
+        {data.map((product) => (
+          <ProductCard key={product._id} product={product} />
         ))}
       </ul>
     </Styled.ProductsWeSell>

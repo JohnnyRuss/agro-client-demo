@@ -17,8 +17,8 @@ export const ContentHead = styled.div`
     gap: 2rem;
 
     li a.active {
-      font-weight: 600;
-      color: ${({ theme }) => theme.colors.green};
+      font-weight: 700;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 

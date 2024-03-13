@@ -1,16 +1,17 @@
-import { useCounter } from "@/hooks/utils";
+import { useSizeChange } from "@/hooks/utils";
 import { LineClamp, Counter } from "@/components/Layouts";
+import { CloseIcon } from "@/components/Layouts/Icons";
 
-type ShoppingCartItemT = {};
-
-const ShoppingCartItem: React.FC<ShoppingCartItemT> = () => {
-  const { counter, onChangeCount, onDecreaseCount, onIncreaseCount } =
-    useCounter();
+const ShoppingCartItem: React.FC = () => {
+  const { size, onDecreaseQuantity, onIncreaseQuantity, onQuantityChange } =
+    useSizeChange([]);
 
   return (
     <li>
       <div className="remove-btn">
-        <button>x</button>
+        <button>
+          <CloseIcon />
+        </button>
       </div>
 
       <figure className="product-fig">
@@ -37,10 +38,10 @@ const ShoppingCartItem: React.FC<ShoppingCartItemT> = () => {
 
       <div className="product-counter">
         <Counter
-          value={counter}
-          onChangeCount={onChangeCount}
-          onIncreaseCount={onIncreaseCount}
-          onDecreaseCount={onDecreaseCount}
+          value={size.selectedCount}
+          onChangeCount={onQuantityChange}
+          onDecreaseCount={onDecreaseQuantity}
+          onIncreaseCount={onIncreaseQuantity}
         />
       </div>
     </li>
