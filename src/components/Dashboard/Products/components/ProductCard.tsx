@@ -1,6 +1,6 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { PATHS } from "@/config/paths";
+import { PATHS, DYNAMIC_ROUTES } from "@/config/paths";
 import { useAppUIContext } from "@/Providers/useProviders";
 
 import * as Styled from "./productCard.styled";
@@ -49,7 +49,9 @@ const ProductCard: React.FC<ProductCardT> = ({ product, onDelete }) => {
       </figure>
 
       <div className="card-details">
-        <LineClamp text={product.title} clamp={2} component="span" />
+        <Link to={DYNAMIC_ROUTES.dashboard_product_details_page(product._id)}>
+          <LineClamp text={product.title} clamp={2} component="span" />
+        </Link>
 
         <LineClamp text={product.description} clamp={4} component="div" />
 
@@ -60,9 +62,9 @@ const ProductCard: React.FC<ProductCardT> = ({ product, onDelete }) => {
             <span>${product.price.toFixed(2).toLocaleString()}</span>
           </div>
 
-          <div className="flex-box__sub">
+          {/* <div className="flex-box__sub">
             <span className="sale">SALE</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex-box">

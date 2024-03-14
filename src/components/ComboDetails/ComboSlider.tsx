@@ -27,7 +27,7 @@ const ComboSlider: React.FC<ComboSliderT> = ({
 
     setActiveIndex(startIndex);
   }, [startIndex, images]);
-
+  console.log({ activeIndex });
   return !isNaN(activeIndex) && activeIndex >= 0 ? (
     <Styled.ComboSlider>
       <button className="slider__arrow-btn left" onClick={onPreviousSlide}>

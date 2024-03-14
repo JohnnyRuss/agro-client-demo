@@ -16,6 +16,10 @@ type DeleteComboArgsT = {
   comboId: string;
 };
 
+type GetComboArgsT = {
+  comboId: string;
+};
+
 type GetAllCombosArgsT = {
   page: number;
   query?: string;
@@ -34,6 +38,7 @@ type UpdateComboArgsT = {
 };
 
 export type {
+  GetComboArgsT,
   CreateComboArgsT,
   DeleteComboArgsT,
   UpdateComboArgsT,

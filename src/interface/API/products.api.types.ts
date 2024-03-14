@@ -13,6 +13,11 @@ type GetAllProductsResponseT = {
   data: Array<ProductT>;
 };
 
+type GetAllRelatedArgsT = {
+  productId: string;
+  categoryId: string;
+};
+
 type CreateProductArgsT = ProductSchemaT;
 
 type UpdateProductArgsT = {
@@ -31,4 +36,5 @@ export type {
   UpdateProductArgsT,
   DeleteProductArgsT,
   GetProductArgsT,
+  GetAllRelatedArgsT,
 };

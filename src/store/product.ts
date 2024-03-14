@@ -36,6 +36,9 @@ const initialState: ProductStateT = {
   hasMore: false,
   readStatus: getStatus("IDLE"),
 
+  relatedProducts: [],
+  relatedStatus: getStatus("IDLE"),
+
   createStatus: getStatus("IDLE"),
   deleteStatus: getStatus("IDLE"),
 };
@@ -188,6 +191,33 @@ const useProductStore = create<ProductStoreT>()(
           currentPage: initialState.currentPage,
           products: initialState.products,
           readStatus: initialState.readStatus,
+        }));
+      },
+
+      async getAllRelated(params) {
+        try {
+          set(() => ({ relatedStatus: getStatus("PENDING") }));
+
+          const { data }: AxiosResponse<Array<ProductT>> =
+            await axiosPrivateQuery.get(
+              `/products/${params.productId}/${params.categoryId}`
+            );
+
+          set(() => ({
+            relatedProducts: data,
+            relatedStatus: getStatus("SUCCESS"),
+          }));
+        } catch (error: any) {
+          const message = logger(error);
+          set(() => ({ relatedStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      cleanUpAllRelated() {
+        set(() => ({
+          relatedStatus: initialState.relatedStatus,
+          relatedProducts: initialState.relatedProducts,
         }));
       },
     })),

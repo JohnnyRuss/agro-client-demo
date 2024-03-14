@@ -1,5 +1,5 @@
 import { DYNAMIC_ROUTES } from "@/config/paths";
-import { useGetCombosQuery } from "@/hooks/api/dashboard/combos";
+import { useGetCombosQuery } from "@/hooks/api/combos";
 
 import {
   ComboCard,

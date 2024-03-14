@@ -14,6 +14,7 @@ import {
   ComboStoreT,
   SelectedProductT,
 } from "@/interface/store/combo.store.types";
+import { ComboT } from "@/interface/db/combo.types";
 import { GetAllCombosResponseT } from "@/interface/API/combo.api.types";
 
 const initialState: ComboStateT = {
@@ -21,6 +22,18 @@ const initialState: ComboStateT = {
   hasMore: false,
   combos: [],
   readStatus: getStatus("IDLE"),
+
+  combo: {
+    _id: "",
+    assets: [],
+    createdAt: "",
+    description: "",
+    price: NaN,
+    products: [],
+    title: "",
+  },
+  readSingleStatus: getStatus("IDLE"),
+
   createStatus: getStatus("IDLE"),
   deleteStatus: getStatus("IDLE"),
 
@@ -193,6 +206,31 @@ const useProductStore = create<ComboStoreT>()(
               currentPage: initialState.currentPage,
               combos: initialState.combos,
               readStatus: initialState.readStatus,
+            }));
+          },
+
+          async get(params) {
+            try {
+              set(() => ({ readSingleStatus: getStatus("PENDING") }));
+
+              const { data }: AxiosResponse<ComboT> =
+                await axiosPrivateQuery.get(`/combos/${params.comboId}`);
+
+              set(() => ({
+                combo: data,
+                readSingleStatus: getStatus("SUCCESS"),
+              }));
+            } catch (error) {
+              const message = logger(error);
+              set(() => ({ readSingleStatus: getStatus("FAIL", message) }));
+              throw error;
+            }
+          },
+
+          cleanUp() {
+            set(() => ({
+              combo: initialState.combo,
+              readSingleStatus: initialState.readSingleStatus,
             }));
           },
 

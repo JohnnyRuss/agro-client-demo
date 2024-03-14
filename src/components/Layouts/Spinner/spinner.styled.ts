@@ -97,10 +97,11 @@ export const Spinner = styled.div`
 `;
 
 export const RelativeSpinner = styled.div`
-  position: absolute;
-  z-index: 9999;
-  inset: 0;
-  width: 100%;
+  /* position: absolute; */
+  /* z-index: 9999; */
+  /* inset: 0; */
+  width: 100vw;
+  height: 90vh;
   padding: 3rem;
   display: flex;
   justify-content: center;

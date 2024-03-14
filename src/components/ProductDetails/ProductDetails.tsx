@@ -2,16 +2,20 @@ import { useSizeChange } from "@/hooks/utils";
 import { useGetProductQuery } from "@/hooks/api/products";
 
 import {
-  Counter,
   Button,
-  StandSpinner,
+  Counter,
   ErrorMessage,
+  RelativeSpinner,
 } from "@/components/Layouts";
 import * as Styled from "./productDetails.styled";
 import ProductSlider from "./components/ProductSlider";
 import RelatedProducts from "./components/RelatedProducts";
 
-const ProductDetails: React.FC = () => {
+type ProductDetailsT = {
+  isOnDashboard?: boolean;
+};
+
+const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
   const { data, status } = useGetProductQuery();
 
   const {
@@ -56,30 +60,38 @@ const ProductDetails: React.FC = () => {
                 {size.size && <span>{size.quantity}</span>}
               </div>
 
-              <div className="details-actions__quantity">
-                <label>რაოდენობა:</label>
-                &nbsp;
-                <Counter
-                  value={size.selectedCount}
-                  onChangeCount={onQuantityChange}
-                  onDecreaseCount={onDecreaseQuantity}
-                  onIncreaseCount={onIncreaseQuantity}
-                />
-              </div>
+              {isOnDashboard ? (
+                <></>
+              ) : (
+                <>
+                  <div className="details-actions__quantity">
+                    <label>რაოდენობა:</label>
+                    &nbsp;
+                    <Counter
+                      value={size.selectedCount}
+                      onChangeCount={onQuantityChange}
+                      onDecreaseCount={onDecreaseQuantity}
+                      onIncreaseCount={onIncreaseQuantity}
+                    />
+                  </div>
 
-              <Button className="details-actions__add-btn" show="secondary">
-                დამატება
-              </Button>
+                  <Button className="details-actions__add-btn" show="secondary">
+                    დამატება
+                  </Button>
+                </>
+              )}
             </div>
           </div>
         </div>
       )}
 
-      {status.loading && <StandSpinner />}
+      {status.loading && <RelativeSpinner />}
 
       {status.error && <ErrorMessage message={status.message} />}
 
-      <RelatedProducts />
+      {!isOnDashboard && (
+        <RelatedProducts productId={data._id} categoryId={data.category._id} />
+      )}
     </Styled.ProductDetails>
   );
 };

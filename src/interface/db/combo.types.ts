@@ -4,14 +4,14 @@ type ComboT = {
   _id: string;
   title: string;
   description: string;
-  price: string;
+  price: number;
   assets: Array<string>;
   products: Array<{
     product: {
       _id: string;
       title: string;
       description: string;
-      price: string;
+      price: number;
       assets: Array<string>;
       sizes: Array<ProductSizeT>;
     };

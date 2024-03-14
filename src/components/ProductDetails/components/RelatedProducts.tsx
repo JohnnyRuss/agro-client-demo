@@ -1,32 +1,34 @@
-import { useEffect } from "react";
-
-import { useGetProductsQuery } from "@/hooks/api/products";
+import { useGetRelatedProductsQuery } from "@/hooks/api/products";
 
 import * as Styled from "./relatedProducts.styled";
-import { ProductCard } from "@/components/Layouts";
+import { ProductCard, Spinner, ErrorMessage } from "@/components/Layouts";
 
-type RelatedProductsT = {};
+type RelatedProductsT = {
+  productId: string;
+  categoryId: string;
+};
 
-const RelatedProducts: React.FC<RelatedProductsT> = () => {
-  const { getPaginatedProductsQuery, data, cleanUpAll } = useGetProductsQuery();
-
-  useEffect(() => {
-    getPaginatedProductsQuery({ page: 1, limit: 6 });
-
-    return () => {
-      cleanUpAll();
-    };
-  }, []);
+const RelatedProducts: React.FC<RelatedProductsT> = ({
+  productId,
+  categoryId,
+}) => {
+  const { data, status } = useGetRelatedProductsQuery(productId, categoryId);
 
   return (
     <Styled.RelatedProducts>
       <p>მსგავსი პროდუქცია</p>
 
-      <div className="related-list">
-        {data.map((product) => (
-          <ProductCard key={product._id} product={product} />
-        ))}
-      </div>
+      {status.status === "SUCCESS" && (
+        <div className="related-list">
+          {data.map((product) => (
+            <ProductCard key={product._id} product={product} />
+          ))}
+        </div>
+      )}
+
+      {status.loading && <Spinner />}
+
+      {status.error && <ErrorMessage message={status.message} />}
     </Styled.RelatedProducts>
   );
 };

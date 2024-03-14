@@ -1,4 +1,5 @@
 import {
+  GetComboArgsT,
   CreateComboArgsT,
   DeleteComboArgsT,
   UpdateComboArgsT,
@@ -20,6 +21,8 @@ type ComboStateT = {
   currentPage: number;
   combos: Array<ComboT>;
   readStatus: LoadingStatusT;
+  combo: ComboT;
+  readSingleStatus: LoadingStatusT;
 };
 
 type ComboActionsT = {
@@ -28,6 +31,10 @@ type ComboActionsT = {
   ) => Promise<void>;
 
   getAll: (params: GetAllCombosArgsT) => Promise<void>;
+
+  get: (params: GetComboArgsT) => Promise<void>;
+
+  cleanUp: () => void;
 
   getAllPaginated: (params: GetAllCombosArgsT) => Promise<void>;
 

@@ -83,6 +83,13 @@ export const ComboDetails = styled.div`
     }
   }
 
+  .dashboard-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 3rem;
+  }
+
   .contained-products {
     margin-top: 5rem;
     display: grid;

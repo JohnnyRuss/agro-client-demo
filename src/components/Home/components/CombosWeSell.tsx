@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { DYNAMIC_ROUTES } from "@/config/paths";
-import { useGetCombosQuery } from "@/hooks/api/dashboard/combos";
+import { useGetCombosQuery } from "@/hooks/api/combos";
 
 import SectionTitle from "./SectionTitle";
 import * as Styled from "./styles/combosWeSell.styled";

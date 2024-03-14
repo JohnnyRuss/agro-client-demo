@@ -7,6 +7,8 @@ type ProductStateT = {
   currentPage: number;
   products: Array<ProductT>;
   readStatus: LoadingStatusT;
+  relatedProducts: Array<ProductT>;
+  relatedStatus: LoadingStatusT;
   product: ProductT;
   readSingleStatus: LoadingStatusT;
   createStatus: LoadingStatusT;
@@ -29,6 +31,10 @@ type ProductActionsT = {
   getAllPaginated: (params: ProductAPI_T.GetAllProductsArgsT) => Promise<void>;
 
   cleanUpAll: () => void;
+
+  getAllRelated: (params: ProductAPI_T.GetAllRelatedArgsT) => Promise<void>;
+
+  cleanUpAllRelated: () => void;
 };
 
 type ProductStoreT = ProductStateT & ProductActionsT;

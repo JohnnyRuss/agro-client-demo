@@ -1,7 +1,6 @@
-import {
-  useGetCombosQuery,
-  useDeleteComboQuery,
-} from "@/hooks/api/dashboard/combos";
+import { DYNAMIC_ROUTES } from "@/config/paths";
+import { useGetCombosQuery } from "@/hooks/api/combos";
+import { useDeleteComboQuery } from "@/hooks/api/dashboard/combos";
 
 import {
   ComboCard,
@@ -30,10 +29,12 @@ const YourCombos: React.FC = () => {
         >
           {data.map((combo) => (
             <ComboCard
-              redirectPath=""
               combo={combo}
               key={combo._id}
               onDelete={deleteComboQuery}
+              redirectPath={DYNAMIC_ROUTES.dashboard_combo_details_page(
+                combo._id
+              )}
             />
           ))}
         </InfiniteScroll>
