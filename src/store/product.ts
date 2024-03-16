@@ -13,7 +13,10 @@ import {
   ProductStoreT,
 } from "@/interface/store/product.store.types";
 import { ProductT } from "@/interface/db/product.types";
-import { GetAllProductsResponseT } from "@/interface/API/products.api.types";
+import {
+  GetAllProductsResponseT,
+  ProductsFilterResponseT,
+} from "@/interface/API/products.api.types";
 
 const initialState: ProductStateT = {
   product: {
@@ -29,12 +32,23 @@ const initialState: ProductStateT = {
     price: NaN,
     sizes: [],
   },
+
   readSingleStatus: getStatus("IDLE"),
 
   products: [],
   currentPage: 0,
   hasMore: false,
   readStatus: getStatus("IDLE"),
+
+  productsFilter: {
+    minPrice: 0,
+    maxPrice: 1,
+    sizes: [],
+    categories: [],
+  },
+
+  productsFilterStatus: getStatus("IDLE"),
+  productsSizeFilterStatus: getStatus("IDLE"),
 
   relatedProducts: [],
   relatedStatus: getStatus("IDLE"),
@@ -191,6 +205,62 @@ const useProductStore = create<ProductStoreT>()(
           currentPage: initialState.currentPage,
           products: initialState.products,
           readStatus: initialState.readStatus,
+        }));
+      },
+
+      async getProductsFilter() {
+        try {
+          set(() => ({ productsFilterStatus: getStatus("PENDING") }));
+
+          const {
+            data: { minPrice, maxPrice, categories },
+          }: AxiosResponse<ProductsFilterResponseT> =
+            await axiosPrivateQuery.get("/products/filter");
+
+          const currentFilter = get().productsFilter;
+
+          set(() => ({
+            productsFilterStatus: getStatus("SUCCESS"),
+            productsFilter: {
+              ...currentFilter,
+              minPrice,
+              maxPrice,
+              categories,
+            },
+          }));
+        } catch (error) {
+          const message = logger(error);
+          set(() => ({ productsFilterStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      async getProductsSizeFilter(params) {
+        try {
+          set(() => ({ productsSizeFilterStatus: getStatus("PENDING") }));
+
+          const { data }: AxiosResponse<Array<string>> =
+            await axiosPrivateQuery.get(
+              `/products/filter/${params.categoryId}`
+            );
+
+          const currentFilter = get().productsFilter;
+
+          set(() => ({
+            productsSizeFilterStatus: getStatus("SUCCESS"),
+            productsFilter: { ...currentFilter, sizes: data },
+          }));
+        } catch (error) {
+          const message = logger(error);
+          set(() => ({ productsSizeFilterStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      cleanUpProductsFilter() {
+        set(() => ({
+          productsFilter: initialState.productsFilter,
+          productsSizeFilterStatus: initialState.productsSizeFilterStatus,
         }));
       },
 

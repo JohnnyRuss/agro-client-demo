@@ -18,7 +18,7 @@ type CreateComboContextT = {
   onTitleChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   description: string;
   onDescriptionChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  price: string;
+  price: number;
   onPriceChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   existingAssets: Array<string>;
   addedExistingAssets: Array<string>;
@@ -41,7 +41,7 @@ export const CreateComboContext = createContext<CreateComboContextT>({
   onTitleChange: () => {},
   description: "",
   onDescriptionChange: () => {},
-  price: "",
+  price: NaN,
   onPriceChange: () => {},
   existingAssets: [],
   addedExistingAssets: [],
@@ -81,7 +81,7 @@ const CreateComboProvider: React.FC<CreateComboProviderT> = ({ children }) => {
   // ========== Locale State ==========
 
   const [title, setTitle] = useState("");
-  const [price, setPrice] = useState("");
+  const [price, setPrice] = useState<number>(0);
   const [description, setDescription] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -123,7 +123,7 @@ const CreateComboProvider: React.FC<CreateComboProviderT> = ({ children }) => {
   const onPriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (errorMessage) setErrorMessage("");
 
-    setPrice(() => e.target.value);
+    setPrice(() => +e.target.value);
   };
 
   // ========== Control Update ==========
@@ -135,7 +135,7 @@ const CreateComboProvider: React.FC<CreateComboProviderT> = ({ children }) => {
 
   const cleanUpForm = () => {
     setTitle("");
-    setPrice("");
+    setPrice(0);
     setDescription("");
     cleanUpComboForm();
   };
@@ -181,7 +181,7 @@ const CreateComboProvider: React.FC<CreateComboProviderT> = ({ children }) => {
 
     setTitle("");
     setDescription("");
-    setPrice("");
+    setPrice(0);
 
     navigate(PATHS.dashboard_create_combo_page);
   };

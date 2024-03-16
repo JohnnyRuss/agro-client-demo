@@ -3,7 +3,7 @@ import { ComboShortT } from "@/interface/db/combo.types";
 type CreateComboArgsT = {
   title: string;
   description: string;
-  price: string;
+  price: number;
   products: Array<{
     product: string;
     size: { size: string; quantity: number };

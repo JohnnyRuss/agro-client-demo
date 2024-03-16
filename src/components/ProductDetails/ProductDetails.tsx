@@ -1,12 +1,21 @@
+import { useNavigate } from "react-router-dom";
+
+import { PATHS } from "@/config/paths";
 import { useSizeChange } from "@/hooks/utils";
+import { useAppUIContext } from "@/Providers/useProviders";
 import { useGetProductQuery } from "@/hooks/api/products";
+import { useDeleteProductQuery } from "@/hooks/api/dashboard/products";
 
 import {
   Button,
   Counter,
   ErrorMessage,
+  StandSpinner,
   RelativeSpinner,
 } from "@/components/Layouts";
+
+import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
+
 import * as Styled from "./productDetails.styled";
 import ProductSlider from "./components/ProductSlider";
 import RelatedProducts from "./components/RelatedProducts";
@@ -16,7 +25,12 @@ type ProductDetailsT = {
 };
 
 const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
+  const navigate = useNavigate();
+
   const { data, status } = useGetProductQuery();
+  const { onDeleteQuery, status: deleteStatus } = useDeleteProductQuery();
+
+  const { activateDialog } = useAppUIContext();
 
   const {
     size,
@@ -25,6 +39,28 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
     onIncreaseQuantity,
     onDecreaseQuantity,
   } = useSizeChange(data.sizes);
+
+  const onEdit = () =>
+    navigate(`${PATHS.dashboard_add_product_page}?product=${data._id}`, {
+      state: { product: data },
+    });
+
+  const onDeleteCombo = async () => {
+    await onDeleteQuery(data._id);
+    navigate(PATHS.dashboard_your_products_page);
+  };
+
+  const onStartDelete = () =>
+    activateDialog({
+      type: "danger",
+      target: "პროდუქტის",
+      title: "პროდუქტის წაშლა",
+      onConfirm: () => onDeleteCombo(),
+      message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
+    });
+
+  const hasError = status.error || deleteStatus.error;
+  const errorMessage = status.message || deleteStatus.message;
 
   return (
     <Styled.ProductDetails>
@@ -61,7 +97,15 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
               </div>
 
               {isOnDashboard ? (
-                <></>
+                <div className="dashboard-actions">
+                  <Button onClick={onEdit}>
+                    <EditIcon />
+                  </Button>
+
+                  <Button show="danger" onClick={onStartDelete}>
+                    <DeleteIcon />
+                  </Button>
+                </div>
               ) : (
                 <>
                   <div className="details-actions__quantity">
@@ -86,8 +130,9 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
       )}
 
       {status.loading && <RelativeSpinner />}
+      {deleteStatus.loading && <StandSpinner />}
 
-      {status.error && <ErrorMessage message={status.message} />}
+      {hasError && <ErrorMessage message={errorMessage} />}
 
       {!isOnDashboard && (
         <RelatedProducts productId={data._id} categoryId={data.category._id} />

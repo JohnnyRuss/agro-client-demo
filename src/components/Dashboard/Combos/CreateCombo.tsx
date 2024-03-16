@@ -1,18 +1,28 @@
 import { useSearchParams } from "@/hooks/utils";
+import { useCreateComboContext } from "@/Providers/useProviders";
 
-import { Modal } from "@/components/Layouts";
-import { PublishIcon } from "@/components/Layouts/Icons";
-import * as Styled from "./styles/createCombo.styled";
 import * as UI from "./components";
+import { Modal } from "@/components/Layouts";
+import * as Styled from "./styles/createCombo.styled";
+import { PublishIcon } from "@/components/Layouts/Icons";
+import { useEffect } from "react";
 
 const CreateCombo: React.FC = () => {
   const { getParam, setParam, removeParam } = useSearchParams();
+
+  const { cleanUpForm } = useCreateComboContext();
 
   const isSelectingMedia = getParam("media") === "1";
   const isPublishing = getParam("publish") === "1";
 
   const onOpenComboModal = () => setParam("publish", "1");
   const onCloseComboModal = () => removeParam("publish");
+
+  useEffect(() => {
+    return () => {
+      cleanUpForm();
+    };
+  }, []);
 
   return (
     <>

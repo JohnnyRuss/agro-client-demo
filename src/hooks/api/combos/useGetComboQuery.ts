@@ -8,12 +8,17 @@ export default function useGetComboQuery() {
 
   const get = comboStore.use.get();
   const data = comboStore.use.combo();
+  const cleanUp = comboStore.use.cleanUp();
   const status = comboStore.use.readSingleStatus();
 
   useEffect(() => {
     if (!comboId) return;
 
     get({ comboId });
+
+    return () => {
+      cleanUp();
+    };
   }, [comboId]);
 
   return { data, status };

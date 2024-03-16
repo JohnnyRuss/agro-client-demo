@@ -13,6 +13,7 @@ import * as Styled from "./styles/yourCombos.styled";
 const YourCombos: React.FC = () => {
   const { data, status, hasMore, getPaginatedCombosQuery, total } =
     useGetCombosQuery(true);
+
   const { deleteComboQuery, status: deleteStatus } = useDeleteComboQuery();
 
   const loading = status.loading || deleteStatus.loading;

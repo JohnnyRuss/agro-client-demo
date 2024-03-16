@@ -17,6 +17,7 @@ type SelectFieldT = {
   options: Array<OptionT>;
   onSelect: (value: OptionT) => void;
   label?: string;
+  onCleanUpField?: () => void;
 };
 
 const SelectField: React.FC<SelectFieldT> = ({
@@ -27,6 +28,7 @@ const SelectField: React.FC<SelectFieldT> = ({
   placeholder,
   loading = false,
   isFilterable = true,
+  onCleanUpField,
 }) => {
   const [openDropdown, setOpenDropdown] = useState(false);
   const [enteredValue, setEnteredValue] = useState(value.value || "");
@@ -44,7 +46,10 @@ const SelectField: React.FC<SelectFieldT> = ({
     setOpenDropdown(false);
   };
 
-  const onClean = () => setEnteredValue("");
+  const onClean = () => {
+    setEnteredValue("");
+    onCleanUpField && onCleanUpField();
+  };
 
   useEffect(() => {
     if (!value.value && enteredValue) setEnteredValue("");

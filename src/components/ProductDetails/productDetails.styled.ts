@@ -48,6 +48,13 @@ export const ProductDetails = styled.div`
       font-size: ${({ theme }) => theme.fontSize.sm};
     }
 
+    .dashboard-actions {
+      display: flex;
+      align-items: center;
+      gap: 3rem;
+      margin-left: auto;
+    }
+
     &-actions {
       display: flex;
       align-items: center;

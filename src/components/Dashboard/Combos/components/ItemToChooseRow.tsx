@@ -12,9 +12,7 @@ import ItemToChooseCard from "./ItemToChooseCard";
 import { SearchIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/itemsToChooseRow.styled";
 
-type ItemToChooseRowT = {};
-
-const ItemToChooseRow: React.FC<ItemToChooseRowT> = memo(() => {
+const ItemToChooseRow: React.FC = memo(() => {
   const { data, hasMore, total, getPaginatedProductsQuery, status } =
     useGetProductsQuery(true);
 

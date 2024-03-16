@@ -12,10 +12,16 @@ import {
   StandSpinner,
   ErrorMessage,
 } from "@/components/Layouts";
+
+import {
+  OpenInNewIcon,
+  ShoppingCartIcon,
+  EditIcon,
+  DeleteIcon,
+} from "@/components/Layouts/Icons";
+
 import ComboSlider from "./ComboSlider";
 import * as Styled from "./comboDetails.styled";
-import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
-import { OpenInNewIcon, ShoppingCartIcon } from "@/components/Layouts/Icons";
 
 type ComboDetailsT = {
   isOnDashboard?: boolean;
@@ -27,13 +33,19 @@ const ComboDetails: React.FC<ComboDetailsT> = ({ isOnDashboard = false }) => {
   const { data, status } = useGetComboQuery();
   const { deleteComboQuery, status: deleteStatus } = useDeleteComboQuery();
 
-  const [startIndex, setStartIndex] = useState<number | undefined>(undefined);
+  const [sliderStartIndex, setSliderStartIndex] = useState<number | undefined>(
+    undefined
+  );
+
+  const onOpenSlider = (index: number) => setSliderStartIndex(index);
+
+  const onCloseSlider = () => setSliderStartIndex(NaN);
 
   const { activateDialog } = useAppUIContext();
 
   const onEdit = () =>
     navigate(`${PATHS.dashboard_create_combo_page}?combo=${data._id}`, {
-      state: { data },
+      state: { combo: data },
     });
 
   const onDeleteCombo = async () => {
@@ -60,14 +72,14 @@ const ComboDetails: React.FC<ComboDetailsT> = ({ isOnDashboard = false }) => {
         <>
           <ComboSlider
             images={data.assets}
-            startIndex={startIndex || NaN}
-            onClose={() => setStartIndex(NaN)}
+            onClose={onCloseSlider}
+            startIndex={sliderStartIndex ?? NaN}
           />
 
           <Styled.ComboDetails>
             <div className="gallery-box">
               {data.assets.map((image, index) => (
-                <figure key={image} onClick={() => setStartIndex(index)}>
+                <figure key={image} onClick={() => onOpenSlider(index)}>
                   <img src={image} alt={image} title={image} loading="eager" />
                 </figure>
               ))}

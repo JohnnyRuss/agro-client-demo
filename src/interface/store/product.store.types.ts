@@ -1,6 +1,7 @@
 import { ProductT } from "@/interface/db/product.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
 import * as ProductAPI_T from "@/interface/API/products.api.types";
+import { CategoryT } from "@/interface/db/category.types";
 
 type ProductStateT = {
   hasMore: boolean;
@@ -13,6 +14,14 @@ type ProductStateT = {
   readSingleStatus: LoadingStatusT;
   createStatus: LoadingStatusT;
   deleteStatus: LoadingStatusT;
+  productsFilter: {
+    minPrice: number;
+    maxPrice: number;
+    sizes: Array<string>;
+    categories: Array<CategoryT>;
+  };
+  productsFilterStatus: LoadingStatusT;
+  productsSizeFilterStatus: LoadingStatusT;
 };
 
 type ProductActionsT = {
@@ -31,6 +40,14 @@ type ProductActionsT = {
   getAllPaginated: (params: ProductAPI_T.GetAllProductsArgsT) => Promise<void>;
 
   cleanUpAll: () => void;
+
+  getProductsFilter: () => Promise<void>;
+
+  getProductsSizeFilter: (
+    params: ProductAPI_T.GetProductsSizeFilterArgsT
+  ) => Promise<void>;
+
+  cleanUpProductsFilter: () => void;
 
   getAllRelated: (params: ProductAPI_T.GetAllRelatedArgsT) => Promise<void>;
 

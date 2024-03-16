@@ -29,7 +29,22 @@ export const ContentHead = styled.div`
 
     .sort-btn {
       display: flex;
-      font-size: ${({ theme }) => theme.fontSize.xxl};
+      align-items: center;
+
+      &.active {
+        color: ${({ theme }) => theme.colors.blue};
+      }
+
+      .sort-btn__content {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        font-size: ${({ theme }) => theme.fontSize.base};
+      }
+
+      .sort-btn__content svg {
+        font-size: ${({ theme }) => theme.fontSize.xxl};
+      }
     }
 
     .search-box {
