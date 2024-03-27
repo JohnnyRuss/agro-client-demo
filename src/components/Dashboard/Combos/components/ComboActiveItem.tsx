@@ -18,20 +18,23 @@ const ComboActiveItem: React.FC<ComboActiveItemT> = memo(() => {
     undefined
   );
 
-  const productId = getParam("product");
-  const sizeId = getParam("product-size");
+  const reviewedProductId = getParam("product");
+  const reviewedProductSize = getParam("product-size");
 
   useEffect(() => {
-    if ((!productId || !sizeId) && product) return setProduct(undefined);
+    if ((!reviewedProductId || !reviewedProductSize) && product)
+      return setProduct(undefined);
 
     const candidateProduct = addedProducts.find(
-      (product) => product._id === productId && product.size._id === sizeId
+      (product) =>
+        product._id === reviewedProductId &&
+        product.size.size === reviewedProductSize
     );
 
     if (!candidateProduct) return;
 
     setProduct(candidateProduct);
-  }, [productId, sizeId]);
+  }, [reviewedProductSize, reviewedProductId]);
 
   const thumbnail = product?.assets?.find((asset) => asset?.endsWith(".webp"));
 
@@ -72,11 +75,11 @@ const ComboActiveItem: React.FC<ComboActiveItemT> = memo(() => {
               <span>{product.size.size}</span>
             </div>
 
-            <div className="grid-box__sub">
+            {/* <div className="grid-box__sub">
               <span>მაქს. რაოდენობა:</span>
               &nbsp;
               <span>{product.size.quantity}</span>
-            </div>
+            </div> */}
 
             <div className="grid-box__sub">
               <span>შერჩეული რაოდენობა:</span>
@@ -84,11 +87,11 @@ const ComboActiveItem: React.FC<ComboActiveItemT> = memo(() => {
               <span>{product.size.selectedCount}</span>
             </div>
 
-            <div className="grid-box__sub">
+            {/* <div className="grid-box__sub">
               <span>ხელმისაწვდომია:</span>
               &nbsp;
               <span>{product.size.quantity - product.size.selectedCount}</span>
-            </div>
+            </div> */}
           </div>
         </>
       ) : (

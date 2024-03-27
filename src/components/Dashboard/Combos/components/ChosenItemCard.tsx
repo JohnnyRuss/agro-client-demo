@@ -48,14 +48,17 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
       size: product.size.size,
     });
 
-  const productId = getParam("product");
-  const sizeId = getParam("product-size");
+  const reviewedProductId = getParam("product");
+  const reviewedProductSize = getParam("product-size");
 
   const onRemoveProduct = (e: React.MouseEvent) => {
     e.stopPropagation();
     removeProduct({ productId: product._id, size: product.size.size });
 
-    if (sizeId === product.size._id && productId === productId)
+    if (
+      reviewedProductId === product._id &&
+      reviewedProductSize === product.size.size
+    )
       removeMultipleParams(["product", "product-size"]);
   };
 
@@ -64,7 +67,7 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
   const onItemReview = () =>
     setMultipleParams([
       { key: "product", value: product._id },
-      { key: "product-size", value: product.size._id },
+      { key: "product-size", value: product.size.size },
     ]);
 
   return (
@@ -99,7 +102,7 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
             <span>{product.size.size}</span>
           </div>
 
-          <div className="total-quantity--box">
+          {/* <div className="total-quantity--box">
             <span>
               <strong>მაქს. რაოდენობა:</strong>
               &nbsp;
@@ -111,7 +114,7 @@ const ChosenItemCard: React.FC<ChosenItemCardT> = ({ product, className }) => {
             >
               {product.size.quantity}
             </span>
-          </div>
+          </div> */}
 
           <Counter
             value={product.size.selectedCount}

@@ -7,6 +7,7 @@ export const OrderItem = styled.li`
 
   .order-fig {
     width: 15rem;
+    min-width: 15rem;
     height: 15rem;
     border-radius: 0.5rem;
     overflow: hidden;
@@ -21,12 +22,16 @@ export const OrderItem = styled.li`
   .order-details {
     display: flex;
     flex-direction: column;
-    gap: 1rem;
+    width: 100%;
+    height: 100%;
+    justify-content: flex-start;
+    gap: 0.75rem;
+    padding-right: 2rem;
   }
 
   .grid-box {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr max-content;
     gap: 5rem;
 
     &__sub {

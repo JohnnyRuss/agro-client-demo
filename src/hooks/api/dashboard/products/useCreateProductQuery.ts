@@ -22,7 +22,7 @@ export default function useCreateProductQuery() {
 
   const onAppendSizeField = (e: React.MouseEvent) => {
     e.preventDefault();
-    sizesField.append({ size: "", quantity: "" });
+    sizesField.append({ size: "" });
   };
 
   const onRemoveSizeField = (fieldIndex: number) => {
@@ -72,15 +72,12 @@ export default function useCreateProductQuery() {
   const onStartUpdate = (product: ProductT) => {
     form.reset({
       title: product.title,
-      description: product.description,
-      price: product.price.toString(),
-      category: { title: product.category.title, value: product.category._id },
-      sizes: product.sizes.map((size) => ({
-        quantity: size.quantity.toString(),
-        size: size.size,
-      })),
-      assets: product.assets,
       assets_to_delete: [],
+      assets: product.assets,
+      price: product.price.toString(),
+      description: product.description,
+      sizes: product.sizes.map((size) => ({ size })),
+      category: { title: product.category.title, value: product.category._id },
     });
 
     setCandidateProductId(product._id);
@@ -94,12 +91,12 @@ export default function useCreateProductQuery() {
 
     form.reset({
       title: "",
-      description: "",
       price: "",
-      category: { title: "", value: "" },
-      sizes: [{ quantity: "", size: "" }],
       assets: [],
+      description: "",
       assets_to_delete: [],
+      sizes: [{ size: "" }],
+      category: { title: "", value: "" },
     });
   });
 

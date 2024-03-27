@@ -7,7 +7,7 @@ import {
 } from "@/interface/API/combo.api.types";
 import { ComboT } from "@/interface/db/combo.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
-import { ProductT, ProductSizeT } from "@/interface/db/product.types";
+import { ProductT } from "@/interface/db/product.types";
 
 type ComboStateT = {
   createStatus: LoadingStatusT;
@@ -86,7 +86,7 @@ type SelectedProductT = Omit<ProductT, "sizes"> & {
   size: SelectedProductSizeT;
 };
 
-type SelectedProductSizeT = ProductSizeT & { selectedCount: number };
+type SelectedProductSizeT = { size: string; selectedCount: number };
 
 type ComboStoreT = ComboStateT & ComboActionsT;
 

@@ -1,19 +1,33 @@
+import {
+  OrderT,
+  OrderStatusT,
+  GroupedOrdersT,
+} from "@/interface/db/order.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
-import { OrderT, OrderStatusT } from "@/interface/db/order.types";
+import { OrderSchemaT } from "@/utils/validations/order/OrderSchema";
+import { CartProductT } from "@/interface/store/shoppingCart.store.types";
 
 type OrderStateT = {
-  orders: Array<OrderT>;
+  createStatus: LoadingStatusT;
+  orders: Array<GroupedOrdersT>;
+  readAllStatus: LoadingStatusT;
+  order: OrderT;
   readStatus: LoadingStatusT;
   treeTrunkStatus: LoadingStatusT;
 };
 
 type OrderActionsT = {
-  getOrders: (query?: string) => Promise<void>;
+  createOrder: (
+    params: OrderSchemaT & { products: Array<CartProductT> }
+  ) => Promise<void>;
+  getOrders: () => Promise<void>;
+  cleanUpOrders: () => void;
+  getOrder: (orderId: string) => Promise<void>;
+  cleanUpOrder: () => void;
   treeTrunkOrder: (params: {
     orderId: string;
     status: OrderStatusT;
   }) => Promise<void>;
-  cleanUpOrders: () => void;
 };
 
 type OrderStoreT = OrderStateT & OrderActionsT;

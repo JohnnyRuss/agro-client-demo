@@ -7,7 +7,7 @@ export const ContentHead = styled.div`
   align-items: center;
   justify-content: space-between;
   position: sticky;
-  top: 6rem;
+  top: 5rem;
   z-index: 9;
   padding: 3rem 1rem 2rem 1rem;
   background-color: ${({ theme }) => theme.colors.white};

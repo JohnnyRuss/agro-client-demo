@@ -71,6 +71,7 @@ const useProductStore = create<ProductStoreT>()(
             assets: [],
             new_assets: data.assets,
             category: data.category.value,
+            sizes: data.sizes.map((s) => s.size),
           };
 
           await axiosPrivateFormDataQuery.post("/products", requestBody);
@@ -89,13 +90,13 @@ const useProductStore = create<ProductStoreT>()(
 
           const requestBody = {
             title: data.title,
-            description: data.description,
             price: data.price,
+            description: data.description,
             category: data.category.value,
-            sizes: data.sizes,
+            sizes: data.sizes.map((s) => s.size),
+            assets_to_delete: data.assets_to_delete,
             assets: data.assets.filter((asset) => typeof asset === "string"),
             new_assets: data.assets.filter((asset) => asset instanceof File),
-            assets_to_delete: data.assets_to_delete,
           };
 
           await axiosPrivateFormDataQuery.put(

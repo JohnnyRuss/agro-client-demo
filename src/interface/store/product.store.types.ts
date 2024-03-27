@@ -1,7 +1,6 @@
-import { ProductT } from "@/interface/db/product.types";
 import { LoadingStatusT } from "@/interface/store/common.types";
 import * as ProductAPI_T from "@/interface/API/products.api.types";
-import { CategoryT } from "@/interface/db/category.types";
+import { ProductT, ProductsFilterT } from "@/interface/db/product.types";
 
 type ProductStateT = {
   hasMore: boolean;
@@ -14,12 +13,7 @@ type ProductStateT = {
   readSingleStatus: LoadingStatusT;
   createStatus: LoadingStatusT;
   deleteStatus: LoadingStatusT;
-  productsFilter: {
-    minPrice: number;
-    maxPrice: number;
-    sizes: Array<string>;
-    categories: Array<CategoryT>;
-  };
+  productsFilter: ProductsFilterT;
   productsFilterStatus: LoadingStatusT;
   productsSizeFilterStatus: LoadingStatusT;
 };

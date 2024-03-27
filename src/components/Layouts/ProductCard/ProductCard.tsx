@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 import { DYNAMIC_ROUTES } from "@/config/paths";
+import { useCart } from "@/hooks/utils";
 
 import * as Styled from "./productCard.styled";
 import { ShoppingCartIcon } from "@/components/Layouts/Icons";
@@ -12,6 +13,16 @@ type ProductCardT = {
 };
 
 const ProductCard: React.FC<ProductCardT> = ({ product }) => {
+  const { onAdd } = useCart();
+
+  const onAddToCart = () =>
+    onAdd({
+      product,
+      quantity: 1,
+      size: product.sizes[0],
+      productType: "product",
+    });
+
   return (
     <Styled.ProductCard>
       {/* <div className="card-header">
@@ -40,10 +51,19 @@ const ProductCard: React.FC<ProductCardT> = ({ product }) => {
           >
             {product.title}
           </Link>
-          <span className="card-price">{product.price}₾</span>
+
+          <div className="card-price--size">
+            <span className="card-price">{product.price}₾</span>
+
+            <span className="card-size">
+              <span>ზომა:</span>
+              &nbsp;
+              <span>{product.sizes[0]}</span>
+            </span>
+          </div>
         </div>
 
-        <button>
+        <button className="card-shopping--btn" onClick={onAddToCart}>
           <ShoppingCartIcon />
         </button>
       </div>

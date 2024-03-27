@@ -1,12 +1,12 @@
-import { useEffect, useState, memo } from "react";
+import { memo } from "react";
 import { NavLink } from "react-router-dom";
 
 import { PATHS } from "@/config/paths";
-import { useSearchParams } from "@/hooks/utils";
+import { useFilterContext } from "@/Providers/useProviders";
 
 import * as Styled from "./styles/contentHead.styled";
 import { Dropdown, TextField } from "@/components/Layouts";
-import { SortIcon } from "@/components/Layouts/Icons";
+import { SortIcon, ArrowUp, ArrowDown } from "@/components/Layouts/Icons";
 
 type ContentHeadT = {
   boxType: "grid" | "flex";
@@ -14,58 +14,41 @@ type ContentHeadT = {
 
 const sort = [
   {
-    label: "Created At ↑",
+    label: (
+      <>
+        Created At <ArrowUp />
+      </>
+    ),
     value: "createdAt",
   },
   {
-    label: "Created At ↓",
+    label: (
+      <>
+        Created At <ArrowDown />
+      </>
+    ),
     value: "-createdAt",
   },
   {
-    label: "Price ↑",
+    label: (
+      <>
+        Price <ArrowUp />
+      </>
+    ),
     value: "price",
   },
   {
-    label: "Price At ↓",
+    label: (
+      <>
+        Price <ArrowDown />
+      </>
+    ),
     value: "-price",
   },
 ];
 
 const ContentHead: React.FC<ContentHeadT> = memo(({ boxType }) => {
-  const { getParam, removeParam, setParam } = useSearchParams();
-
-  const currentSort = getParam("sort");
-  const currentSearch = getParam("search");
-
-  const onSort = (item: any) => {
-    item.value === currentSort
-      ? removeParam("sort")
-      : setParam("sort", item.value);
-  };
-
-  const [search, setSearch] = useState("");
-  const [isMounted, setIsMounted] = useState(false);
-
-  const onSearch = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSearch(e.target.value);
-
-  useEffect(() => {
-    if (!isMounted) return;
-
-    const timeoutId = setTimeout(() => {
-      if (search) setParam("search", search);
-      else removeParam("search");
-    }, 450);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [search, isMounted]);
-
-  useEffect(() => {
-    if (!search && currentSearch) setSearch(currentSearch);
-    setIsMounted(true);
-  }, []);
+  const { currentSort, onSort, search, onSearch } = useFilterContext();
 
   return (
     <Styled.ContentHead

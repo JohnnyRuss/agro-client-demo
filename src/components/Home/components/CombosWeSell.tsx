@@ -28,7 +28,7 @@ const CombosWeSell: React.FC = () => {
             combo={combo}
             key={combo._id}
             showActions={false}
-            redirectPath={DYNAMIC_ROUTES.combo_page("123")}
+            redirectPath={DYNAMIC_ROUTES.combo_page(combo._id)}
           />
         ))}
       </ul>

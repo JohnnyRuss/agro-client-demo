@@ -14,4 +14,9 @@ export const OrdersFilter = styled.div`
   svg {
     font-size: ${({ theme }) => theme.fontSize.xl};
   }
+
+  span.active,
+  svg {
+    color: ${({ theme }) => theme.colors.blue};
+  }
 `;

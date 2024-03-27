@@ -46,7 +46,8 @@ const SelectField: React.FC<SelectFieldT> = ({
     setOpenDropdown(false);
   };
 
-  const onClean = () => {
+  const onClean = (e: React.MouseEvent) => {
+    e.preventDefault();
     setEnteredValue("");
     onCleanUpField && onCleanUpField();
   };

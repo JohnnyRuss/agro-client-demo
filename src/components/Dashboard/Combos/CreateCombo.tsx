@@ -1,5 +1,9 @@
+import { useMemo } from "react";
+
 import { useSearchParams } from "@/hooks/utils";
 import { useCreateComboContext } from "@/Providers/useProviders";
+
+import FilterProvider from "@/Providers/FilterProvider";
 
 import * as UI from "./components";
 import { Modal } from "@/components/Layouts";
@@ -24,10 +28,14 @@ const CreateCombo: React.FC = () => {
     };
   }, []);
 
+  const memorisedFilterableKeys = useMemo(() => ["search"], []);
+
   return (
     <>
       <Styled.CreateCombo>
-        <UI.ItemToChooseRow />
+        <FilterProvider filterableKeys={memorisedFilterableKeys}>
+          <UI.ItemToChooseRow />
+        </FilterProvider>
 
         <UI.ChosenItemsRow />
 

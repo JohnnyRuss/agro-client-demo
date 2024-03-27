@@ -47,6 +47,7 @@ export const ProductCard = styled.div`
   .card-details {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .flex-col {
       display: flex;
@@ -59,12 +60,15 @@ export const ProductCard = styled.div`
       font-size: ${({ theme }) => theme.fontSize.md};
     }
 
-    .card-price {
+    .card-price--size {
+      display: flex;
+      align-items: center;
       font-size: ${({ theme }) => theme.fontSize.sm};
       color: ${({ theme }) => theme.colors.gray_shade};
+      gap: 2rem;
     }
 
-    button {
+    .card-shopping--btn {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.white};
       width: 5rem;

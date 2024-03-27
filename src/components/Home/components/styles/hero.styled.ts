@@ -48,11 +48,12 @@ export const Hero = styled.div`
       }
     }
 
-    button {
+    a {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.white};
       padding: 1rem 2rem;
       border-radius: 0.2rem;
+      display: inline-block;
       margin-top: 4rem;
     }
   }

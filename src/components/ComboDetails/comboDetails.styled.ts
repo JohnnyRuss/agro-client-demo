@@ -72,14 +72,20 @@ export const ComboDetails = styled.div`
     margin-top: 4rem;
   }
 
-  .add-to--cart__btn {
+  .client-actions {
     margin-top: 6rem;
-    margin-left: auto;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
+    gap: 5rem;
 
-    svg {
-      font-size: ${({ theme }) => theme.fontSize.xl};
+    .add-to--cart__btn {
+      display: flex;
+      align-items: center;
+
+      svg {
+        font-size: ${({ theme }) => theme.fontSize.xl};
+      }
     }
   }
 

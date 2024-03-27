@@ -1,3 +1,5 @@
+type DateConfigKeyT = keyof typeof DATE_CONFIG;
+
 const DATE_CONFIG: { [key: string]: Intl.DateTimeFormatOptions } = {
   dayMonthYearHourConfig: {
     hour: "2-digit",
@@ -21,11 +23,15 @@ const DATE_CONFIG: { [key: string]: Intl.DateTimeFormatOptions } = {
     hour: "2-digit",
     minute: "2-digit",
   },
+  monthYearConfig: {
+    month: "short",
+    year: "numeric",
+  },
 };
 
 export default function getTimeString(
   date: string,
-  config?: keyof typeof DATE_CONFIG
+  config?: DateConfigKeyT
 ): string {
   if (!date) return "";
 

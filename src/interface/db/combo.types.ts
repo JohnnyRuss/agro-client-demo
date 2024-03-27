@@ -1,5 +1,3 @@
-import { ProductSizeT } from "@/interface/db/product.types";
-
 type ComboT = {
   _id: string;
   title: string;
@@ -13,7 +11,7 @@ type ComboT = {
       description: string;
       price: number;
       assets: Array<string>;
-      sizes: Array<ProductSizeT>;
+      sizes: Array<string>;
     };
     size: {
       size: string;

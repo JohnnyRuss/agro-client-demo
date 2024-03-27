@@ -70,6 +70,23 @@ export const Navigation = styled.nav`
       font-size: ${({ theme }) => theme.fontSize.xxl};
       color: ${({ theme }) => theme.colors.primary};
       display: flex;
+      position: relative;
+
+      span {
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        right: -0.75rem;
+        top: -0.75rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        color: ${({ theme }) => theme.colors.white};
+        background-color: ${({ theme }) => theme.colors.red};
+        font-size: ${({ theme }) => theme.fontSize.sm};
+      }
     }
   }
 

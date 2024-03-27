@@ -1,9 +1,8 @@
-import { useState, memo, useEffect } from "react";
+import { useState, memo } from "react";
 import RangeSlider from "react-range-slider-input";
 import "react-range-slider-input/dist/style.css";
 
-import { useSearchParams } from "@/hooks/utils";
-import { useGetProductsFilter } from "@/hooks/api/products";
+import { useFilterContext } from "@/Providers/useProviders";
 
 import { SelectField } from "@/components/Layouts";
 import * as Styled from "./styles/filter.styled";
@@ -13,108 +12,20 @@ type FilterT = {
 };
 
 const Filter: React.FC<FilterT> = memo(({ boxType }) => {
-  const { getParam, removeParam, setParam } = useSearchParams();
-
-  const { filter, status, sizeStatus } = useGetProductsFilter();
+  const {
+    filter,
+    priceRange,
+    onPriceRangeChange,
+    category,
+    onClearCategory,
+    onSelectCategory,
+    size,
+    sizeStatus,
+    onClearSize,
+    onSelectSize,
+  } = useFilterContext();
 
   const [showFilter, setShowFilter] = useState(false);
-  const [priceRange, setPriceRange] = useState<Array<number>>([0, 5000]);
-  const [size, setSize] = useState<{ title: string; value: string }>({
-    title: "",
-    value: "",
-  });
-  const [category, setCategory] = useState<{ title: string; value: string }>({
-    title: "",
-    value: "",
-  });
-
-  const currentMinPrice: string | null = getParam("price[gte]");
-  const currentMaxPrice: string | null = getParam("price[lte]");
-  const currentCategory: string | null = getParam("category");
-  const currentSize: string | null = getParam("size");
-
-  const onPriceRangeChange = (value: [number, number]) => setPriceRange(value);
-
-  const onClearSize = () => {
-    removeParam("size");
-    setSize(() => ({ title: "", value: "" }));
-  };
-
-  const onClearCategory = () => {
-    removeParam("category");
-    setCategory((prev) => ({ ...prev, title: "", value: "" }));
-
-    if (currentSize) onClearSize();
-  };
-
-  const onSelectCategory = (category: { title: string; value: string }) => {
-    const isRemoving = category.value === currentCategory;
-
-    if (isRemoving) onClearCategory();
-    else {
-      setCategory((prev) => ({
-        ...prev,
-        title: category.title,
-        value: category.value,
-      }));
-      setParam("category", category.value);
-    }
-  };
-
-  const onSelectSize = (size: { title: string; value: string }) => {
-    const isRemoving = size.value === currentSize;
-
-    if (isRemoving) onClearSize();
-    else {
-      setSize((prev) => ({
-        ...prev,
-        title: size.title,
-        value: size.value,
-      }));
-      setParam("size", size.value);
-    }
-  };
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setParam("price[gte]", priceRange[0].toString());
-      setParam("price[lte]", priceRange[1].toString());
-    }, 1000);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [priceRange]);
-
-  useEffect(() => {
-    if (status.status !== "SUCCESS") return;
-
-    if (currentMinPrice && currentMaxPrice)
-      setPriceRange([+currentMinPrice, +currentMaxPrice]);
-    else setPriceRange([filter.minPrice, filter.maxPrice]);
-
-    if (currentCategory) {
-      const candidateCategory = filter.categories.find(
-        (category) => category._id === currentCategory
-      );
-
-      if (!candidateCategory) return;
-
-      setCategory(() => ({
-        title: candidateCategory.title,
-        value: candidateCategory._id,
-      }));
-
-      const candidateSize = filter.sizes.find((size) => size === currentSize);
-
-      if (!candidateSize) return;
-
-      setSize(() => ({
-        title: candidateSize,
-        value: candidateSize,
-      }));
-    }
-  }, [status.status]);
 
   return (
     <Styled.Filter
@@ -131,9 +42,9 @@ const Filter: React.FC<FilterT> = memo(({ boxType }) => {
 
       <div className="price-filter--box">
         <RangeSlider
+          value={priceRange}
           min={filter.minPrice}
           max={filter.maxPrice}
-          value={priceRange}
           onInput={onPriceRangeChange}
         />
 

@@ -11,23 +11,4 @@ export const Orders = styled.div`
     height: 100%;
     overflow: hidden;
   }
-
-  .invoice {
-    flex: 1;
-    padding: 2rem;
-
-    figure {
-      width: 100%;
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    img {
-      object-fit: contain;
-      max-height: 100%;
-      max-width: 70%;
-    }
-  }
 `;

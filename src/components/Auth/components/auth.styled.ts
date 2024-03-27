@@ -17,7 +17,7 @@ export const Auth = styled.section`
     width: 100%;
 
     .submit-btn {
-      background: ${({ theme }) => theme.colors.blue};
+      background: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.white};
       padding: 1rem 0;
       border-radius: 0.5rem;

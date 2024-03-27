@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { comboStore } from "@/store";
 import { GetAllCombosArgsT } from "@/interface/API/combo.api.types";
 
-export default function useGetCombosQuery(runOnMount = false) {
+export default function useGetCombosQuery(runOnMount = false, filter = false) {
   const { search } = useLocation();
 
   const getAll = comboStore.use.getAll();
@@ -21,14 +21,29 @@ export default function useGetCombosQuery(runOnMount = false) {
   const getPaginatedCombosQuery = async (
     params?: GetAllCombosArgsT | undefined
   ) => {
-    await getAllPaginated(params ? params : { page: currentPage + 1 });
+    await getAllPaginated(
+      params ? params : { page: currentPage + 1, query: search || "" }
+    );
   };
 
   useEffect(() => {
     if (!runOnMount) return;
+    getAll({ page: 1, query: search || "" });
+  }, [runOnMount]);
 
-    getAll({ page: 1, query: search });
+  useEffect(() => {
+    if (!runOnMount || !filter) return;
 
+    const timeoutId = setTimeout(() => {
+      getAll({ page: 1, query: search || "" });
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [runOnMount, search]);
+
+  useEffect(() => {
     return () => {
       cleanUpAll();
     };

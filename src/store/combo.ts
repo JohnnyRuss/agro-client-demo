@@ -259,7 +259,11 @@ const useProductStore = create<ComboStoreT>()(
             } else {
               set(() => ({
                 addedProducts: [...addedProducts, product],
-                existingAssets: [...existingAssets, ...product.assets],
+                existingAssets: [
+                  ...Array.from(
+                    new Set([...existingAssets, ...product.assets])
+                  ),
+                ],
               }));
             }
           },
@@ -272,8 +276,14 @@ const useProductStore = create<ComboStoreT>()(
                   data: draft.addedProducts,
                 });
 
+                const candidateProductVarietyCount = get().addedProducts.filter(
+                  (product) => product._id === params.productId
+                ).length;
+
                 const removedProductAssets =
-                  draft.addedProducts[candidateProductIndex].assets;
+                  candidateProductVarietyCount > 1
+                    ? []
+                    : draft.addedProducts[candidateProductIndex].assets;
 
                 draft.addedProducts.splice(candidateProductIndex, 1);
 
@@ -300,10 +310,7 @@ const useProductStore = create<ComboStoreT>()(
                   draft.addedProducts[candidateProductIndex].size;
 
                 candidateProductSize.selectedCount =
-                  candidateProductSize.selectedCount ===
-                  candidateProductSize.quantity
-                    ? candidateProductSize.quantity
-                    : candidateProductSize.selectedCount + 1;
+                  candidateProductSize.selectedCount + 1;
               })
             );
           },
@@ -339,11 +346,7 @@ const useProductStore = create<ComboStoreT>()(
                   draft.addedProducts[candidateProductIndex].size;
 
                 candidateProductSize.selectedCount =
-                  params.count > candidateProductSize.quantity
-                    ? candidateProductSize.quantity
-                    : params.count <= 0
-                    ? 1
-                    : params.count;
+                  params.count <= 0 ? 1 : params.count;
               })
             );
           },
@@ -398,21 +401,13 @@ const useProductStore = create<ComboStoreT>()(
               addedProducts: params.products.map(({ product, size }) => ({
                 _id: product._id,
                 title: product.title,
+                price: product.price,
+                assets: Array.from(new Set(product.assets)),
                 description: product.description,
                 size: {
                   size: size.size,
                   selectedCount: size.quantity,
-                  _id:
-                    product.sizes.find(
-                      (productSize) => productSize.size === size.size
-                    )?._id || "",
-                  quantity:
-                    product.sizes.find(
-                      (productSize) => productSize.size === size.size
-                    )?.quantity || 0,
                 },
-                price: product.price,
-                assets: product.assets,
               })),
             }));
           },

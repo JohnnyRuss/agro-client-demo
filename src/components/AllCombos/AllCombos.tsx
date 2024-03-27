@@ -11,7 +11,7 @@ import * as Styled from "./allCombos.styled";
 
 const AllCombos: React.FC = () => {
   const { data, status, hasMore, total, getPaginatedCombosQuery } =
-    useGetCombosQuery(true);
+    useGetCombosQuery(true, true);
 
   return (
     <Styled.AllCombos>
@@ -19,6 +19,7 @@ const AllCombos: React.FC = () => {
         total={total}
         hasMore={hasMore}
         onNext={getPaginatedCombosQuery}
+        showLastMessage={status.status === "SUCCESS"}
       >
         {data.map((combo) => (
           <ComboCard

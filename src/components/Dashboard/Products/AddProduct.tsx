@@ -105,29 +105,15 @@ const AddProduct: React.FC = () => {
             className={`size-field__block ${index === 0 ? "first" : ""}`}
           >
             <Controller
-              control={form.form.control}
               name={`sizes.${index}.size`}
+              control={form.form.control}
               render={({ field, fieldState: { error } }) => (
                 <Form.TextField
+                  fieldProps={field}
+                  message={error?.message || ""}
+                  hasError={error ? true : false}
                   label={index === 0 ? "ზომა" : ""}
                   placeholder={index > 0 ? "ზომა" : ""}
-                  fieldProps={field}
-                  hasError={error ? true : false}
-                  message={error?.message || ""}
-                />
-              )}
-            />
-
-            <Controller
-              control={form.form.control}
-              name={`sizes.${index}.quantity`}
-              render={({ field, fieldState: { error } }) => (
-                <Form.TextField
-                  label={index === 0 ? "რაოდენობა" : ""}
-                  placeholder={index > 0 ? "რაოდენობა" : ""}
-                  fieldProps={field}
-                  hasError={error ? true : false}
-                  message={error?.message || ""}
                 />
               )}
             />

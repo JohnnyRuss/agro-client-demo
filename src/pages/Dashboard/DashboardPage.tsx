@@ -1,11 +1,17 @@
 import { lazy } from "react";
 import { Outlet } from "react-router-dom";
 
-import { SuspenseContainer } from "@/components/Layouts";
+import { useRedirectUnAuthorized } from "@/hooks/auth";
+
+import { SuspenseContainer, StandSpinner } from "@/components/Layouts";
 const Dashboard = lazy(() => import("@/components/Dashboard/Dashboard"));
 
 const DashboardPage: React.FC = () => {
-  return (
+  const { loading } = useRedirectUnAuthorized();
+
+  return loading ? (
+    <StandSpinner />
+  ) : (
     <SuspenseContainer>
       <Dashboard>
         <Outlet />

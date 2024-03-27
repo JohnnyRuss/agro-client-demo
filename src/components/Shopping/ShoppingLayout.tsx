@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { PATHS } from "@/config/paths";
+import FilterProvider from "@/Providers/FilterProvider";
 
 import Filter from "./components/Filter";
 import * as Styled from "./shoppingLayout.styled";
@@ -22,6 +23,11 @@ const AllProductsLayout: React.FC<AllProductsLayoutT> = ({ children }) => {
     if (pathname === PATHS.shopping_page) navigate(PATHS.all_products_page);
   }, [pathname]);
 
+  const memorisedFilterableKeys = useMemo(
+    () => ["sort", "search", "priceRange", "category", "size"],
+    []
+  );
+
   return (
     <Styled.ShoppingLayout>
       <ShoppingHeader />
@@ -31,9 +37,11 @@ const AllProductsLayout: React.FC<AllProductsLayoutT> = ({ children }) => {
           isOnProducts ? "grid-box" : "flex-box"
         }`}
       >
-        <ContentHead boxType={isOnProducts ? "grid" : "flex"} />
+        <FilterProvider filterableKeys={memorisedFilterableKeys}>
+          <ContentHead boxType={isOnProducts ? "grid" : "flex"} />
 
-        {isOnProducts && <Filter boxType={isOnProducts ? "grid" : "flex"} />}
+          {isOnProducts && <Filter boxType={isOnProducts ? "grid" : "flex"} />}
+        </FilterProvider>
 
         {children}
       </div>

@@ -23,12 +23,14 @@ export { default as AboutUsPage } from "./AboutUs/AboutUsPage";
 
 // ========== SHOPPING_CART ==========
 export { default as ShoppingCartPage } from "./ShoppingCart/ShoppingCartPage";
+export { default as ShoppingCartSuccessPage } from "./ShoppingCart/ShoppingCartSuccessPage";
 
 //================================ //
 //========== DASHBOARD ========== //
 //============================== //
 
 //========== DASHBOARD ==========
+export { default as AuthPage } from "./Auth/AuthPage";
 export { default as DashboardPage } from "./Dashboard/DashboardPage";
 
 //========== CATEGORIES ==========

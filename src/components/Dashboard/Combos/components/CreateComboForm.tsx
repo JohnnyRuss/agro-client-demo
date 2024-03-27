@@ -70,7 +70,7 @@ const CreateComboForm: React.FC<CreateComboFormT> = memo(({ hidden }) => {
           name: "title",
           onChange: (e) =>
             onPriceChange(e as React.ChangeEvent<HTMLInputElement>),
-          value: price,
+          value: price.toString(),
         }}
         hasError={false}
         message=""

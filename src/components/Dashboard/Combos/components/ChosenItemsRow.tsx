@@ -45,7 +45,7 @@ const ChosenItemsRow: React.FC<AddedItemsRowT> = memo(() => {
               <ChosenItemCard
                 className="added-item"
                 product={product}
-                key={`${product._id}-${product.size._id}`}
+                key={`${product._id}-${product.size.size}`}
               />
             ))}
         </div>

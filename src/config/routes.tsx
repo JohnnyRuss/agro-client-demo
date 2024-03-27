@@ -64,6 +64,13 @@ const Routes: Array<RouteT> = [
     children: [],
   },
 
+  {
+    path: PATHS.shopping_cart_success_page,
+    title: "shopping-cart-success-page",
+    element: <Pages.ShoppingCartSuccessPage />,
+    children: [],
+  },
+
   // ========== ABOUT_US ==========
   {
     path: PATHS.about_us_page,
@@ -73,6 +80,13 @@ const Routes: Array<RouteT> = [
   },
 
   // ========== DASHBOARD ==========
+  {
+    path: PATHS.auth_page,
+    title: "auth-page",
+    element: <Pages.AuthPage />,
+    children: [],
+  },
+
   {
     path: PATHS.dashboard_page,
     title: "dashboard-page",

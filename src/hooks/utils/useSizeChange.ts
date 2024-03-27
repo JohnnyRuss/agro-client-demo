@@ -1,27 +1,27 @@
 import { useState, useEffect } from "react";
 
-import { ProductSizeT } from "@/interface/db/product.types";
 import { SelectedProductSizeT } from "@/interface/store/combo.store.types";
 
-export default function useSizeChange(sizes: Array<ProductSizeT>) {
+export default function useSizeChange(
+  sizes: Array<string>,
+  setDefaults = true
+) {
   /* Set Size locally before current product will be added to store */
   const [size, setSize] = useState<SelectedProductSizeT>({
-    _id: "",
     size: "",
-    quantity: 0,
     selectedCount: 0,
   });
 
   /** Watch Size change and reset size state based on change*/
   const onSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const chosenSize = sizes.find((size) => size.size === e.target.value);
+    const chosenSize = sizes.find((size) => size === e.target.value);
 
     if (!chosenSize) return;
 
     setSize((prev) => ({
       ...prev,
-      ...chosenSize,
-      selectedCount: chosenSize.quantity > 0 ? 1 : 0,
+      size: chosenSize,
+      selectedCount: 1,
     }));
   };
 
@@ -29,43 +29,38 @@ export default function useSizeChange(sizes: Array<ProductSizeT>) {
    * control product quantity according to specific size max count
    * size should be changed by the button or from the input itself
    */
-  const onIncreaseQuantity = () =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount:
-        prev.selectedCount === prev.quantity
-          ? prev.selectedCount
-          : prev.selectedCount + 1,
-    }));
+  const onIncreaseQuantity = () => {
+    setSize((prev) => ({ ...prev, selectedCount: prev.selectedCount + 1 }));
+    return size.selectedCount + 1;
+  };
 
-  const onDecreaseQuantity = () =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount: prev.selectedCount === 0 ? 0 : prev.selectedCount - 1,
-    }));
+  const onDecreaseQuantity = () => {
+    const newCount = size.selectedCount === 1 ? 1 : size.selectedCount - 1;
 
-  const onQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setSize((prev) => ({
-      ...prev,
-      selectedCount:
-        +e.target.value > prev.quantity
-          ? prev.quantity
-          : +e.target.value < 0
-          ? 0
-          : +e.target.value,
-    }));
+    setSize((prev) => ({ ...prev, selectedCount: newCount }));
+
+    return newCount;
+  };
+
+  const onQuantityChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newCount = +e.target.value > 0 ? +e.target.value : 1;
+    setSize((prev) => ({ ...prev, selectedCount: newCount }));
+    return newCount;
+  };
 
   /**
    * set default size on size state
    */
   useEffect(() => {
-    if (!sizes || (Array.isArray(sizes) && !sizes[0]) || size.size) return;
+    const isArray = sizes && Array.isArray(sizes) && sizes[0];
+
+    if (!isArray || size.size || !setDefaults) return;
 
     const defaultSize = sizes[0];
 
     setSize({
-      ...defaultSize,
-      selectedCount: defaultSize.quantity > 0 ? 1 : 0,
+      size: defaultSize,
+      selectedCount: 1,
     });
   }, [sizes]);
 

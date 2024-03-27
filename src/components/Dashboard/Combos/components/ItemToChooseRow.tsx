@@ -1,5 +1,6 @@
 import { memo } from "react";
 
+import { useFilterContext } from "@/Providers/useProviders";
 import { useGetProductsQuery } from "@/hooks/api/products";
 
 import {
@@ -14,12 +15,19 @@ import * as Styled from "./styles/itemsToChooseRow.styled";
 
 const ItemToChooseRow: React.FC = memo(() => {
   const { data, hasMore, total, getPaginatedProductsQuery, status } =
-    useGetProductsQuery(true);
+    useGetProductsQuery(true, true);
+
+  const { search, onSearch } = useFilterContext();
 
   return (
     <Styled.ItemsToChooseRow>
       <div className="search-field">
-        <input type="text" name="" id="" placeholder="ძებნა ..." />
+        <input
+          type="text"
+          value={search}
+          placeholder="ძებნა ..."
+          onChange={onSearch}
+        />
 
         <Button show="secondary">
           ძებნა

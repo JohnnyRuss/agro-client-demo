@@ -12,12 +12,7 @@ const ProductSchema = z.object({
     title: z.string(),
     value: z.string(),
   }),
-  sizes: z.array(
-    z.object({
-      size: z.string(),
-      quantity: z.string().refine(isNumeric.validator, isNumeric.message),
-    })
-  ),
+  sizes: z.array(z.object({ size: z.string() })),
   assets: z.array(z.any()),
   assets_to_delete: z.array(z.string()),
 });
@@ -32,7 +27,7 @@ const useProductForm = () =>
       description: "",
       price: "",
       category: { title: "", value: "" },
-      sizes: [{ size: "", quantity: "" }],
+      sizes: [{ size: "" }],
       assets: [],
       assets_to_delete: [],
     },

@@ -1,5 +1,7 @@
 import { Link, NavLink } from "react-router-dom";
+
 import { PATHS } from "@/config/paths.ts";
+import { shoppingCartStore } from "@/store/index.ts";
 
 import {
   PhoneIcon,
@@ -8,14 +10,16 @@ import {
   WhatsUpIcon,
   LocationIcon,
   ShoppingCartIcon,
-  SearchIcon,
+  // SearchIcon,
 } from "@/components/Layouts/Icons";
-import { TextField } from "@/components/Layouts";
+// import { TextField } from "@/components/Layouts";
 import * as Styled from "./navigation.styled.ts";
 
 type NavigationT = {};
 
 const Navigation: React.FC<NavigationT> = () => {
+  const productsCount = shoppingCartStore.use.products().length;
+
   return (
     <>
       <Styled.NavSocials className="socials-wrapper">
@@ -57,7 +61,7 @@ const Navigation: React.FC<NavigationT> = () => {
         <div className="nav-row">
           <div className="nav-row__left">
             <Link to={PATHS.home_page} className="logo-link">
-              <img src="/assets/logo-small.webp" alt="" width="45" />
+              <img src="/assets/logo-small.webp" alt="" width="35" />
             </Link>
           </div>
 
@@ -91,7 +95,7 @@ const Navigation: React.FC<NavigationT> = () => {
               </li>
             </ul>
 
-            <div className="search-field">
+            {/* <div className="search-field">
               <SearchIcon />
               <TextField
                 fieldProps={{
@@ -102,9 +106,10 @@ const Navigation: React.FC<NavigationT> = () => {
                 message=""
                 hasError={false}
               />
-            </div>
+            </div> */}
 
             <Link to={PATHS.shopping_cart_page} className="cart-btn">
+              {productsCount > 0 && <span>{productsCount}</span>}
               <ShoppingCartIcon />
             </Link>
           </div>

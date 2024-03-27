@@ -20,37 +20,34 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
   const {
     size,
     setSize,
+    onQuantityChange,
     onIncreaseQuantity,
     onDecreaseQuantity,
-    onQuantityChange,
   } = useSizeChange(product.sizes);
 
   /** Watch Size change and reset size state based on change*/
   const onSizeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const chosenSize = product.sizes.find(
-      (size) => size.size === e.target.value
-    );
+    const chosenSize = product.sizes.find((size) => size === e.target.value);
 
     if (!chosenSize) return;
 
     const inAddedProductsIndex = addedProducts.findIndex(
       (addedProduct) =>
         addedProduct._id === product._id &&
-        addedProduct.size._id === chosenSize._id
+        addedProduct.size.size === chosenSize
     );
 
     if (inAddedProductsIndex >= 0) {
       const addedProductSize = addedProducts[inAddedProductsIndex].size;
 
       setSize(() => ({
-        ...chosenSize,
+        size: chosenSize,
         selectedCount: addedProductSize.selectedCount,
-        quantity: addedProductSize.quantity - addedProductSize.selectedCount,
       }));
     } else {
       setSize(() => ({
-        ...chosenSize,
-        selectedCount: chosenSize.quantity > 0 ? 1 : 0,
+        size: chosenSize,
+        selectedCount: 1,
       }));
     }
   };
@@ -61,10 +58,8 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
    * added product quantity is bind bidirectional way between itemsToChoose and chosenItems (controlled by useEffects bellow)
    */
   const onAddProduct = () => {
-    if (size.quantity === 0 || size.selectedCount === 0) return;
-
+    if (size.selectedCount === 0) return;
     const { sizes, ...sizeOmittedProduct } = product;
-
     addProduct({ ...sizeOmittedProduct, size });
   };
 
@@ -84,25 +79,22 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
         (p) => p._id === product._id && size.size === p.size.size
       );
 
-      const nativeQuantity =
-        product.sizes.find((nativeSize) => nativeSize.size === size.size)
-          ?.quantity || 0;
-
       setSize((prev) => ({
         ...prev,
-        quantity:
-          nativeQuantity -
+        size: addedProducts[selectedCurrentSizeIndex].size.size,
+        selectedCount:
           addedProducts[selectedCurrentSizeIndex].size.selectedCount,
       }));
     } else {
       const nativeSize = product.sizes.find(
-        (nativeSize) => nativeSize._id === size._id
+        (nativeSize) => nativeSize === size.size
       );
 
       if (nativeSize)
-        setSize(() => ({
-          ...nativeSize,
-          selectedCount: nativeSize.quantity > 0 ? 1 : 0,
+        setSize((prev) => ({
+          ...prev,
+          size: nativeSize,
+          selectedCount: 1,
         }));
     }
   }, [isSelectedCurrentSize, addedProducts]);
@@ -142,14 +134,14 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
             &nbsp;
             <select name="size" value={size.size} onChange={onSizeChange}>
               {product.sizes.map((size) => (
-                <option value={size.size} key={size._id}>
-                  {size.size}
+                <option value={size} key={size}>
+                  {size}
                 </option>
               ))}
             </select>
           </div>
 
-          <div className="total-quantity--box">
+          {/* <div className="total-quantity--box">
             <span>
               <strong>მაქს.</strong>
               &nbsp;
@@ -159,7 +151,7 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
             >
               {size.quantity}
             </span>
-          </div>
+          </div> */}
 
           <Counter
             value={size.selectedCount}
@@ -171,12 +163,8 @@ const ItemToChooseCard: React.FC<ItemToChooseCardT> = ({ product }) => {
           <Button
             onClick={onAddProduct}
             className="add-btn"
-            disabled={size.quantity === 0 || size.selectedCount === 0}
-            show={
-              size.quantity === 0 || size.selectedCount === 0
-                ? "danger"
-                : "primary"
-            }
+            disabled={size.selectedCount === 0}
+            show={size.selectedCount === 0 ? "danger": "primary" }
           >
             ADD
           </Button>

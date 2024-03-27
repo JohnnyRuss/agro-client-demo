@@ -20,7 +20,12 @@ import {
 } from "react-icons/md";
 
 // ========== io ==========
-import { IoMdArrowDropdown, IoIosArrowBack } from "react-icons/io";
+import {
+  IoMdArrowDropdown,
+  IoIosArrowBack,
+  IoIosArrowRoundUp,
+  IoIosArrowRoundDown,
+} from "react-icons/io";
 
 // ========== fa ==========
 import {
@@ -81,6 +86,8 @@ const PlayIcon = FaPlay;
 const PackageCheckIcon = LuPackageCheck;
 const OpenInNewIcon = MdOpenInNew;
 const SortIcon = MdOutlineSort;
+const ArrowUp = IoIosArrowRoundUp;
+const ArrowDown = IoIosArrowRoundDown;
 
 export {
   LocationIcon,
@@ -113,4 +120,6 @@ export {
   PackageCheckIcon,
   OpenInNewIcon,
   SortIcon,
+  ArrowUp,
+  ArrowDown,
 };

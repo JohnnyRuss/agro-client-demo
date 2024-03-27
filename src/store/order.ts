@@ -7,13 +7,27 @@ import { logger } from "@/utils";
 import { getStatus, createSelectors } from "./helpers";
 import { axiosPrivateQuery } from "@/services/axios";
 
-import { OrderT } from "@/interface/db/order.types";
+import { GroupedOrdersT, OrderT } from "@/interface/db/order.types";
 import { OrderStateT, OrderStoreT } from "@/interface/store/order.store.types";
 
 const initialState: OrderStateT = {
+  readAllStatus: getStatus("IDLE"),
   orders: [],
 
   readStatus: getStatus("IDLE"),
+  order: {
+    _id: "",
+    customerAddress: "",
+    customerId: "",
+    customerName: "",
+    customerPhone: "",
+    products: [],
+    status: "PENDING",
+    totalPrice: NaN,
+    createdAt: "",
+  },
+
+  createStatus: getStatus("IDLE"),
   treeTrunkStatus: getStatus("IDLE"),
 };
 
@@ -21,6 +35,39 @@ const useProductStore = create<OrderStoreT>()(
   devtools(
     immer((set) => ({
       ...initialState,
+
+      async createOrder(params) {
+        try {
+          set(() => ({ createStatus: getStatus("PENDING") }));
+
+          const requestBody = {
+            products: params.products.map((product) => ({
+              quantity: product.size.selectedCount,
+              productType: product.productType.toLocaleUpperCase().trim(),
+              product: product.productType === "product" ? product._id : "",
+              combo: product.productType === "product" ? "" : product._id,
+              size: product.productType === "product" ? product.size.size : "",
+            })),
+            fullname: params.fullname,
+            address: params.address,
+            id_number: params.id_number,
+            phone_number: params.phone_number,
+            totalPrice: params.products.reduce(
+              (acc, product) =>
+                (acc += product.size.selectedCount * product.price),
+              0
+            ),
+          };
+
+          await axiosPrivateQuery.post("/orders", requestBody);
+
+          set(() => ({ createStatus: getStatus("SUCCESS") }));
+        } catch (error) {
+          const message = logger(error);
+          set(() => ({ createStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
 
       async treeTrunkOrder(params) {
         try {
@@ -40,13 +87,39 @@ const useProductStore = create<OrderStoreT>()(
 
       async getOrders() {
         try {
-          set(() => ({ readStatus: getStatus("PENDING") }));
+          set(() => ({ readAllStatus: getStatus("PENDING") }));
 
-          const { data }: AxiosResponse<Array<OrderT>> =
-            await axiosPrivateQuery.get(``);
+          const { data }: AxiosResponse<Array<GroupedOrdersT>> =
+            await axiosPrivateQuery.get(`/orders`);
 
           set(() => ({
             orders: data,
+            readAllStatus: getStatus("SUCCESS"),
+          }));
+        } catch (error: any) {
+          const message = logger(error);
+          set(() => ({ readAllStatus: getStatus("FAIL", message) }));
+          throw error;
+        }
+      },
+
+      cleanUpOrders() {
+        set(() => ({
+          orders: initialState.orders,
+          readAllStatus: initialState.readAllStatus,
+        }));
+      },
+
+      async getOrder(orderId) {
+        try {
+          set(() => ({ readStatus: getStatus("PENDING") }));
+
+          const { data }: AxiosResponse<OrderT> = await axiosPrivateQuery.get(
+            `/orders/${orderId}`
+          );
+
+          set(() => ({
+            order: data,
             readStatus: getStatus("SUCCESS"),
           }));
         } catch (error: any) {
@@ -56,9 +129,9 @@ const useProductStore = create<OrderStoreT>()(
         }
       },
 
-      cleanUpOrders() {
+      cleanUpOrder() {
         set(() => ({
-          orders: initialState.orders,
+          order: initialState.order,
           readStatus: initialState.readStatus,
         }));
       },

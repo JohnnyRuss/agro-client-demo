@@ -53,6 +53,9 @@ export const Dropdown = styled.div<{
         border-radius: 0.4rem;
         padding: 0.5rem 0.75rem;
         transition: all 0.3s ease-out;
+        display: flex;
+        align-items: center;
+        line-height: 1;
 
         &:hover {
           color: ${({ theme }) => theme.colors.blue};

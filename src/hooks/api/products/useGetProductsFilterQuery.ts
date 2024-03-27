@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { productStore } from "@/store";
 import { useSearchParams } from "@/hooks/utils";
 
-export default function useGetProductsFilter() {
+export default function useGetProductsFilterQuery() {
   const { getParam } = useSearchParams();
 
   const selectedCategory = getParam("category");

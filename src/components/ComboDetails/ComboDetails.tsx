@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
+import { useCart } from "@/hooks/utils";
 import { DYNAMIC_ROUTES, PATHS } from "@/config/paths";
 import { useGetComboQuery } from "@/hooks/api/combos";
 import { useAppUIContext } from "@/Providers/useProviders";
@@ -8,6 +9,7 @@ import { useDeleteComboQuery } from "@/hooks/api/dashboard/combos";
 
 import {
   Button,
+  Counter,
   LineClamp,
   StandSpinner,
   ErrorMessage,
@@ -62,9 +64,29 @@ const ComboDetails: React.FC<ComboDetailsT> = ({ isOnDashboard = false }) => {
       message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
     });
 
+  const [quantity, setQuantity] = useState(1);
+
+  const onChangeQuantity = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setQuantity(() => (+e.target.value <= 0 ? 1 : +e.target.value));
+
+  const onQuantityIncrease = () => setQuantity((prev) => prev + 1);
+
+  const onQuantityDecrease = () =>
+    setQuantity((prev) => (prev === 1 ? 1 : prev - 1));
+
+  const { onAdd } = useCart();
+
+  const onAddToCart = () =>
+    onAdd({
+      size: "",
+      quantity,
+      product: data,
+      productType: "combo",
+    });
+
+  const hasError = status.error || deleteStatus.error;
   const loading = status.loading || deleteStatus.loading;
   const errorMessage = status.message || deleteStatus.message;
-  const hasError = status.error || deleteStatus.error;
 
   return (
     <>
@@ -103,10 +125,23 @@ const ComboDetails: React.FC<ComboDetailsT> = ({ isOnDashboard = false }) => {
                   </Button>
                 </div>
               ) : (
-                <Button show="secondary" className="add-to--cart__btn">
-                  <ShoppingCartIcon />
-                  კალათაში დამატება
-                </Button>
+                <div className="client-actions">
+                  <Counter
+                    value={quantity}
+                    onChangeCount={onChangeQuantity}
+                    onDecreaseCount={onQuantityDecrease}
+                    onIncreaseCount={onQuantityIncrease}
+                  />
+
+                  <Button
+                    show="secondary"
+                    className="add-to--cart__btn"
+                    onClick={onAddToCart}
+                  >
+                    <ShoppingCartIcon />
+                    კალათაში დამატება
+                  </Button>
+                </div>
               )}
 
               <p className="sub-title">ნაკრებში შედის:</p>

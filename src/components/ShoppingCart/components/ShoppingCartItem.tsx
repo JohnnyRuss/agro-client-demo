@@ -1,47 +1,104 @@
-import { useSizeChange } from "@/hooks/utils";
-import { LineClamp, Counter } from "@/components/Layouts";
-import { CloseIcon } from "@/components/Layouts/Icons";
+import { useEffect } from "react";
 
-const ShoppingCartItem: React.FC = () => {
-  const { size, onDecreaseQuantity, onIncreaseQuantity, onQuantityChange } =
-    useSizeChange([]);
+import { useCart } from "@/hooks/utils";
+import { useSizeChange } from "@/hooks/utils";
+
+import { CloseIcon, CheckIcon } from "@/components/Layouts/Icons";
+import { LineClamp, Counter } from "@/components/Layouts";
+
+import { CartProductT } from "@/interface/store/shoppingCart.store.types";
+
+type ShoppingCartItemT = {
+  product: CartProductT;
+};
+
+const ShoppingCartItem: React.FC<ShoppingCartItemT> = ({ product }) => {
+  const {
+    size,
+    setSize,
+    onDecreaseQuantity,
+    onIncreaseQuantity,
+    onQuantityChange,
+  } = useSizeChange([product.size.size], false);
+
+  const { onRemove, onSetQuantity } = useCart();
+
+  const onRemoveItem = () =>
+    onRemove({
+      productId: product._id,
+      size: product.size.size,
+      productType: product.productType,
+    });
+
+  const onProductQuantityChange = (count: number) =>
+    onSetQuantity({
+      size: size.size,
+      quantity: count,
+      productId: product._id,
+      productType: product.productType,
+    });
+
+  useEffect(() => {
+    setSize((prev) => ({ ...prev, ...product.size }));
+  }, []);
+
+  const isProductType = product.productType === "product";
 
   return (
     <li>
       <div className="remove-btn">
-        <button>
+        <button onClick={onRemoveItem}>
           <CloseIcon />
         </button>
       </div>
 
       <figure className="product-fig">
         <img
-          src="https://images.unsplash.com/photo-1631337902392-b4bb679fbfdb?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
+          src={product.thumbnail}
+          alt={product.title}
+          title={product.title}
           width={120}
           height={65}
+          loading="lazy"
         />
       </figure>
 
       <div className="product-title">
         <LineClamp
-          text="პროდუქტის სათაური"
           clamp={2}
           showTitle={true}
+          text={product.title}
           sx={{ textAlign: "center", fontWeight: 600 }}
         />
       </div>
 
+      <div className={isProductType ? "is-unavailable" : "is-available"}>
+        <p>{!isProductType ? <CheckIcon /> : <CloseIcon />}</p>
+      </div>
+
       <div className="product-price">
-        <p>100₾</p>
+        <p>{product.price}₾</p>
+      </div>
+
+      <div className={`product-size ${!isProductType ? "is-unavailable" : ""}`}>
+        {!isProductType ? <CloseIcon /> : <p>{product.size.size}</p>}
       </div>
 
       <div className="product-counter">
         <Counter
           value={size.selectedCount}
-          onChangeCount={onQuantityChange}
-          onDecreaseCount={onDecreaseQuantity}
-          onIncreaseCount={onIncreaseQuantity}
+          onChangeCount={(e) => {
+            const count = onQuantityChange(e);
+            onProductQuantityChange(count);
+          }}
+          onDecreaseCount={() => {
+            const count = onDecreaseQuantity();
+            onProductQuantityChange(count);
+          }}
+          onIncreaseCount={() => {
+            const count = onIncreaseQuantity();
+            onProductQuantityChange(count);
+          }}
         />
       </div>
     </li>

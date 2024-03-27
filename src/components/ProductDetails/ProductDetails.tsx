@@ -1,9 +1,10 @@
 import { useNavigate } from "react-router-dom";
 
 import { PATHS } from "@/config/paths";
+import { useCart } from "@/hooks/utils";
 import { useSizeChange } from "@/hooks/utils";
-import { useAppUIContext } from "@/Providers/useProviders";
 import { useGetProductQuery } from "@/hooks/api/products";
+import { useAppUIContext } from "@/Providers/useProviders";
 import { useDeleteProductQuery } from "@/hooks/api/dashboard/products";
 
 import {
@@ -59,6 +60,16 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
       message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
     });
 
+  const { onAdd } = useCart();
+
+  const onAddToCart = () =>
+    onAdd({
+      product: data,
+      size: size.size,
+      productType: "product",
+      quantity: size.selectedCount,
+    });
+
   const hasError = status.error || deleteStatus.error;
   const errorMessage = status.message || deleteStatus.message;
 
@@ -87,13 +98,13 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
                 &nbsp;
                 <select name="size" onChange={onSizeChange}>
                   {data.sizes.map((size) => (
-                    <option value={size.size} key={size._id}>
-                      {size.size}
+                    <option value={size} key={size}>
+                      {size}
                     </option>
                   ))}
                 </select>
                 &nbsp;
-                {size.size && <span>{size.quantity}</span>}
+                {/* {size.size && <span>{size.quantity}</span>} */}
               </div>
 
               {isOnDashboard ? (
@@ -119,7 +130,11 @@ const ProductDetails: React.FC<ProductDetailsT> = ({ isOnDashboard }) => {
                     />
                   </div>
 
-                  <Button className="details-actions__add-btn" show="secondary">
+                  <Button
+                    className="details-actions__add-btn"
+                    show="secondary"
+                    onClick={onAddToCart}
+                  >
                     დამატება
                   </Button>
                 </>

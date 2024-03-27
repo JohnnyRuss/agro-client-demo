@@ -2,20 +2,38 @@ const PATHS = {
   root_page: "/",
   home_page: "/home",
 
-  // ========== PRODUCT ==========
+  // ================================ //
+  // ========== PRODUCT ↓ ========== //
+  // ============================== //
+
+  // ========== ALL PRODUCTS & COMBOS WRAPPER ==========
   shopping_page: "/shop",
-  all_combos_page: "/shop/combos",
-  combo_page: "/shop/combos/:comboId",
+
+  // ========== PRODUCT ==========
   all_products_page: "/shop/products",
   product_page: "/shop/products/:productId",
 
-  // ========== ABOUT_US ==========
+  // ========== COMBO ==========
+  all_combos_page: "/shop/combos",
+  combo_page: "/shop/combos/:comboId",
+
+  // ================================= //
+  // ========== ABOUT_US ↓ ========== //
+  // =============================== //
+
   about_us_page: "/about-us",
 
-  // ========== SHOPPING_CART ==========
-  shopping_cart_page: "/cart",
+  // ====================================== //
+  // ========== SHOPPING_CART ↓ ========== //
+  // ==================================== //
 
-  // ========== DASHBOARD ==========
+  shopping_cart_page: "/cart",
+  shopping_cart_success_page: "/cart/success",
+
+  // ================================== //
+  // ========== DASHBOARD ↓ ========== //
+  // ================================ //
+
   dashboard_page: "/dashboard",
 
   // ========== CATEGORIES ==========
@@ -39,14 +57,12 @@ const PATHS = {
   dashboard_product_details_page: "/dashboard/products/all/:productId",
 
   // ========== AUTH ==========
-  auth_page: "/auth",
-  login_page: "/auth/login",
-  register_page: "/auth/register",
-  forgot_password_page: "/auth/forgot_password",
-  confirm_email_page: "/auth/confirm_email",
-  update_password_page: "/auth/update_password",
+  auth_page: "/dashboard/auth",
 
-  // ========== UNKNOWN ==========
+  // ================================ //
+  // ========== UNKNOWN ↓ ========== //
+  // ============================== //
+
   unknown_page: "*",
 };
 

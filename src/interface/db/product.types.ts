@@ -4,16 +4,17 @@ type ProductT = {
   _id: string;
   title: string;
   description: string;
-  sizes: Array<ProductSizeT>;
+  sizes: Array<string>;
   price: number;
   assets: Array<string>;
   category: CategoryT;
 };
 
-type ProductSizeT = {
-  size: string;
-  quantity: number;
-  _id: string;
+type ProductsFilterT = {
+  minPrice: number;
+  maxPrice: number;
+  sizes: Array<string>;
+  categories: Array<CategoryT>;
 };
 
-export type { ProductT, ProductSizeT };
+export type { ProductT, ProductsFilterT };

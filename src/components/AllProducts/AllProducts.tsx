@@ -10,7 +10,7 @@ import * as Styled from "./allProducts.styled";
 
 const AllProducts: React.FC = () => {
   const { data, getPaginatedProductsQuery, hasMore, status, total } =
-    useGetProductsQuery(true);
+    useGetProductsQuery(true, true);
 
   return (
     <Styled.AllProducts>
@@ -18,6 +18,7 @@ const AllProducts: React.FC = () => {
         total={total}
         hasMore={hasMore}
         onNext={getPaginatedProductsQuery}
+        showLastMessage={status.status === "SUCCESS"}
       >
         {data.map((product) => (
           <ProductCard key={product._id} product={product} />
