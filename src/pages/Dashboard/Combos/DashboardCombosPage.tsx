@@ -13,7 +13,7 @@ const DashboardCombosPage: React.FC = () => {
 
   useEffect(() => {
     if (pathname === PATHS.dashboard_combos_page)
-      navigate(PATHS.dashboard_your_combos_page);
+      navigate(`${PATHS.dashboard_your_combos_page}?dashboard=1`);
   }, [pathname]);
 
   return (

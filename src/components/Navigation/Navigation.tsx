@@ -1,4 +1,7 @@
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+
+import { PATHS } from "@/config/paths.ts";
+import { shoppingCartStore } from "@/store/index.ts";
 
 import {
   PhoneIcon,
@@ -7,14 +10,16 @@ import {
   WhatsUpIcon,
   LocationIcon,
   ShoppingCartIcon,
-  SearchIcon,
+  // SearchIcon,
 } from "@/components/Layouts/Icons";
-import { TextField } from "@/components/Layouts";
+// import { TextField } from "@/components/Layouts";
 import * as Styled from "./navigation.styled.ts";
 
 type NavigationT = {};
 
 const Navigation: React.FC<NavigationT> = () => {
+  const productsCount = shoppingCartStore.use.products().length;
+
   return (
     <>
       <Styled.NavSocials className="socials-wrapper">
@@ -55,26 +60,42 @@ const Navigation: React.FC<NavigationT> = () => {
       <Styled.Navigation>
         <div className="nav-row">
           <div className="nav-row__left">
-            <figure>A</figure>
+            <Link to={PATHS.home_page} className="logo-link">
+              <img src="/assets/logo-small.webp" alt="" width="35" />
+            </Link>
           </div>
 
           <div className="nav-row__center">
             <ul className="routes-list">
               <li className="routes-list__item">
-                <Link to={""}>Home</Link>
+                <NavLink
+                  to={PATHS.home_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  მთავარი
+                </NavLink>
               </li>
+
               <li className="routes-list__item">
-                <Link to={""}>Shop</Link>
+                <NavLink
+                  to={PATHS.shopping_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  პროდუქტები
+                </NavLink>
               </li>
+
               <li className="routes-list__item">
-                <Link to={""}>About Us</Link>
-              </li>
-              <li className="routes-list__item">
-                <Link to={""}>Contact Us</Link>
+                <NavLink
+                  to={PATHS.about_us_page}
+                  className={({ isActive }) => (isActive ? "active" : "")}
+                >
+                  ჩვენს შესახებ
+                </NavLink>
               </li>
             </ul>
 
-            <div className="search-field">
+            {/* <div className="search-field">
               <SearchIcon />
               <TextField
                 fieldProps={{
@@ -85,9 +106,10 @@ const Navigation: React.FC<NavigationT> = () => {
                 message=""
                 hasError={false}
               />
-            </div>
+            </div> */}
 
-            <Link to={""} className="cart-btn">
+            <Link to={PATHS.shopping_cart_page} className="cart-btn">
+              {productsCount > 0 && <span>{productsCount}</span>}
               <ShoppingCartIcon />
             </Link>
           </div>

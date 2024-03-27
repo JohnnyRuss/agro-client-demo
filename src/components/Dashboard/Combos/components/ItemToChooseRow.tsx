@@ -1,33 +1,58 @@
 import { memo } from "react";
 
-import { generateArray } from "@/utils";
+import { useFilterContext } from "@/Providers/useProviders";
+import { useGetProductsQuery } from "@/hooks/api/products";
 
-import { Button } from "@/components/Layouts";
+import {
+  Button,
+  Spinner,
+  ErrorMessage,
+  InfiniteScroll,
+} from "@/components/Layouts";
 import ItemToChooseCard from "./ItemToChooseCard";
 import { SearchIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./styles/itemsToChooseRow.styled";
 
-type ItemToChooseRowT = {};
+const ItemToChooseRow: React.FC = memo(() => {
+  const { data, hasMore, total, getPaginatedProductsQuery, status } =
+    useGetProductsQuery(true, true);
 
-const ItemToChooseRow: React.FC<ItemToChooseRowT> = memo(() => {
+  const { search, onSearch } = useFilterContext();
+
   return (
     <Styled.ItemsToChooseRow>
       <div className="search-field">
-        <input type="text" name="" id="" placeholder="Search ..." />
+        <input
+          type="text"
+          value={search}
+          placeholder="ძებნა ..."
+          onChange={onSearch}
+        />
 
         <Button show="secondary">
-          Search
+          ძებნა
           <SearchIcon />
         </Button>
       </div>
 
-      <div className="item-to--choose__list-wrapper">
-        <div className="item-to--choose__list">
-          {generateArray(10).map((id) => (
-            <ItemToChooseCard key={id} isInAddedRow={false} />
+      {status.status === "SUCCESS" && (
+        <InfiniteScroll
+          height="76vh"
+          total={total}
+          hasMore={hasMore}
+          onNext={getPaginatedProductsQuery}
+        >
+          {data.map((product) => (
+            <ItemToChooseCard key={product._id} product={product} />
           ))}
-        </div>
-      </div>
+        </InfiniteScroll>
+      )}
+
+      {status.status === "PENDING" && <Spinner />}
+
+      {status.status === "FAIL" && (
+        <ErrorMessage message={status.message} align="center" />
+      )}
     </Styled.ItemsToChooseRow>
   );
 });

@@ -9,11 +9,11 @@ type ProductsT = {
 
 const routes = [
   {
-    title: "Your Products",
+    title: "შენი პროდუქტები",
     path: PATHS.dashboard_your_products_page,
   },
   {
-    title: "Add Product",
+    title: "პროდუქტის დამატება",
     path: PATHS.dashboard_add_product_page,
   },
 ];

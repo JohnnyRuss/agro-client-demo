@@ -9,11 +9,11 @@ type CategoriesT = {
 
 const routes = [
   {
-    title: "your categories",
+    title: "შენი კატეგორიები",
     path: PATHS.dashboard_your_categories_page,
   },
   {
-    title: "create category",
+    title: "შექმენი კატეგორია",
     path: PATHS.dashboard_create_category_page,
   },
 ];

@@ -29,6 +29,10 @@ const commonStyles = css`
     width: 100%;
     font-size: ${({ theme }) => theme.fontSize.sm};
     color: ${({ theme }) => theme.colors.gray_dark};
+
+    &::-webkit-inner-spin-button {
+      display: none;
+    }
   }
 `;
 
@@ -99,13 +103,20 @@ export const OTPField = styled.div`
 
 export const SelectField = styled.div`
   ${commonStyles};
+  position: relative;
+  z-index: 1;
+
+  &.active {
+    z-index: 99;
+  }
 
   .text-field__wrapper {
     display: flex;
+    cursor: pointer;
     align-items: center;
     border-radius: 0.5rem;
     border: 1px solid ${({ theme }) => theme.colors.gray_shade};
-    cursor: pointer;
+    background-color: ${({ theme }) => theme.colors.white};
 
     button {
       display: flex;
@@ -121,11 +132,6 @@ export const SelectField = styled.div`
     }
   }
 
-  .dropdown-wrapper {
-    position: relative;
-    z-index: 9;
-  }
-
   .dropdown-backdrop {
     position: fixed;
     inset: 0;
@@ -136,9 +142,9 @@ export const SelectField = styled.div`
     position: absolute;
     left: 0;
     right: 0;
-    top: calc(100% + 1.5rem);
     padding: 1.5rem;
     border-radius: 0.5rem;
+    top: calc(100% + 1.5rem);
     background-color: ${({ theme }) => theme.colors.white};
     box-shadow: ${({ theme }) => theme.boxShadow.radial_md};
     border: 1px solid ${({ theme }) => theme.colors.gray};
@@ -187,6 +193,10 @@ export const FileField = styled.div`
     color: ${({ theme }) => theme.colors.white};
   }
 
+  .chosen-assets__review-box {
+    margin-top: 1rem;
+  }
+
   .chosen-assets__review-box.single {
     display: flex;
     align-items: center;
@@ -208,11 +218,21 @@ export const FileField = styled.div`
     border-radius: 0.5rem;
     position: relative;
 
-    img {
+    img,
+    video {
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: inherit;
+    }
+
+    .play {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: ${({ theme }) => theme.fontSize.lg};
+      color: ${({ theme }) => theme.colors.blue};
     }
 
     .remove-asset--btn {

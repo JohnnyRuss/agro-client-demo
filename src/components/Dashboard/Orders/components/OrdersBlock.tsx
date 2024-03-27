@@ -1,22 +1,43 @@
-import { getTimeString, generateArray } from "@/utils";
+import { useState } from "react";
 
-import OrderItem from "./OrderItem";
+import { useSearchParams } from "@/hooks/utils";
+
+import ExpandBlockButton from "./ExpandBlockButton";
+import ExpandedOrdersList from "./ExpandedOrdersList";
+import ShortenOrdersList from "./ShortenOrdersList";
 import * as Styled from "./styles/ordersBlock.styled";
 
-type OrdersBlockT = {};
+import { GroupedOrdersT } from "@/interface/db/order.types";
 
-const OrdersBlock: React.FC<OrdersBlockT> = () => {
+type OrdersBlockT = {
+  groupedOrders: GroupedOrdersT;
+};
+
+const OrdersBlock: React.FC<OrdersBlockT> = ({ groupedOrders }) => {
+  const { getParam } = useSearchParams();
+
+  const isExpanded = getParam("expand") === "1";
+
+  const [isOpen, setIsOpen] = useState(true);
+
   return (
     <Styled.OrdersBlock>
-      <span className="order-block__date">
-        {getTimeString(new Date("02.24.2024").toString(), "dayMonthYearConfig")}
-      </span>
+      <ExpandBlockButton
+        total={groupedOrders.totalOrders}
+        year={groupedOrders.dateRange.year}
+        month={groupedOrders.dateRange.month}
+        onToggle={() => setIsOpen((prev) => !prev)}
+      />
 
-      <ul className="order-block__list">
-        {generateArray(5).map((id) => (
-          <OrderItem key={id} />
-        ))}
-      </ul>
+      {isOpen && (
+        <>
+          {isExpanded ? (
+            <ExpandedOrdersList groupedOrders={groupedOrders} />
+          ) : (
+            <ShortenOrdersList groupedOrders={groupedOrders} />
+          )}
+        </>
+      )}
     </Styled.OrdersBlock>
   );
 };

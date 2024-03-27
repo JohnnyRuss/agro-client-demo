@@ -17,9 +17,9 @@ const SectionTitle: React.FC<SectionTitleT> = ({
       <p className="section-title__main">
         {type === "primary" ? (
           <>
-            <span>{title} We</span>
+            <span>{title}</span>
             &nbsp;
-            <span>SELL</span>
+            <span>რომელსაც ვყიდით</span>
           </>
         ) : (
           <span>{title}</span>

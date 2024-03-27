@@ -3,6 +3,18 @@ import styled from "styled-components";
 export const Dashboard = styled.div`
   min-height: 100vh;
 
+  .nav-wrapper {
+    width: 100%;
+    display: flex;
+    align-items: center;
+
+    button {
+      padding: 1.5rem 2rem;
+      border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+      font-weight: 500;
+    }
+  }
+
   .dashboard-fig {
     width: 100%;
     height: 95vh;

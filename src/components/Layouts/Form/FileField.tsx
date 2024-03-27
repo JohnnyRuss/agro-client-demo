@@ -1,9 +1,12 @@
 import { useRef } from "react";
 
-import { CloseIcon } from "@/components/Layouts/Icons";
 import * as Styled from "./form.styled";
+import { CloseIcon, PlayIcon } from "@/components/Layouts/Icons";
 
 import { HookFormFileFieldT } from "@/interface/form.types";
+
+type SingleFileT = string | File | Blob;
+type MultipleFileT = Array<string> | Array<File> | Array<Blob>;
 
 type FileFieldT = {
   label: string;
@@ -14,16 +17,23 @@ type FileFieldT = {
   accept?: string;
   fieldProps: HookFormFileFieldT;
   value: string | string[];
-  onRemoveFile: (src: string) => void;
+  onRemoveFile: (src: SingleFileT) => void;
 };
 
 const FileField: React.FC<FileFieldT> = (props) => {
   const fileRef = useRef<HTMLInputElement | null>(null);
 
+  const doesValueExists =
+    (Array.isArray(props.value) && props.value.length > 0) ||
+    (!Array.isArray(props.value) && props.value);
+
   return (
     <Styled.FileField data-input-file>
-      {((Array.isArray(props.value) && props.value[0]) ||
-        (!Array.isArray(props.value) && props.value)) && (
+      <label htmlFor="form-file--upload" className="form__input-file--label">
+        {props.label ? props.label : "აირჩიეთ ფაილი"}
+      </label>
+
+      {doesValueExists && (
         <InputFileFrame
           value={props.value}
           multiple={props.multiple || false}
@@ -31,22 +41,17 @@ const FileField: React.FC<FileFieldT> = (props) => {
         />
       )}
 
-      <label htmlFor="form-file--upload" className="form__input-file--label">
-        {props.label ? props.label : "აირჩიეთ ფაილი"}
-      </label>
-
       <input
         hidden
         type="file"
         ref={fileRef}
-        accept={props.accept}
+        accept={props.accept || "*"}
         multiple={props.multiple}
         id="form-file--upload"
-        // {...fieldProps}
         onChange={props.fieldProps.onChange}
       />
 
-      {props.anotation && (
+      {props.anotation && !doesValueExists && (
         <label className="anotation-label" htmlFor="form-file--upload">
           {props.anotation}
         </label>
@@ -61,8 +66,8 @@ export default FileField;
 
 type InputFileFrameT = {
   multiple: boolean;
-  value: string | Array<string>;
-  onRemoveFile: (src: string) => void;
+  value: SingleFileT | MultipleFileT;
+  onRemoveFile: (src: SingleFileT) => void;
 };
 
 function InputFileFrame({ multiple, value, onRemoveFile }: InputFileFrameT) {
@@ -77,27 +82,25 @@ function InputFileFrame({ multiple, value, onRemoveFile }: InputFileFrameT) {
           .slice(0, 10)
           .map((url: string, index: number) => (
             <AssetFigure
-              key={url}
+              key={`asset-to-upload__${index}`}
               url={url}
               index={index}
-              assetsCount={value.length}
               onRemoveFile={onRemoveFile}
+              assetsCount={Array.isArray(value) ? value.length : 0}
             />
           ))
       ) : (
-        <figure className="form__file-icon--review__fig">
-          <img src={value as string} alt="media" />
-        </figure>
+        <AssetFigure url={value as SingleFileT} onRemoveFile={onRemoveFile} />
       )}
     </div>
   );
 }
 
 type AssetFigureT = {
-  url: string;
-  index: number;
-  assetsCount: number;
-  onRemoveFile: (src: string) => void;
+  url: SingleFileT;
+  index?: number;
+  assetsCount?: number;
+  onRemoveFile: (src: SingleFileT) => void;
 };
 
 function AssetFigure({ url, index, assetsCount, onRemoveFile }: AssetFigureT) {
@@ -106,20 +109,41 @@ function AssetFigure({ url, index, assetsCount, onRemoveFile }: AssetFigureT) {
     onRemoveFile && onRemoveFile(url);
   };
 
+  const isFile = (v: any) => v instanceof File;
+  const isVideo = (v: any) =>
+    (isFile(v) && v.type.startsWith("video/")) ||
+    (typeof v === "string" && v.endsWith(".mp4"));
+
   return (
     <figure className="chosen-assets__review-box--fig" key={`file-${index}`}>
-      <img src={url} alt="" />
+      {isVideo(url) ? (
+        <>
+          <span className="play">
+            <PlayIcon />
+          </span>
+          <video
+            src={
+              isFile(url) ? URL.createObjectURL(url as any) : (url as string)
+            }
+          />
+        </>
+      ) : (
+        <img
+          src={isFile(url) ? URL.createObjectURL(url as any) : (url as string)}
+          alt="uploading file"
+        />
+      )}
 
       <button
         className={`remove-asset--btn ${
-          assetsCount > 10 && index === 9 ? "hide-remove" : ""
+          assetsCount && assetsCount > 10 && index === 9 ? "hide-remove" : ""
         }`}
         onClick={onHandleRemove}
       >
         <CloseIcon />
       </button>
 
-      {assetsCount > 10 && index === 9 && (
+      {assetsCount && assetsCount > 10 && index === 9 && (
         <span className="extra-assets__layout">+{assetsCount - 10}</span>
       )}
     </figure>

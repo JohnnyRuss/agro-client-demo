@@ -1,8 +1,6 @@
 import * as Styled from "./spinner.styled";
 
-type StandSpinnerT = {};
-
-const StandSpinner: React.FC<StandSpinnerT> = () => {
+const StandSpinner: React.FC = () => {
   return (
     <Styled.StandSpinner className="scroll-block">
       <span className="loader"></span>

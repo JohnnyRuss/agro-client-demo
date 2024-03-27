@@ -1,73 +1,81 @@
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import { PATHS } from "@/config/paths";
+import { PATHS, DYNAMIC_ROUTES } from "@/config/paths";
 import { useAppUIContext } from "@/Providers/useProviders";
 
 import * as Styled from "./productCard.styled";
 import { LineClamp, Button } from "@/components/Layouts";
 import { DeleteIcon, EditIcon } from "@/components/Layouts/Icons";
 
-type ProductCardT = {};
+import { ProductT } from "@/interface/db/product.types";
 
-const ProductCard: React.FC<ProductCardT> = () => {
+type ProductCardT = {
+  product: ProductT;
+  onDelete: (productId: string) => Promise<void>;
+};
+
+const ProductCard: React.FC<ProductCardT> = ({ product, onDelete }) => {
   const navigate = useNavigate();
 
   const { activateDialog } = useAppUIContext();
 
   const onEdit = () =>
-    navigate(`${PATHS.dashboard_add_product_page}?category=${"1234"}`);
+    navigate(`${PATHS.dashboard_add_product_page}?product=${product._id}`, {
+      state: { product },
+    });
 
   const onStartDelete = () =>
     activateDialog({
-      target: "<PRODUCT>",
-      message: "Are you sure you want to delete this Product ?",
-      onConfirm: () => {},
-      title: "Delete Product",
+      target: "პროდუქტის",
+      message: "დარწმუნებული ხართ გსურთ ამ <TARGET> წაშლა ?",
+      onConfirm: () => onDelete(product._id),
+      title: "პროდუქტის წაშლა",
       type: "danger",
     });
+
+  const thumbnail = product.assets.find((asset) => asset?.endsWith(".webp"));
 
   return (
     <Styled.ProductCard>
       <figure className="card-fig">
         <img
-          src="https://images.unsplash.com/photo-1631337902392-b4bb679fbfdb?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          title=""
+          src={thumbnail}
+          alt={product.title}
+          title={product.title}
           width="100%"
           height="200"
+          loading="lazy"
         />
       </figure>
 
       <div className="card-details">
-        <LineClamp text="Spring Mix" clamp={2} component="span" />
+        <Link to={DYNAMIC_ROUTES.dashboard_product_details_page(product._id)}>
+          <LineClamp text={product.title} clamp={2} component="span" />
+        </Link>
 
-        <LineClamp
-          text="Lorem ipsum dolor sit, amet consectetur adipisicing elit. Ullam, in iste! Facere obcaecati cum deserunt est similique non tempora veniam!"
-          clamp={4}
-          component="p"
-        />
+        <LineClamp text={product.description} clamp={4} component="div" />
 
         <div className="flex-box">
           <div className="flex-box__sub">
-            <span>price:</span>
+            <span>ფასი:</span>
             &nbsp;
-            <span>$15.00</span>
+            <span>${product.price.toFixed(2).toLocaleString()}</span>
           </div>
 
-          <div className="flex-box__sub">
+          {/* <div className="flex-box__sub">
             <span className="sale">SALE</span>
-          </div>
+          </div> */}
         </div>
 
         <div className="flex-box">
           <Button show="danger" onClick={onStartDelete}>
             <DeleteIcon />
-            delete
+            წაშლა
           </Button>
 
           <Button onClick={onEdit}>
             <EditIcon />
-            update
+            რედაქტირება
           </Button>
         </div>
       </div>

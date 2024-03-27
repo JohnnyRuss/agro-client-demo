@@ -6,6 +6,10 @@ const USER_DEFAULT_AVATAR =
 const AGRO_THEME_KEY = "AGRO_THEME";
 const AGRO_PASSPORT_KEY = "AGRO_PASSPORT";
 
+const CATEGORIES_PER_PAGE = 42;
+const PRODUCT_PER_PAGE = 25;
+const COMBOS_PER_PAGE = 15;
+
 const RouterHistory: RouterHistoryT = {
   navigate: () => {},
   location: {
@@ -22,4 +26,7 @@ export {
   USER_DEFAULT_AVATAR,
   AGRO_PASSPORT_KEY,
   AGRO_THEME_KEY,
+  CATEGORIES_PER_PAGE,
+  PRODUCT_PER_PAGE,
+  COMBOS_PER_PAGE,
 };

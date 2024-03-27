@@ -4,7 +4,7 @@ import { devtools, persist } from "zustand/middleware";
 
 import { AxiosResponse } from "axios";
 import { RouterHistory } from "@/config/config";
-import { PATHS, PRIVATE_ROUTES } from "@/config/paths";
+import { PATHS } from "@/config/paths";
 import { logger, LocaleStorage as s } from "@/utils";
 import { createSelectors, getStatus } from "./helpers";
 import { axiosPublicQuery, axiosPrivateQuery } from "@/services/axios";
@@ -43,29 +43,8 @@ const useAuthStore = create<AuthStoreT>()(
 
               set(() => ({ user, status: getStatus("SUCCESS") }));
 
-              RouterHistory.navigate(PATHS.root_page);
+              RouterHistory.navigate(PATHS.dashboard_page);
             } catch (error) {
-              const message = logger(error);
-              set(() => ({ status: getStatus("FAIL", message) }));
-              throw error;
-            }
-          },
-
-          register: async (args) => {
-            try {
-              set(() => ({ status: getStatus("PENDING") }));
-
-              const { data }: AxiosResponse<AuthAPI_T.LoginResponseT> =
-                await axiosPublicQuery.post(`/auth/signup`, args);
-
-              const { user, accessToken } = data;
-
-              s.setJWT(accessToken);
-
-              set(() => ({ user, status: getStatus("SUCCESS") }));
-
-              RouterHistory.navigate(PATHS.root_page);
-            } catch (error: any) {
               const message = logger(error);
               set(() => ({ status: getStatus("FAIL", message) }));
               throw error;
@@ -85,90 +64,7 @@ const useAuthStore = create<AuthStoreT>()(
                 status: getStatus("SUCCESS"),
               }));
 
-              const isOnPrivateRoute = PRIVATE_ROUTES.some((route) =>
-                RouterHistory.location.pathname.includes(route)
-              );
-
-              if (isOnPrivateRoute) RouterHistory.navigate(PATHS.root_page);
-            } catch (error: any) {
-              const message = logger(error);
-              set(() => ({ status: getStatus("FAIL", message) }));
-              throw error;
-            }
-          },
-
-          forgotPassword: async (args) => {
-            try {
-              set(() => ({ status: getStatus("PENDING") }));
-
-              await axiosPublicQuery.patch("/auth/forgot-password", args);
-
-              set(() => ({ status: getStatus("SUCCESS") }));
-
-              RouterHistory.navigate(PATHS.confirm_email_page, {
-                state: { isProcessingPasswordUpdate: true },
-              });
-            } catch (error: any) {
-              const message = logger(error);
-              set(() => ({ status: getStatus("FAIL", message) }));
-              throw error;
-            }
-          },
-
-          confirmEmail: async (args) => {
-            try {
-              set(() => ({ status: getStatus("PENDING") }));
-
-              await axiosPublicQuery.put("/auth/forgot-password", args);
-
-              set(() => ({ status: getStatus("SUCCESS") }));
-
-              RouterHistory.navigate(PATHS.update_password_page, {
-                state: { emailIsConfirmed: true },
-              });
-            } catch (error: any) {
-              const message = logger(error);
-              set(() => ({ status: getStatus("FAIL", message) }));
-              throw error;
-            }
-          },
-
-          updatePassword: async (args) => {
-            try {
-              set(() => ({ status: getStatus("PENDING") }));
-
-              await axiosPublicQuery.post("/auth/forgot-password", args);
-
-              set(() => ({ status: getStatus("SUCCESS") }));
-
-              RouterHistory.navigate(PATHS.auth_page);
-            } catch (error: any) {
-              const message = logger(error);
-              set(() => ({ status: getStatus("FAIL", message) }));
-              throw error;
-            }
-          },
-
-          deleteAccount: async (args) => {
-            try {
-              set(() => ({ status: getStatus("PENDING") }));
-
-              await axiosPrivateQuery.post(`/users/${args.userId}/delete`, {
-                password: args.password,
-              });
-
-              s.removeJWT();
-
-              set(() => ({
-                user: initialState.user,
-                status: getStatus("SUCCESS"),
-              }));
-
-              const isOnPrivateRoute = PRIVATE_ROUTES.some((route) =>
-                RouterHistory.location.pathname.includes(route)
-              );
-
-              if (isOnPrivateRoute) RouterHistory.navigate(PATHS.root_page);
+              RouterHistory.navigate(PATHS.root_page);
             } catch (error: any) {
               const message = logger(error);
               set(() => ({ status: getStatus("FAIL", message) }));

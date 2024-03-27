@@ -6,7 +6,7 @@ import { useCheckIsAuthenticatedUser } from "@/hooks/auth";
 import * as Styled from "./dropdown.styled";
 
 type DropdownItemT = {
-  label: string;
+  label: React.ReactNode;
   value: string;
   onSelect?: (item?: Omit<DropdownItemT, "onSelect">) => void;
   active?: boolean;

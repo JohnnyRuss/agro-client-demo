@@ -1,24 +1,43 @@
+import { Link } from "react-router-dom";
+
+import { DYNAMIC_ROUTES } from "@/config/paths";
+import { useCart } from "@/hooks/utils";
+
 import * as Styled from "./productCard.styled";
-import { HeartIcon, ShoppingCartIcon } from "@/components/Layouts/Icons";
+import { ShoppingCartIcon } from "@/components/Layouts/Icons";
 
-type ProductCardT = {};
+import { ProductT } from "@/interface/db/product.types";
 
-const ProductCard: React.FC<ProductCardT> = () => {
+type ProductCardT = {
+  product: ProductT;
+};
+
+const ProductCard: React.FC<ProductCardT> = ({ product }) => {
+  const { onAdd } = useCart();
+
+  const onAddToCart = () =>
+    onAdd({
+      product,
+      quantity: 1,
+      size: product.sizes[0],
+      productType: "product",
+    });
+
   return (
     <Styled.ProductCard>
-      <div className="card-header">
+      {/* <div className="card-header">
         <button>
           <HeartIcon />
         </button>
 
         <span>sale!</span>
-      </div>
+      </div> */}
 
       <figure className="card-fig">
         <img
-          src="https://images.unsplash.com/photo-1631337902392-b4bb679fbfdb?q=80&w=2006&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-          alt=""
-          title=""
+          src={product.assets[0]}
+          alt={product.title}
+          title={product.title}
           width="100%"
           height="200"
         />
@@ -26,11 +45,25 @@ const ProductCard: React.FC<ProductCardT> = () => {
 
       <div className="card-details">
         <div className="flex-col">
-          <p className="card-title">Spring Mix</p>
-          <span className="card-price">$15.00</span>
+          <Link
+            to={DYNAMIC_ROUTES.product_page(product._id)}
+            className="card-title"
+          >
+            {product.title}
+          </Link>
+
+          <div className="card-price--size">
+            <span className="card-price">{product.price}₾</span>
+
+            <span className="card-size">
+              <span>ზომა:</span>
+              &nbsp;
+              <span>{product.sizes[0]}</span>
+            </span>
+          </div>
         </div>
 
-        <button>
+        <button className="card-shopping--btn" onClick={onAddToCart}>
           <ShoppingCartIcon />
         </button>
       </div>

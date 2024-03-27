@@ -17,6 +17,10 @@ export const Button = styled.button<ButtonT>`
   gap: 1rem;
   transition: all 0.3s ease;
 
+  &:disabled {
+    opacity: 0.7;
+  }
+
   ${({ $show, $fillType }) => {
     switch ($show) {
       case "danger":

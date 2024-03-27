@@ -4,6 +4,7 @@ import { RouteT } from "@/interface/config.types";
 import { Navigate } from "react-router-dom";
 
 const Routes: Array<RouteT> = [
+  // ========== HOME ==========
   {
     path: PATHS.root_page,
     title: "root-page",
@@ -18,12 +19,80 @@ const Routes: Array<RouteT> = [
     children: [],
   },
 
+  // ========== PRODUCTS ==========
+  {
+    path: PATHS.product_page,
+    title: "product-page",
+    element: <Pages.ProductDetailsPage />,
+    children: [],
+  },
+
+  // ========== COMBOS ==========
+  {
+    path: PATHS.combo_page,
+    title: "combo-page",
+    element: <Pages.ComboDetailsPage />,
+    children: [],
+  },
+
+  // ========== SHOP -  ALL PRODUCTS AND ALL COMBOS ROOT ==========
+  {
+    path: PATHS.shopping_page,
+    title: "shopping-page",
+    element: <Pages.ShoppingPage />,
+    children: [
+      {
+        path: PATHS.all_products_page,
+        title: "all-products-page",
+        element: <Pages.AllProductsPage />,
+        children: [],
+      },
+      {
+        path: PATHS.all_combos_page,
+        title: "all-combos-page",
+        element: <Pages.AllCombosPage />,
+        children: [],
+      },
+    ],
+  },
+
+  // ========== SHOPPING_CART ==========
+  {
+    path: PATHS.shopping_cart_page,
+    title: "shopping-cart-page",
+    element: <Pages.ShoppingCartPage />,
+    children: [],
+  },
+
+  {
+    path: PATHS.shopping_cart_success_page,
+    title: "shopping-cart-success-page",
+    element: <Pages.ShoppingCartSuccessPage />,
+    children: [],
+  },
+
+  // ========== ABOUT_US ==========
+  {
+    path: PATHS.about_us_page,
+    title: "about-us-page",
+    element: <Pages.AboutUsPage />,
+    children: [],
+  },
+
   // ========== DASHBOARD ==========
+  {
+    path: PATHS.auth_page,
+    title: "auth-page",
+    element: <Pages.AuthPage />,
+    children: [],
+  },
+
   {
     path: PATHS.dashboard_page,
     title: "dashboard-page",
     element: <Pages.DashboardPage />,
     children: [
+      // ========== CATEGORIES ==========
       {
         path: PATHS.dashboard_categories_page,
         title: "dashboard-categories-page",
@@ -44,11 +113,13 @@ const Routes: Array<RouteT> = [
         ],
       },
 
+      // ========== COMBOS ==========
       {
         path: PATHS.dashboard_combos_page,
         title: "dashboard-combos-page",
         element: <Pages.DashboardCombosPage />,
         children: [
+          // ALL COMBOS
           {
             path: PATHS.dashboard_your_combos_page,
             title: "dashboard-your-combos-page",
@@ -56,26 +127,29 @@ const Routes: Array<RouteT> = [
             children: [],
           },
           {
+            // CREATE COMBO
             path: PATHS.dashboard_create_combo_page,
             title: "dashboard-create-combo-page",
             element: <Pages.DashboardCreateComboPage />,
             children: [],
           },
+          // ACTIVE COMBO
+          {
+            path: PATHS.dashboard_combo_details_page,
+            title: "dashboard-combo-details-page",
+            element: <Pages.DashboardComboDetailsPage />,
+            children: [],
+          },
         ],
       },
 
-      {
-        path: PATHS.dashboard_orders_page,
-        title: "dashboard-orders-page",
-        element: <Pages.DashboardOrdersPage />,
-        children: [],
-      },
-
+      // ========== PRODUCTS ==========
       {
         path: PATHS.dashboard_products_page,
         title: "dashboard-product-page",
         element: <Pages.DashboardProductsPage />,
         children: [
+          // ALL PRODUCT
           {
             path: PATHS.dashboard_your_products_page,
             title: "dashboard-your-products-page",
@@ -83,12 +157,28 @@ const Routes: Array<RouteT> = [
             children: [],
           },
           {
+            // ADD PRODUCT
             path: PATHS.dashboard_add_product_page,
             title: "dashboard-add-product-page",
             element: <Pages.DashboardAddProductPage />,
             children: [],
           },
+          // ACTIVE PRODUCT
+          {
+            path: PATHS.dashboard_product_details_page,
+            title: "dashboard-combo-details-page",
+            element: <Pages.DashboardProductDetailsPage />,
+            children: [],
+          },
         ],
+      },
+
+      // ========== ORDERS ==========
+      {
+        path: PATHS.dashboard_orders_page,
+        title: "dashboard-orders-page",
+        element: <Pages.DashboardOrdersPage />,
+        children: [],
       },
     ],
   },

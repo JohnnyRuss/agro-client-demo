@@ -1,5 +1,6 @@
 import * as Styled from "./orders.styled";
 import OrdersList from "./components/Orders";
+import OrderReview from "./components/OrderReview";
 import OrdersFilter from "./components/OrdersFilter";
 
 const Orders: React.FC = () => {
@@ -10,11 +11,7 @@ const Orders: React.FC = () => {
       <div className="orders__content-box">
         <OrdersList />
 
-        <div className="invoice">
-          <figure>
-            <img src="/assets/invoice.jpg" alt="" />
-          </figure>
-        </div>
+        <OrderReview />
       </div>
     </Styled.Orders>
   );

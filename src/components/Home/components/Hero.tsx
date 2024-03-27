@@ -1,8 +1,9 @@
+import { Link } from "react-router-dom";
+import { PATHS } from "@/config/paths";
+
 import * as Styled from "./styles/hero.styled";
 
-type HeroT = {};
-
-const Hero: React.FC<HeroT> = () => {
+const Hero: React.FC = () => {
   return (
     <Styled.Hero>
       <figure className="hero-fig">
@@ -16,9 +17,9 @@ const Hero: React.FC<HeroT> = () => {
 
       <div className="hero__content-box">
         <div className="hero-stand">
-          <p>Welcome To Our</p>
-          <p className="primary">Farming House</p>
-          <button>See Products</button>
+          <p>მოგესალმებათ</p>
+          <p className="primary">AGRO-ORNAMENT</p>
+          <Link to={PATHS.all_products_page}>ნახეთ პროდუქტები</Link>
         </div>
       </div>
     </Styled.Hero>

@@ -7,6 +7,7 @@ type NavigationT = {
 
 const StyledNav = styled.nav`
   border-bottom: 1px solid ${({ theme }) => theme.colors.gray};
+  width: 100%;
 
   .nav__list {
     display: flex;

@@ -11,12 +11,28 @@ export default function useSearchParams() {
     navigate(`${pathname}?${searchParams.toString()}`);
   };
 
+  const setMultipleParams = (params: Array<{ key: string; value: string }>) => {
+    params.forEach((param) => searchParams.set(param.key, param.value));
+    navigate(`${pathname}?${searchParams.toString()}`);
+  };
+
   const removeParam = (key: string) => {
     searchParams.delete(key);
     navigate(`${pathname}?${searchParams.toString()}`);
   };
 
+  const removeMultipleParams = (keys: Array<string>) => {
+    keys.forEach((key) => searchParams.delete(key));
+    navigate(`${pathname}?${searchParams.toString()}`);
+  };
+
   const getParam = (key: string) => searchParams.get(key);
 
-  return { setParam, removeParam, getParam };
+  return {
+    setParam,
+    setMultipleParams,
+    removeParam,
+    removeMultipleParams,
+    getParam,
+  };
 }

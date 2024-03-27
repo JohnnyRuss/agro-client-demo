@@ -1,5 +1,7 @@
 import { useLocation } from "react-router-dom";
+
 import { PATHS } from "@/config/paths";
+import { useLogoutQuery } from "@/hooks/api/auth";
 
 import * as Styled from "./dashboard.styled";
 import Navigation from "./utils/Navigation";
@@ -12,19 +14,19 @@ type DashboardT = {
 const routes = [
   {
     path: PATHS.dashboard_categories_page,
-    title: "categories",
-  },
-  {
-    path: PATHS.dashboard_combos_page,
-    title: "combos",
-  },
-  {
-    path: PATHS.dashboard_orders_page,
-    title: "orders",
+    title: "კატეგორიები",
   },
   {
     path: PATHS.dashboard_products_page,
-    title: "products",
+    title: "პროდუქტები",
+  },
+  {
+    path: PATHS.dashboard_combos_page,
+    title: "ნაკრები",
+  },
+  {
+    path: PATHS.dashboard_orders_page,
+    title: "შეკვეთები",
   },
   {
     path: PATHS.home_page,
@@ -34,9 +36,16 @@ const routes = [
 
 const Dashboard: React.FC<DashboardT> = ({ children }) => {
   const { pathname } = useLocation();
+
+  const { onLogout } = useLogoutQuery();
+
   return (
     <Styled.Dashboard>
-      <Navigation routes={routes} />
+      <div className="nav-wrapper">
+        <Navigation routes={routes} />
+
+        <button onClick={onLogout}>გასვლა</button>
+      </div>
 
       <div className="dashboard__content-box">
         {pathname === PATHS.dashboard_page ? (

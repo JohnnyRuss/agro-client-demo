@@ -20,6 +20,12 @@ export const Navigation = styled.nav`
     align-items: center;
     font-size: ${({ theme }) => theme.fontSize.xxl};
     font-weight: 600;
+
+    .logo-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
   }
 
   .nav-row__center {
@@ -36,6 +42,11 @@ export const Navigation = styled.nav`
       display: flex;
       align-items: center;
       gap: 2rem;
+
+      li a.active {
+        font-weight: 600;
+        color: ${({ theme }) => theme.colors.primary};
+      }
     }
 
     .search-field {
@@ -59,6 +70,23 @@ export const Navigation = styled.nav`
       font-size: ${({ theme }) => theme.fontSize.xxl};
       color: ${({ theme }) => theme.colors.primary};
       display: flex;
+      position: relative;
+
+      span {
+        position: absolute;
+        width: 2rem;
+        height: 2rem;
+        right: -0.75rem;
+        top: -0.75rem;
+        line-height: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        color: ${({ theme }) => theme.colors.white};
+        background-color: ${({ theme }) => theme.colors.red};
+        font-size: ${({ theme }) => theme.fontSize.sm};
+      }
     }
   }
 
@@ -126,15 +154,20 @@ export const Navigation = styled.nav`
     .nav-row__left {
       width: max-content;
       flex: none;
+
+      img {
+        width: 3rem;
+      }
     }
 
     .nav-row__center {
       border: none;
-      justify-content: flex-end;
+      justify-content: space-between;
     }
 
     .search-field {
       margin: unset;
+      margin-left: auto;
     }
   }
 `;
@@ -185,10 +218,10 @@ export const NavSocials = styled.div`
   }
 
   @media screen and (${({ theme }) => theme.breakpoints.mobile_lg}) {
-    padding: 1rem;
+    padding: 1rem 0.25rem;
 
     .socials-list {
-      gap: 1rem 1.5rem;
+      gap: 1rem 0.5rem;
     }
 
     .socials-list li a {

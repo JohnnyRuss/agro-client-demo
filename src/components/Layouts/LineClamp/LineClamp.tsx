@@ -2,8 +2,10 @@ import { Text } from "@/components/Layouts";
 import styled from "styled-components";
 
 type LineClampT = {
-  clamp?: number;
   text: string;
+  clamp?: number;
+  showTitle?: boolean;
+  onClick?: () => void;
   showEmptyLines?: boolean;
   sx?: React.CSSProperties;
   component?: keyof JSX.IntrinsicElements;
@@ -22,11 +24,20 @@ const LineClamp: React.FC<LineClampT> = ({
   text,
   sx = {},
   clamp = 1,
+  showTitle = false,
   component = "div",
+  onClick = () => {},
   showEmptyLines = false,
 }) => {
   return (
-    <LineClampedBox as={component} $clamp={clamp} style={sx} data-line-clamp>
+    <LineClampedBox
+      style={sx}
+      as={component}
+      $clamp={clamp}
+      data-line-clamp
+      onClick={onClick}
+      title={showTitle ? text : ""}
+    >
       <Text text={text} showEmptyLines={showEmptyLines} />
     </LineClampedBox>
   );

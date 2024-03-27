@@ -4,12 +4,12 @@ const Theme: DefaultTheme = {
   mode: "light",
 
   breakpoints: {
-    desktop: "max-width:96em",
-    desktop_sm: "max-width:80em",
-    tablet: "max-width:64em",
-    tablet_sm: "max-width:53.75em",
-    mobile_lg: "max-width:40em",
-    mobile: "max-width:30em",
+    desktop: "max-width:96em", // 1536px
+    desktop_sm: "max-width:80em", // 1280px
+    tablet: "max-width:64em", // 1024px
+    tablet_sm: "max-width:53.75em", // 860px
+    mobile_lg: "max-width:40em", // 640px
+    mobile: "max-width:30em", // 480px
   },
 
   colors: {

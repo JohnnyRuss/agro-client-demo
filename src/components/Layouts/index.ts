@@ -6,6 +6,7 @@ export { default as MultiSelect } from "./MultiSelect/MultiSelect";
 export { default as TextFieldPassword } from "./Form/TextFieldPassword";
 export { default as SelectField } from "./Form/SelectField";
 export { default as FileField } from "./Form/FileField";
+export { default as FormTitle } from "./Form/FormTitle";
 
 // ========== Modals ==========
 export { default as Modal } from "./Modal/Modal";
@@ -22,6 +23,10 @@ export { default as EmptyMessage } from "./EmptyMessage/EmptyMessage";
 export { default as SuspenseContainer } from "./SuspenseContainer/SuspenseContainer";
 export { default as ProductCard } from "./ProductCard/ProductCard";
 export { default as Button } from "./Button/Button";
+export { default as InfiniteScroll } from "./InfiniteScroll/InfiniteScroll";
+export { default as Counter } from "./Counter/Counter";
+export { default as ComboCard } from "./ComboCard/ComboCard";
+export { default as ContactSection } from "./ContactSection/ContactSection";
 
 // ========== SPINNERS ==========
 export { default as Spinner } from "./Spinner/Spinner";

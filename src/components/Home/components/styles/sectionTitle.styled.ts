@@ -29,11 +29,11 @@ export const SectionTitle = styled.div`
     font-size: ${({ theme }) => theme.fontSize.xxl};
 
     span:first-child {
-      font-weight: 500;
+      font-weight: 700;
     }
 
     span:last-child {
-      font-weight: 700;
+      font-weight: 500;
     }
   }
 

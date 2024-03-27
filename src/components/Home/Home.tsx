@@ -1,8 +1,6 @@
 import * as Styled from "./home.styled";
+import { ContactSection } from "@/components/Layouts";
 import Hero from "./components/Hero";
-import Contact from "./components/Contact";
-import AboutUs from "./components/AboutUs";
-import GetInTouch from "./components/GetInTouch";
 import CombosWeSell from "./components/CombosWeSell";
 import ProductsWeSell from "./components/ProductsWeSell";
 
@@ -16,11 +14,11 @@ const Home: React.FC = () => {
 
         <CombosWeSell />
 
-        <GetInTouch />
+        {/* <GetInTouch /> */}
 
-        <Contact />
+        <ContactSection />
 
-        <AboutUs />
+        {/* <AboutUs /> */}
       </div>
     </Styled.Home>
   );

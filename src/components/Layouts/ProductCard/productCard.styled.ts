@@ -4,8 +4,12 @@ export const ProductCard = styled.div`
   display: flex;
   flex-direction: column;
   gap: 9rem;
+  background-color: #fbfafa;
+  padding: 2rem;
+  padding-top: 6rem;
+  border-radius: 1rem;
 
-  .card-header {
+  /* .card-header {
     width: 100%;
     display: flex;
     align-items: center;
@@ -23,7 +27,7 @@ export const ProductCard = styled.div`
       font-size: ${({ theme }) => theme.fontSize.xs};
       text-transform: capitalize;
     }
-  }
+  } */
 
   .card-fig {
     width: 100%;
@@ -43,6 +47,7 @@ export const ProductCard = styled.div`
   .card-details {
     display: flex;
     justify-content: space-between;
+    align-items: center;
 
     .flex-col {
       display: flex;
@@ -55,12 +60,15 @@ export const ProductCard = styled.div`
       font-size: ${({ theme }) => theme.fontSize.md};
     }
 
-    .card-price {
+    .card-price--size {
+      display: flex;
+      align-items: center;
       font-size: ${({ theme }) => theme.fontSize.sm};
       color: ${({ theme }) => theme.colors.gray_shade};
+      gap: 2rem;
     }
 
-    button {
+    .card-shopping--btn {
       background-color: ${({ theme }) => theme.colors.primary};
       color: ${({ theme }) => theme.colors.white};
       width: 5rem;

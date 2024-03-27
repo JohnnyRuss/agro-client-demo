@@ -16,7 +16,7 @@ export default function useRedirectAuthorized() {
     (async () => {
       try {
         const { isAuthenticatedUser } = await check();
-        if (isAuthenticatedUser) navigate(PATHS.root_page);
+        if (isAuthenticatedUser) navigate(PATHS.dashboard_page);
       } catch (error) {
         console.error(error);
       } finally {

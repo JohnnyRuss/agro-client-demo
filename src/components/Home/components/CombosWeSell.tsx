@@ -1,19 +1,35 @@
-import { generateArray } from "@/utils";
+import { useEffect } from "react";
+
+import { DYNAMIC_ROUTES } from "@/config/paths";
+import { useGetCombosQuery } from "@/hooks/api/combos";
 
 import SectionTitle from "./SectionTitle";
-import { ProductCard } from "@/components/Layouts";
 import * as Styled from "./styles/combosWeSell.styled";
+import { ComboCard } from "@/components/Layouts";
 
-type CombosWeSellT = {};
+const CombosWeSell: React.FC = () => {
+  const { getPaginatedCombosQuery, data, cleanUpAll } = useGetCombosQuery();
 
-const CombosWeSell: React.FC<CombosWeSellT> = () => {
+  useEffect(() => {
+    getPaginatedCombosQuery({ page: 1, limit: 6 });
+
+    return () => {
+      cleanUpAll();
+    };
+  }, []);
+
   return (
     <Styled.CombosWeSell>
-      <SectionTitle subTitle="BUNDLES" title="Bundles" />
+      <SectionTitle subTitle="კომბინაციები" title="კომბინაციები" />
 
       <ul className="products-list">
-        {generateArray(6).map((id) => (
-          <ProductCard key={id} />
+        {data.map((combo) => (
+          <ComboCard
+            combo={combo}
+            key={combo._id}
+            showActions={false}
+            redirectPath={DYNAMIC_ROUTES.combo_page(combo._id)}
+          />
         ))}
       </ul>
     </Styled.CombosWeSell>

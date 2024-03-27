@@ -11,14 +11,21 @@ import {
 
 // ========== md ==========
 import {
-  MdOutlineEmail,
   MdDelete,
   MdClose,
+  MdOpenInNew,
+  MdOutlineSort,
+  MdOutlineEmail,
   MdOutlinePublish,
 } from "react-icons/md";
 
 // ========== io ==========
-import { IoMdArrowDropdown, IoIosArrowBack } from "react-icons/io";
+import {
+  IoMdArrowDropdown,
+  IoIosArrowBack,
+  IoIosArrowRoundUp,
+  IoIosArrowRoundDown,
+} from "react-icons/io";
 
 // ========== fa ==========
 import {
@@ -31,6 +38,7 @@ import {
   FaVideo,
   FaPlus,
   FaMinus,
+  FaPlay,
 } from "react-icons/fa";
 
 // ========== ai ==========
@@ -44,6 +52,9 @@ import { GoFileMedia } from "react-icons/go";
 
 // ========== gr ==========
 import { GrApps } from "react-icons/gr";
+
+// ========== lu ==========
+import { LuPackageCheck } from "react-icons/lu";
 
 const LocationIcon = CiLocationOn;
 const SearchIcon = CiSearch;
@@ -71,6 +82,12 @@ const MinusIcon = FaMinus;
 const PublishIcon = MdOutlinePublish;
 const FilterIcon = CiFilter;
 const AppIcon = GrApps;
+const PlayIcon = FaPlay;
+const PackageCheckIcon = LuPackageCheck;
+const OpenInNewIcon = MdOpenInNew;
+const SortIcon = MdOutlineSort;
+const ArrowUp = IoIosArrowRoundUp;
+const ArrowDown = IoIosArrowRoundDown;
 
 export {
   LocationIcon,
@@ -99,4 +116,10 @@ export {
   PublishIcon,
   FilterIcon,
   AppIcon,
+  PlayIcon,
+  PackageCheckIcon,
+  OpenInNewIcon,
+  SortIcon,
+  ArrowUp,
+  ArrowDown,
 };
