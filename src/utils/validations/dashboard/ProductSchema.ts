@@ -12,7 +12,7 @@ const ProductSchema = z.object({
     title: z.string(),
     value: z.string(),
   }),
-  sizes: z.array(z.object({ size: z.string() })),
+  sizes: z.array(z.object({ size: z.string().trim().min(1) })).min(1),
   assets: z.array(z.any()),
   assets_to_delete: z.array(z.string()),
 });

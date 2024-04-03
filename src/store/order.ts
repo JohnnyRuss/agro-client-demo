@@ -1,11 +1,12 @@
+import { produce } from "immer";
 import { create } from "zustand";
+import { AxiosResponse } from "axios";
 import { devtools } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
-import { AxiosResponse } from "axios";
 
 import { logger } from "@/utils";
-import { getStatus, createSelectors } from "./helpers";
 import { axiosPrivateQuery } from "@/services/axios";
+import { getStatus, createSelectors } from "./helpers";
 
 import { GroupedOrdersT, OrderT } from "@/interface/db/order.types";
 import { OrderStateT, OrderStoreT } from "@/interface/store/order.store.types";
@@ -17,6 +18,7 @@ const initialState: OrderStateT = {
   readStatus: getStatus("IDLE"),
   order: {
     _id: "",
+    invoiceNumber: "",
     customerAddress: "",
     customerId: "",
     customerName: "",
@@ -73,9 +75,31 @@ const useProductStore = create<OrderStoreT>()(
         try {
           set(() => ({ treeTrunkStatus: getStatus("PENDING") }));
 
-          await axiosPrivateQuery.post(`${params.orderId}`, {
+          await axiosPrivateQuery.post(`/orders/${params.orderId}/status`, {
             status: params.status,
           });
+
+          set((state) =>
+            produce(state, (draft) => {
+              const candidateOrdersGroupIndex = draft.orders.findIndex(
+                (groupedOrders) =>
+                  groupedOrders.orders.some(
+                    (order) => order._id === params.orderId
+                  )
+              );
+              const candidateOrderIndex = draft.orders[
+                candidateOrdersGroupIndex
+              ].orders.findIndex((order) => order._id === params.orderId);
+
+              if (candidateOrdersGroupIndex >= 0)
+                draft.orders[candidateOrdersGroupIndex].orders[
+                  candidateOrderIndex
+                ].status = params.status;
+
+              if (draft.order && draft.order._id === params.orderId)
+                draft.order.status = params.status;
+            })
+          );
 
           set(() => ({ treeTrunkStatus: getStatus("SUCCESS") }));
         } catch (error: any) {

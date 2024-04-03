@@ -14,21 +14,30 @@ type ExpandedOrdersListT = {
 const ExpandedOrdersList: React.FC<ExpandedOrdersListT> = ({
   groupedOrders,
 }) => {
+  const filteredOrders =
+    groupedOrders.orders.filter(filterOrdersByStatus) || [];
+
   return (
     <Styled.ExpandedOrdersList>
-      {groupedOrders.orders.filter(filterOrdersByStatus).map((order) => {
-        return (
-          <Fragment key={order._id}>
-            {order.products.map((product) => (
-              <ExpandedOrderItem
-                order={order}
-                product={product}
-                key={`${product._id}-${product.size}--${order.createdAt}`}
-              />
-            ))}
-          </Fragment>
-        );
-      })}
+      {filteredOrders.length > 0 ? (
+        filteredOrders.map((order) => {
+          return (
+            <Fragment key={order._id}>
+              {order.products.map((product) => (
+                <ExpandedOrderItem
+                  order={order}
+                  product={product}
+                  key={`${product._id}-${product.size}--${order.createdAt}`}
+                />
+              ))}
+            </Fragment>
+          );
+        })
+      ) : (
+        <p style={{ textAlign: "center", fontWeight: 600, fontSize: "18px" }}>
+          დროის ამ მონაკვეთში შესაბამისი შეკვეთა არ ფიქსირდება
+        </p>
+      )}
     </Styled.ExpandedOrdersList>
   );
 };

@@ -8,12 +8,13 @@ type ShortenOrderItemT = {
 };
 
 const ShortenOrderItem: React.FC<ShortenOrderItemT> = ({ order }) => {
-  const { setParam } = useSearchParams();
+  const { setParam, getParam } = useSearchParams();
 
   const onReviewOrder = () => setParam("review-order", order._id);
+  const isOrderInReview = getParam("review-order") === order._id;
 
   return (
-    <li>
+    <li className={isOrderInReview ? "active" : ""}>
       <div>
         <span>დამკვეთის სახელი:</span>
         &nbsp;
@@ -35,8 +36,8 @@ const ShortenOrderItem: React.FC<ShortenOrderItemT> = ({ order }) => {
       <div>
         <span>შეკვეთის სტატუსი:</span>
         &nbsp;
-        <span>
-          {order.status === "APPROVED"
+        <span className={`status ${order.status.toLocaleLowerCase()}`}>
+          {order.status === "SUCCESS"
             ? "წარმატებული"
             : order.status === "PENDING"
             ? "მომლოდინე"

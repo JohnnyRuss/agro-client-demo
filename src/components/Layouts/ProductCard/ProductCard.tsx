@@ -46,6 +46,7 @@ const ProductCard: React.FC<ProductCardT> = ({ product }) => {
       <div className="card-details">
         <div className="flex-col">
           <Link
+            target="_blank"
             to={DYNAMIC_ROUTES.product_page(product._id)}
             className="card-title"
           >

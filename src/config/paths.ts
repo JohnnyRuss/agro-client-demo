@@ -22,6 +22,7 @@ const PATHS = {
   // =============================== //
 
   about_us_page: "/about-us",
+  privacy_policy__page: "/privacy-policy",
 
   // ====================================== //
   // ========== SHOPPING_CART ↓ ========== //
@@ -49,6 +50,7 @@ const PATHS = {
 
   // ========== ORDERS ==========
   dashboard_orders_page: "/dashboard/orders",
+  dashboard_generate_invoice_page: "/dashboard/orders/invoice",
 
   // ========== PRODUCTS ==========
   dashboard_products_page: "/dashboard/products",

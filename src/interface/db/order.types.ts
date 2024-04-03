@@ -37,6 +37,7 @@ type GroupedOrdersIdT = { month: number; year: number };
 
 type OrderT = {
   _id: string;
+  invoiceNumber: string;
   customerName: string;
   customerAddress: string;
   customerPhone: string;
@@ -47,7 +48,7 @@ type OrderT = {
   createdAt: string;
 };
 
-type OrderStatusT = "PENDING" | "REJECTED" | "APPROVED";
+type OrderStatusT = "PENDING" | "REJECTED" | "SUCCESS";
 
 export type {
   OrderT,

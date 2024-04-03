@@ -12,7 +12,7 @@ const ShoppingCartHeader: React.FC = () => {
 
       <div className="shopping-cart__header-body">
         <figure>
-          <img src="/assets/logo.webp" alt="" width={300} />
+          <img src="/assets/logo-geo.webp" alt="" width={300} />
         </figure>
       </div>
     </Styled.ShoppingCartHeader>

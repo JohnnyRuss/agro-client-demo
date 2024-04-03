@@ -95,7 +95,8 @@ export const Navigation = styled.nav`
     padding: 0 1rem;
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 1rem;
+    min-width: 20rem;
 
     svg {
       font-size: ${({ theme }) => theme.fontSize.xxl};
@@ -184,6 +185,7 @@ export const NavSocials = styled.div`
     width: min(128rem, 100%);
     margin: 0 auto;
 
+    li div,
     li a {
       display: flex;
       align-items: center;
@@ -192,6 +194,7 @@ export const NavSocials = styled.div`
       font-size: ${({ theme }) => theme.fontSize.sm};
     }
 
+    li div span,
     li a span {
       line-height: 1;
       display: flex;

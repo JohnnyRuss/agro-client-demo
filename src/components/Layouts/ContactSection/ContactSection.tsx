@@ -5,8 +5,6 @@ import {
   WhatsUpIcon,
   PhoneIcon,
   FacebookIcon,
-  TwitterIcon,
-  InstagramIcon,
 } from "@/components/Layouts/Icons";
 import * as Styled from "./contactSection.styled";
 
@@ -21,31 +19,36 @@ const ContactSection: React.FC<ContactT> = () => {
         </span>
 
         <div className="contact-box__detail">
-          <span>2715 ash dr. san jose, south dakota 83475</span>
+          <span>ქ.ქუთაისი შარტავას 2/10 - 4600</span>
         </div>
       </div>
 
-      <div className="contact-box col-2">
+      <a href="mailto:agroornament@gmail.com" className="contact-box col-2">
         <span className="contact-box__icon">
           <EmailIcon />
         </span>
 
         <div className="contact-box__detail">
-          <span>support@example.com</span>
+          <span>agroornament@gmail.com</span>
         </div>
-      </div>
+      </a>
 
-      <div className="contact-box col-2">
+      <a href="tel:+995555145719" className="contact-box col-2">
         <span className="contact-box__icon">
           <PhoneIcon />
         </span>
 
         <div className="contact-box__detail">
-          <span>+01234567889</span>
+          <span>+995 555 14 57 19</span>
         </div>
-      </div>
+      </a>
 
-      <div className="contact-box col-2">
+      <a
+        href="https://wa.me/555145719"
+        referrerPolicy="no-referrer"
+        target="_blank"
+        className="contact-box col-2"
+      >
         <span className="contact-box__icon">
           <WhatsUpIcon />
         </span>
@@ -53,9 +56,14 @@ const ContactSection: React.FC<ContactT> = () => {
         <div className="contact-box__detail">
           <span>WhatsUp</span>
         </div>
-      </div>
+      </a>
 
-      <div className="contact-box col-2">
+      <a
+        href="viber://chat?number=555145719"
+        referrerPolicy="no-referrer"
+        target="_blank"
+        className="contact-box col-2"
+      >
         <span className="contact-box__icon">
           <ViberIcon />
         </span>
@@ -63,9 +71,14 @@ const ContactSection: React.FC<ContactT> = () => {
         <div className="contact-box__detail">
           <span>Viber</span>
         </div>
-      </div>
+      </a>
 
-      <div className="contact-box col-2">
+      <a
+        className="contact-box col-2"
+        href="https://www.facebook.com/agrometi"
+        target="_blank"
+        referrerPolicy="no-referrer"
+      >
         <span className="contact-box__icon">
           <FacebookIcon />
         </span>
@@ -73,9 +86,9 @@ const ContactSection: React.FC<ContactT> = () => {
         <div className="contact-box__detail">
           <span>Facebook</span>
         </div>
-      </div>
+      </a>
 
-      <div className="contact-box col-3">
+      {/* <div className="contact-box col-3">
         <span className="contact-box__icon">
           <TwitterIcon />
         </span>
@@ -93,7 +106,7 @@ const ContactSection: React.FC<ContactT> = () => {
         <div className="contact-box__detail">
           <span>Instagram</span>
         </div>
-      </div>
+      </div> */}
     </Styled.ContactSection>
   );
 };

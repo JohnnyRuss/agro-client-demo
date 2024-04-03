@@ -3,6 +3,11 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
+  "overrides": {
+    "@react-pdf/renderer": {
+      "react": "^18.0.0"
+    }
+  },
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
@@ -11,6 +16,7 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.4",
+    "@react-pdf/renderer": "^3.4.2",
     "@types/react-image-magnify": "^2.7.4",
     "axios": "^1.6.7",
     "immer": "^10.0.3",

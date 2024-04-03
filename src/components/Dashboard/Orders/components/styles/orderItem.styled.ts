@@ -4,6 +4,13 @@ export const OrderItem = styled.li`
   display: flex;
   align-items: flex-start;
   gap: 2rem;
+  padding: 1rem 1.5rem;
+  margin-right: 2rem;
+
+  &.active {
+    border-radius: 1rem;
+    border: 1px solid ${({ theme }) => theme.colors.blue};
+  }
 
   .order-fig {
     width: 15rem;
@@ -50,6 +57,20 @@ export const OrderItem = styled.li`
       .view-invoice__btn {
         padding: 0.5rem 2rem;
         border-radius: 0.25rem;
+      }
+    }
+
+    .status {
+      &.success {
+        color: ${({ theme }) => theme.colors.primary};
+      }
+
+      &.rejected {
+        color: ${({ theme }) => theme.colors.red};
+      }
+
+      &.pending {
+        color: orange;
       }
     }
   }

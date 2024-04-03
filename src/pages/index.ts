@@ -20,6 +20,7 @@ export { default as ComboDetailsPage } from "./Combo/ComboDetailsPage";
 
 //========== ABOUT_US ==========
 export { default as AboutUsPage } from "./AboutUs/AboutUsPage";
+export { default as PrivacyPolicyPage } from "./AboutUs/PrivacyPolicyPage";
 
 // ========== SHOPPING_CART ==========
 export { default as ShoppingCartPage } from "./ShoppingCart/ShoppingCartPage";
@@ -46,6 +47,7 @@ export { default as DashboardComboDetailsPage } from "./Dashboard/Combos/Dashboa
 
 //========== ORDERS ==========
 export { default as DashboardOrdersPage } from "./Dashboard/Orders/DashboardOrdersPage";
+export { default as GenerateInvoicePage } from "./Dashboard/Orders/GenerateInvoicePage";
 
 //========== PRODUCTS ==========
 export { default as DashboardProductsPage } from "./Dashboard/Products/DashboardProductsPage";

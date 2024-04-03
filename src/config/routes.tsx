@@ -79,6 +79,13 @@ const Routes: Array<RouteT> = [
     children: [],
   },
 
+  {
+    path: PATHS.privacy_policy__page,
+    title: "privacy-policy-page",
+    element: <Pages.PrivacyPolicyPage />,
+    children: [],
+  },
+
   // ========== DASHBOARD ==========
   {
     path: PATHS.auth_page,
@@ -178,6 +185,13 @@ const Routes: Array<RouteT> = [
         path: PATHS.dashboard_orders_page,
         title: "dashboard-orders-page",
         element: <Pages.DashboardOrdersPage />,
+        children: [],
+      },
+
+      {
+        path: PATHS.dashboard_generate_invoice_page,
+        title: "dashboard-generate-invoice-page",
+        element: <Pages.GenerateInvoicePage />,
         children: [],
       },
     ],

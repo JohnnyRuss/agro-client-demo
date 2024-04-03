@@ -21,12 +21,13 @@ const ExpandedOrderItem: React.FC<ExpandedOrderItemT> = ({
   const productInfo =
     product.productType === "COMBO" ? product.combo : product.product;
 
-  const { setParam } = useSearchParams();
+  const { setParam, getParam } = useSearchParams();
 
   const onReviewOrder = () => setParam("review-order", order._id);
+  const isOrderInReview = getParam("review-order") === order._id;
 
   return (
-    <Styled.OrderItem>
+    <Styled.OrderItem className={isOrderInReview ? "active" : ""}>
       <figure className="order-fig">
         <img
           src={productInfo.assets[0]}
@@ -89,8 +90,8 @@ const ExpandedOrderItem: React.FC<ExpandedOrderItemT> = ({
           <div className="grid-box__sub">
             <span>სტატუსი:</span>
             &nbsp;
-            <span>
-              {order.status === "APPROVED"
+            <span className={`status ${order.status.toLocaleLowerCase()}`}>
+              {order.status === "SUCCESS"
                 ? "წარმატებული"
                 : order.status === "PENDING"
                 ? "მომლოდინე"

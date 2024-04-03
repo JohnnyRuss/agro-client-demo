@@ -1,7 +1,7 @@
-import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
-import { immer } from "zustand/middleware/immer";
 import { produce } from "immer";
+import { create } from "zustand";
+import { immer } from "zustand/middleware/immer";
+import { devtools, persist } from "zustand/middleware";
 
 import {
   ShoppingCartStateT,

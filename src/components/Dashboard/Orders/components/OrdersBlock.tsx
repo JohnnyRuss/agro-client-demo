@@ -23,6 +23,7 @@ const OrdersBlock: React.FC<OrdersBlockT> = ({ groupedOrders }) => {
   return (
     <Styled.OrdersBlock>
       <ExpandBlockButton
+        isOpen={isOpen}
         total={groupedOrders.totalOrders}
         year={groupedOrders.dateRange.year}
         month={groupedOrders.dateRange.month}

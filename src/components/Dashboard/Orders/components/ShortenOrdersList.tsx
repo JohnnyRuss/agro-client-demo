@@ -10,11 +10,20 @@ type ShortenOrdersListT = {
 };
 
 const ShortenOrdersList: React.FC<ShortenOrdersListT> = ({ groupedOrders }) => {
+  const filteredOrders =
+    groupedOrders.orders.filter(filterOrdersByStatus) || [];
+
   return (
     <Styled.ShortenOrdersList>
-      {groupedOrders.orders.filter(filterOrdersByStatus).map((order) => (
-        <ShortenOrderItem order={order} key={order._id} />
-      ))}
+      {filteredOrders.length > 0 ? (
+        filteredOrders.map((order) => (
+          <ShortenOrderItem order={order} key={order._id} />
+        ))
+      ) : (
+        <p style={{ textAlign: "center", fontWeight: 600, fontSize: "18px" }}>
+          დროის ამ მონაკვეთში შესაბამისი შეკვეთა არ ფიქსირდება
+        </p>
+      )}
     </Styled.ShortenOrdersList>
   );
 };

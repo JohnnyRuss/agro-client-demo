@@ -14,7 +14,7 @@ const AboutUsHeader: React.FC<AboutUsHeaderT> = () => {
 
       <div className="shopping__header-body">
         <figure>
-          <img src="/assets/logo.webp" alt="" width={300} />
+          <img src="/assets/logo-geo.webp" alt="agrometi" width={300} />
         </figure>
       </div>
     </Styled.AboutUsHeader>

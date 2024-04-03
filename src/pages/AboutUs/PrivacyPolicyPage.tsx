@@ -1,22 +1,18 @@
 import { lazy } from "react";
 
-import { useScrollTop } from "@/hooks/utils";
-
 import { SuspenseContainer } from "@/components/Layouts";
 import Navigation from "@/components/Navigation/Navigation";
 import Footer from "@/components/Footer/Footer";
 
-const AboutUs = lazy(() => import("@/components/AboutUs/AboutUs"));
+const PrivacyPolicy = lazy(() => import("@/components/AboutUs/PrivacyPolicy"));
 
-const AboutUsPage: React.FC = () => {
-  useScrollTop();
-
+const PrivacyPolicyPage: React.FC = () => {
   return (
     <>
       <Navigation />
 
       <SuspenseContainer>
-        <AboutUs />
+        <PrivacyPolicy />
       </SuspenseContainer>
 
       <Footer />
@@ -24,4 +20,4 @@ const AboutUsPage: React.FC = () => {
   );
 };
 
-export default AboutUsPage;
+export default PrivacyPolicyPage;

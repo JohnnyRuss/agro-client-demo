@@ -7,6 +7,7 @@ type ExpandBlockButtonT = {
   year: number;
   month: number;
   total: number;
+  isOpen: boolean;
   onToggle: () => void;
 };
 
@@ -14,10 +15,11 @@ const ExpandBlockButton: React.FC<ExpandBlockButtonT> = ({
   year,
   month,
   total,
+  isOpen,
   onToggle,
 }) => {
   return (
-    <Styled.ExpandBlockButton onClick={onToggle}>
+    <Styled.ExpandBlockButton $isOpen={isOpen} onClick={onToggle}>
       <span>
         {getTimeString(
           new Date(`${month}-01-${year}`).toString(),

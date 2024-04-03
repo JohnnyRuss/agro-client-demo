@@ -25,34 +25,45 @@ const Navigation: React.FC<NavigationT> = () => {
       <Styled.NavSocials className="socials-wrapper">
         <ul className="socials-list">
           <li>
-            <Link to={""}>
+            <div>
               <span className="icon">
                 <LocationIcon />
               </span>
-              <span className="title">1901 Thornidge Cir. Shiloh</span>
-            </Link>
+              <span className="title">ქ. ქუთაისი შარტავას 2/10</span>
+            </div>
           </li>
+
           <li>
-            <Link to={""}>
+            <a href="mailto:agroornament@gmail.com">
               <span className="icon">
                 <EmailIcon />
               </span>
-              <span className="title">support@example.com</span>
-            </Link>
+              <span className="title">agroornament@gmail.com</span>
+            </a>
           </li>
+
           <li>
-            <Link to={""}>
+            <a
+              href="viber://chat?number=555145719"
+              referrerPolicy="no-referrer"
+              target="_blank"
+            >
               <span className="icon">
                 <ViberIcon />
               </span>
-            </Link>
+            </a>
           </li>
+
           <li>
-            <Link to={""}>
+            <a
+              href="https://wa.me/555145719"
+              referrerPolicy="no-referrer"
+              target="_blank"
+            >
               <span className="icon">
                 <WhatsUpIcon />
               </span>
-            </Link>
+            </a>
           </li>
         </ul>
       </Styled.NavSocials>
@@ -116,7 +127,7 @@ const Navigation: React.FC<NavigationT> = () => {
 
           <div className="nav-row__right">
             <PhoneIcon />
-            <span>+01234567889</span>
+            <span>+995 555 14 57 19</span>
           </div>
         </div>
       </Styled.Navigation>

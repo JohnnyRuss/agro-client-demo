@@ -37,6 +37,7 @@ export const Dashboard = styled.div`
       font-size: ${({ theme }) => theme.fontSize.h1};
       font-weight: 600;
       letter-spacing: 3px;
+      color: ${({ theme }) => theme.colors.primary};
     }
   }
 `;
